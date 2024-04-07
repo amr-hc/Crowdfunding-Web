@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.forms import TimeField
-
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Create your models here.
 
@@ -62,6 +62,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+
 class Project(models.Model):
     title = models.CharField(max_length=225)
     description = models.CharField(max_length=225)
@@ -70,5 +71,11 @@ class Project(models.Model):
     target_money = models.DecimalField(max_digits=10, decimal_places=2)
     hidden = models.BooleanField(default=False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="owner")
+    rates = models.ManyToManyField(User, through="Rate")
 
+
+class Rate(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    rate = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])

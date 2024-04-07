@@ -37,10 +37,17 @@ class LoginAPIView(GenericAPIView):
         else:
             return Response({'error': 'Invalid username or password'}, status=status.HTTP_401_UNAUTHORIZED)
 
-class UserListCreateAPIView(ListCreateAPIView):
+# class UserListCreateAPIView(ListCreateAPIView):
+#     # permission_classes = [IsAuthenticatedOrReadOnly]
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+
+class UserModelViewSet(ModelViewSet):
     # permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+
 
 class CategoryListCreateAPIView(ListCreateAPIView):
     # permission_classes = [IsAuthenticatedOrReadOnly]
