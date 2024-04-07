@@ -48,12 +48,6 @@ class CategoryListCreateAPIView(ListCreateAPIView):
     serializer_class = CategorySerializer
 
 
-class ProjectListCreateAPIView(ListCreateAPIView):
-    # permission_classes = [IsAuthenticatedOrReadOnly]
-    queryset = Project.objects.all()
-    serializer_class = ProjectSerializer
-
-
 class ProjectModelViewSet(ModelViewSet):
     # permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Project.objects.all()
