@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     'project_tag.apps.ProjectTagConfig',
     'rating.apps.RatingConfig',
     'project_report.apps.ProjectReportConfig',
+    'comment.apps.CommentConfig',
+    'comment_report.apps.CommentReportConfig',
+    'replay.apps.ReplayConfig'
 ]
 
 MIDDLEWARE = [
@@ -85,7 +88,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'crowdfunding',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': '1234',
         'HOST': 'localhost',
         'PORT':3306
 
