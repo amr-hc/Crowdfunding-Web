@@ -21,7 +21,22 @@
             <a class="nav-link" href="#">About</a>
           </li>
         </ul>
+        <div v-show="isAuthenticated" class="avatar-container dropdown" data-bs-theme="dark">
+          <a class="dropdown-toggle-split text-decoration-none d-flex align-items-center" href="#" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="name">John Doe</div>
+            <div class="avatar">
+              <img :src="avatarSrc" alt="Avatar">
+            </div>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item text-center" href="#">Log out &nbsp;<i
+                  class=" fa-solid fa-right-from-bracket"></i></a>
+            </li>
+          </ul>
+        </div>
 
+        <a v-show="!isAuthenticated" class=" text-light text-decoration-none" href="#">Log in</a>
       </div>
     </div>
   </nav>
@@ -30,8 +45,11 @@
 <script>
 export default {
   name: 'navbar',
-  props: {
-    msg: String
+  data() {
+    return {
+      isAuthenticated: false,
+      avatarSrc: require('@/assets/images/avatar.png')
+    }
   }
 }
 </script>
@@ -78,5 +96,30 @@ export default {
   transition: transform 0.5s ease-in-out;
   transform-origin: left;
   transform: scale(1);
+}
+
+.avatar-container {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--primary-color-3);
+  margin-left: 10px;
+  overflow: hidden;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.name {
+  font-size: 16px;
+  color: var(--secondary-color-4);
 }
 </style>

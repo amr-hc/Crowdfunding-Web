@@ -1,24 +1,27 @@
 <template>
   <div class="container map">
-    <navbar msg="Welcome to Your Vue.js App" />
+    <navbar />
+    <intro />
   </div>
 </template>
 
 <script>
 import navbar from './components/navbar.vue'
+import intro from './components/intro.vue'
 
 export default {
   name: 'App',
   components: {
-    navbar
+    navbar, intro
   }
 }
 </script>
 
 <style>
 #app {
-  font-family: "Tajawal", sans-serif;
-  font-weight: 400;
+  position: relative;
+  font-family: "Poppins", sans-serif;
+  font-weight: 200;
   font-style: normal;
 }
 
