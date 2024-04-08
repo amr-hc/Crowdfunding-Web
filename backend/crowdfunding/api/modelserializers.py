@@ -2,6 +2,10 @@ from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 
 from api.models import User, Category , Project
+from comment.models import Comment
+from replay.models import Replay
+from comment_report.models import Report_comment
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -39,4 +43,19 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
+        fields = "__all__"
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = "__all__"
+
+class ReplaySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Replay
+        fields = "__all__"
+
+class ReportCommentListCreateAPIView(serializers.ModelSerializer):
+    class Meta:
+        model = Report_comment
         fields = "__all__"

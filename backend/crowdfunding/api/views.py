@@ -5,13 +5,16 @@ from rest_framework.response import Response
 
 from api.models import User, Category , Project
 
-from api.modelserializers import UserSerializer,LoginSerializer,CategorySerializer , ProjectSerializer
+from api.modelserializers import UserSerializer,LoginSerializer,CategorySerializer , ProjectSerializer ,CommentSerializer,ReplaySerializer,ReportCommentListCreateAPIView 
 
 from rest_framework.permissions import IsAuthenticated , IsAuthenticatedOrReadOnly
 
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.viewsets import ModelViewSet
 
+from comment.models import Comment
+from replay.models import Replay
+from comment_report.models import Report_comment
 
 
 from rest_framework import status
@@ -65,4 +68,22 @@ def testview(request):
     return HttpResponse("hi")
 
 
+
+class CategoryListCreateAPIView(ListCreateAPIView):
+    # permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+class CommentListCreateAPIView(ListCreateAPIView):
+    queryset =Comment.objects.all()
+    serializer_class=CommentSerializer
+
+class ReplayListCreateAPIView(ListCreateAPIView):
+    queryset =Replay.objects.all()
+    serializer_class=ReplaySerializer
+
+
+class ReportCommentListCreateAPIView(ListCreateAPIView):
+    queryset =Report_comment.objects.all()
+    serializer_class=ReportCommentListCreateAPIView
 
