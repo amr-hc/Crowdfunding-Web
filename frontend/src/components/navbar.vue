@@ -9,16 +9,19 @@
         <a class="navbar-brand" href="#">Arise</a>
         <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <router-link to="/" class="text-decoration-none"><button class="nav-link ">Home</button></router-link>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" @click.prevent="navigate('v')">Projects</a>
+            <router-link to="projects" class="text-decoration-none"><button
+                class="nav-link ">Projects</button></router-link>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" @click.prevent="navigate('vv')">Investors</a>
+            <router-link to="investors" class="text-decoration-none"><button
+                class="nav-link ">Investors</button></router-link>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" @click.prevent="navigate('v')">About</a>
+            <router-link to="/about" class="text-decoration-none"><button class="nav-link ">About</button></router-link>
+
           </li>
           <!-- <li class="nav-item">
             <button class="nav-link" @click="navigate('registration')">registration
@@ -39,9 +42,11 @@
             </li>
           </ul>
         </div>
+        <router-link v-show="!isAuthenticated" class=" text-light text-decoration-none m-2" to="registration"><button
+            class="nav-link ">sign up</button></router-link>
+        <router-link v-show="!isAuthenticated" class=" text-light text-decoration-none" to="login"><button
+            class="nav-link ">login</button></router-link>
 
-        <a v-show="!isAuthenticated" class=" text-light text-decoration-none" href="#"
-          @click="navigate('registration')">Log in</a>
       </div>
     </div>
   </nav>
@@ -52,7 +57,7 @@ export default {
   name: 'navbar',
   data() {
     return {
-      isAuthenticated: true,
+      isAuthenticated: false,
       avatarSrc: require('@/assets/images/avatar.png')
     }
   },
