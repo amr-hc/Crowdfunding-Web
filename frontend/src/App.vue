@@ -1,8 +1,7 @@
 <template>
   <div class="container map">
-    <navbar />
-    <intro />
     <navbar @clickEvent="activpage" />
+    <intro />
     <component :is="targetComponent" />
 
   </div>
