@@ -1,26 +1,54 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container map">
+    <navbar @clickEvent="activpage" />
+    <intro />
+    <component :is="targetComponent" />
+
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import navbar from './components/navbar.vue'
+import intro from './components/intro.vue'
+import registration from './components/registration.vue'
+import hi from './components/hi.vue'
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    navbar, intro, registration, hi
+
+
+  },
+  data: () => ({
+    targetComponent: ""
+  }),
+  methods: {
+    activpage(_v) {
+      if (_v == "registration") {
+        this.targetComponent = "registration"
+      }
+      else {
+
+        this.targetComponent = "hi"
+      }
+    },
+
+  },
+
+
+
 }
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  position: relative;
+  font-family: "Poppins", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.container {
+  min-height: 100vh;
 }
 </style>
