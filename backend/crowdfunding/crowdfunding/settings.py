@@ -39,7 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_cleanup.apps.CleanupConfig',
     'api.apps.ApiConfig',
-    'rest_framework'
+    'rest_framework',
+    'tags.apps.TagsConfig',
+    'project_tag.apps.ProjectTagConfig',
+    'rating.apps.RatingConfig',
+    'project_report.apps.ProjectReportConfig',
 ]
 
 MIDDLEWARE = [
