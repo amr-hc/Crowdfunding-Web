@@ -42,8 +42,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'tags.apps.TagsConfig',
     'project_tag.apps.ProjectTagConfig',
-    'rating.apps.RatingConfig',
     'project_report.apps.ProjectReportConfig',
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
@@ -140,3 +140,13 @@ AUTH_USER_MODEL = 'api.User'
 import os
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': [
+#         'rest_framework.authentication.BasicAuthentication',
+#         'rest_framework.authentication.SessionAuthentication',
+#     ],
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.IsAuthenticated',
+#     ]
+# }
