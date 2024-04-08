@@ -12,14 +12,18 @@
             <a class="nav-link active" aria-current="page" href="#">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Projects</a>
+            <a class="nav-link" href="#" @click.prevent="navigate('v')">Projects</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Investors</a>
+            <a class="nav-link" href="#" @click.prevent="navigate('vv')">Investors</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
+            <a class="nav-link" href="#" @click.prevent="navigate('v')">About</a>
           </li>
+          <!-- <li class="nav-item">
+            <button class="nav-link" @click="navigate('registration')">registration
+            </button>
+          </li> -->
         </ul>
         <div v-show="isAuthenticated" class="avatar-container dropdown" data-bs-theme="dark">
           <a class="dropdown-toggle-split text-decoration-none d-flex align-items-center" href="#" role="button"
@@ -36,7 +40,8 @@
           </ul>
         </div>
 
-        <a v-show="!isAuthenticated" class=" text-light text-decoration-none" href="#">Log in</a>
+        <a v-show="!isAuthenticated" class=" text-light text-decoration-none" href="#"
+          @click="navigate('registration')">Log in</a>
       </div>
     </div>
   </nav>
@@ -50,11 +55,17 @@ export default {
       isAuthenticated: false,
       avatarSrc: require('@/assets/images/avatar.png')
     }
-  }
+  },
+  methods: {
+    navigate(selcted) {
+
+      this.$emit("clickEvent", selcted)
+    }
+  },
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Bungee+Spice&display=swap');
 
