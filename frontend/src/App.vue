@@ -2,6 +2,7 @@
   <div class="container map">
     <navbar @clickEvent="activpage" />
     <intro />
+    <featured />
     <component :is="targetComponent" />
 
   </div>
@@ -12,10 +13,11 @@ import navbar from './components/navbar.vue'
 import intro from './components/intro.vue'
 import registration from './components/registration.vue'
 import hi from './components/hi.vue'
+import featured from './components/featured.vue'
 export default {
   name: 'App',
   components: {
-    navbar, intro, registration, hi
+    navbar, intro, registration, hi, featured
 
 
   },

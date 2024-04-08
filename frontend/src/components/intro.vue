@@ -6,7 +6,7 @@
         <div class="more btn text-light p-0">
             learn more <i class="ms-1 fa-solid fa-arrow-right-long"></i>
         </div>
-        <div class="statics row gap-2">
+        <div class="statics row gap-2 ">
             <div class="statics_card d-flex flex-column justify-content-center align-items-center">
                 <h2 class="m-0">100+</h2>
                 <p class="m-0 text-light ">Years Of Experience</p>
@@ -42,11 +42,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .intro {
-    min-height: 90vh;
+    min-height: calc(100vh - 62px);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
 }
 
 .title {
