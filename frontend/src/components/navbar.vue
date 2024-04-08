@@ -52,7 +52,7 @@ export default {
   name: 'navbar',
   data() {
     return {
-      isAuthenticated: false,
+      isAuthenticated: true,
       avatarSrc: require('@/assets/images/avatar.png')
     }
   },
