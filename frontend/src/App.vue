@@ -1,17 +1,40 @@
 <template>
   <div class="container map">
-    <navbar msg="Welcome to Your Vue.js App" />
+    <navbar @clickEvent="activpage" />
+    <component :is="targetComponent" />
+     
   </div>
 </template>
 
 <script>
 import navbar from './components/navbar.vue'
+import registration from './components/registration.vue'
+import hi from './components/hi.vue'
 
 export default {
-  name: 'App',
-  components: {
-    navbar
+
+  data:()=>({
+targetComponent:""
+  }),
+  methods: {
+    activpage(_v){
+      if(_v=="registration"){
+       this.targetComponent="registration"
+      }
+      else{
+         
+        this.targetComponent="hi"
+      }
+    },
+     
+  },
+  components:{
+    navbar,
+    registration,hi
+
   }
+   
+   
 }
 </script>
 

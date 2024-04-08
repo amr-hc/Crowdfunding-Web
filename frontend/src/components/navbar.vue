@@ -12,14 +12,17 @@
             <a class="nav-link active" aria-current="page" href="#">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Projects</a>
+            <a class="nav-link" href="#" @click.prevent="chosing('v')">Projects</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Investors</a>
+            <a class="nav-link" href="#" @click.prevent="chosing('vv')">Investors</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
+            <a class="nav-link" href="#" @click.prevent="chosing('v')" >About</a>
           </li>
+          <li class="nav-item">
+            <button class="nav-link" @click="chosing('registration')">registration
+          </button></li>
         </ul>
 
       </div>
@@ -32,11 +35,17 @@ export default {
   name: 'navbar',
   props: {
     msg: String
-  }
+  },
+  methods: {
+     chosing(selcted){
+       
+ this.$emit("clickEvent",selcted)
+     }
+  },
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+ 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Bungee+Spice&display=swap');
 
