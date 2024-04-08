@@ -1,8 +1,42 @@
 <template>
   <div class="register vh-100 row justify-content-center align-items-center ">
-    <div class="registerCard w-50 h-75 bg-white  row flex-column   ">
+    <div class="registerCard w-50 bg-white  row flex-column   ">
+      <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
+  <li class="nav-item" role="presentation">
+    <router-link to="/login"><button class="nav-link " id="tab-register" data-mdb-toggle="pill" role="tab"
+      aria-controls="pills-register" aria-selected="false">Login</button></router-link>
+     
+  </li>
+  
+  <li class="nav-item" role="presentation">
+    <router-link to="/registration"><button class="nav-link " id="tab-register" data-mdb-toggle="pill" role="tab"
+      aria-controls="pills-register" aria-selected="false">Register</button></router-link>
+  </li>
+</ul>
       <form class="row flex-column  justify-content-center align-items-center  g-3 needs-validation" novalidate>
-  <div class="col-md-10">
+  
+        <div class="text-center mb-3">
+        <p>Sign in with:</p>
+        <button type="button" class="btn btn-link btn-floating mx-1">
+          <i class="fab fa-facebook-f"></i>
+        </button>
+
+        <button type="button" class="btn btn-link btn-floating mx-1">
+          <i class="fab fa-google"></i>
+        </button>
+
+        <button type="button" class="btn btn-link btn-floating mx-1">
+          <i class="fab fa-twitter"></i>
+        </button>
+
+        <button type="button" class="btn btn-link btn-floating mx-1">
+          <i class="fab fa-github"></i>
+        </button>
+      </div>
+
+      <p class="text-center">or:</p>
+  
+        <div class="col-md-10">
     <label for="validationCustom01" class="form-label">Name</label>
     <input type="text" class="form-control" id="validationCustom01" value="" required>
     <div class="valid-feedback">
@@ -84,6 +118,7 @@ export default {
 }
 .registerCard{border-radius: 10%;
 opacity: 0.8;
-color:black
+color:black;
+height: 90vh;
 }
 </style>

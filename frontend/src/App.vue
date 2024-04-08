@@ -39,7 +39,8 @@
             </li>
           </ul>
         </div>
-        <router-link v-show="!isAuthenticated" class=" text-light text-decoration-none" to="registration"><button class="nav-link ">sign up</button></router-link>
+        <router-link v-show="!isAuthenticated" class=" text-light text-decoration-none m-2" to="registration"><button class="nav-link ">sign up</button></router-link>
+        <router-link v-show="!isAuthenticated" class=" text-light text-decoration-none" to="login"><button class="nav-link ">login</button></router-link>
  
       </div>
     </div>
@@ -56,7 +57,7 @@
 export default {
   data() {
     return {
-      isAuthenticated: true,
+      isAuthenticated: false,
       avatarSrc: require('@/assets/images/avatar.png')
     }
   },
