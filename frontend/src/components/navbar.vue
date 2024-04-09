@@ -16,8 +16,8 @@
                 class="nav-link ">Projects</button></router-link>
           </li>
           <li class="nav-item">
-            <router-link to="investors" class="text-decoration-none"><button
-                class="nav-link ">Investors</button></router-link>
+            <router-link to="profile" class="text-decoration-none"><button
+                class="nav-link ">Profile</button></router-link>
           </li>
           <li class="nav-item">
             <router-link to="/about" class="text-decoration-none"><button class="nav-link ">About</button></router-link>
