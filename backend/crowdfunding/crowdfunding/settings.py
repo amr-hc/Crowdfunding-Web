@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     "comment_report.apps.CommentReportConfig",
     "replay.apps.ReplayConfig",
     "corsheaders",
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    "djoser"
 ]
 
 MIDDLEWARE = [
@@ -149,3 +150,47 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
 
 CORS_ALLOWED_ORIGINS = ["http://localhost:8080", "http://127.0.0.1:8080"]
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework.authentication.TokenAuthentication',
+#     )
+# }
+
+
+DJOSER = {
+    'USER_MODEL': 'users.Users',
+    'LOGIN_FIELD': 'email',
+    # 'ACTIVATION_URL': 'auth/users/activation/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True,
+    'SEND_CONFIRM_EMAIL': False,
+    'PASSWORD_RESET_CONFIRM_URL' : 'reset-password-confirm/{uid}/{token}/',
+    'LOGIN_REDIRECT_URL': '/',
+    'LOGOUT_REDIRECT_URL': '/',
+    'SERIALIZERS': {
+        'user': 'api.modelserializers.UserSerializer',
+    },
+
+}
+
+# Authentication settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'amr.abdullah.elrefaey@gmail.com'
+EMAIL_HOST_PASSWORD = 'ezwc olhu eqzn bfss'
+DEFAULT_FROM_EMAIL = 'amr.abdullah.elrefaey@gmail.comm'
+
+
+

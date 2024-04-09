@@ -28,6 +28,7 @@ from rest_framework.authtoken.models import Token
 
 class login(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
+        print(request.data)
         serializer = self.serializer_class(data=request.data,
                                            context={'request': request})
         serializer.is_valid(raise_exception=True)
@@ -40,8 +41,8 @@ class login(ObtainAuthToken):
         })
 
 class UserModelViewSet(ModelViewSet):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsSameUserOrReadOnly]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsSameUserOrReadOnly]
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -87,3 +88,19 @@ class ReportCommentListCreateAPIView(ListCreateAPIView):
     queryset =Report_comment.objects.all()
     serializer_class=ReportCommentListCreateAPIView
 
+
+from django.core.mail import send_mail
+from django.http import HttpResponse
+
+
+def send_test_email(request):
+    subject = 'Test Email'
+    message = 'This is a test email sent from Django using Gmail SMTP.'
+    from_email = 'amr.abdullah.elrefaey@gmail.com'  # Use your Gmail address here
+    to_email = 'ef64b54e13@emailbbox.pro'
+
+    try:
+        send_mail(subject, message, from_email, [to_email])
+        return HttpResponse('Test email sent successfully!')
+    except Exception as e:
+        return HttpResponse(f'Failed to send test email: {str(e)}')
