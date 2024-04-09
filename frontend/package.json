@@ -1,5 +1,5 @@
 {
-  "name": "frontend-with-vuejs",
+  "name": "arise",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,7 +7,9 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "vue": "^3.2.13"
+    "pinia": "^2.1.7",
+    "vue": "^3.2.13",
+    "vue-router": "^4.3.0"
   },
   "devDependencies": {
     "@vue/cli-service": "~5.0.0"

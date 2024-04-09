@@ -6,13 +6,16 @@ from rest_framework.response import Response
 
 from api.models import User, Category , Project , Rate
 
-from api.modelserializers import UserSerializer,LoginSerializer,CategorySerializer , ProjectSerializer,RateSerializer
+from api.modelserializers import UserSerializer,LoginSerializer,CategorySerializer , ProjectSerializer,RateSerializer ,CommentSerializer,ReplaySerializer,ReportCommentListCreateAPIView 
 
 from rest_framework.permissions import IsAuthenticated , IsAuthenticatedOrReadOnly
 
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.viewsets import ModelViewSet
 
+from comment.models import Comment
+from replay.models import Replay
+from comment_report.models import Report_comment
 
 from api.permissions import IsOwnerOrReadOnly, IsSameUserOrReadOnly,IsAdminOrReadOnly
 from rest_framework.generics import GenericAPIView
@@ -66,3 +69,21 @@ class RateModelViewSet(ModelViewSet):
     # permission_classes = [IsAuthenticated]
     queryset = Rate.objects.all()
     serializer_class = RateSerializer
+class CategoryListCreateAPIView(ListCreateAPIView):
+    # permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+class CommentListCreateAPIView(ListCreateAPIView):
+    queryset =Comment.objects.all()
+    serializer_class=CommentSerializer
+
+class ReplayListCreateAPIView(ListCreateAPIView):
+    queryset =Replay.objects.all()
+    serializer_class=ReplaySerializer
+
+
+class ReportCommentListCreateAPIView(ListCreateAPIView):
+    queryset =Report_comment.objects.all()
+    serializer_class=ReportCommentListCreateAPIView
+
