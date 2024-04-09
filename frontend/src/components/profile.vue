@@ -80,7 +80,9 @@
                   <hr>
                   <div class="row">
                     <div class="col-sm-12">
-                      <a class="btn btn-info " target="__blank" href="">Edit</a>
+                      <router-link to="/updateUserProfile" class=" m-1 text-decoration-none "><button class="btn btn-info ">Edit</button></router-link>
+
+                      
                     </div>
                   </div>
                 </div>

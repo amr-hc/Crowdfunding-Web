@@ -8,6 +8,7 @@ import projects from "../components/projects.vue";
 import login from "../components/login.vue";
 import Home from "@/components/home.vue";
 import profile from "../components/profile.vue";
+import updateUserProfile from "../components/updateUserProfile.vue";
 
 const routes = [
   {
@@ -38,6 +39,10 @@ const routes = [
   {
     path: "/profile",
     component: profile,
+  },
+  {
+    path: "/updateUserProfile",
+    component: updateUserProfile,
   },
   {
     path: "/:catchAll(.*)",
