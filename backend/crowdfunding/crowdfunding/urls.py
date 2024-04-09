@@ -28,4 +28,6 @@ urlpatterns = [
     path("project_tag/", include('project_tag.api.urls')),
     path("rating/", include('rating.api.urls')),
     path("report/", include('project_report.api.urls')),
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.authtoken')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
