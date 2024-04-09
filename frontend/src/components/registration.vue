@@ -119,6 +119,6 @@ export default {
 .registerCard{border-radius: 10%;
 opacity: 0.8;
 color:black;
-height: 90vh;
+height: 95vh;
 }
 </style>

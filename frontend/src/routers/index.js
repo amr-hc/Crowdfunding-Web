@@ -7,6 +7,7 @@ import investors from "../components/investors.vue";
 import projects from "../components/projects.vue";
 import login from "../components/login.vue";
 import Home from "@/components/home.vue";
+import profile from "../components/profile.vue";
 
 const routes = [
   {
@@ -33,6 +34,10 @@ const routes = [
   {
     path: "/login",
     component: login,
+  },
+  {
+    path: "/profile",
+    component: profile,
   },
   {
     path: "/:catchAll(.*)",

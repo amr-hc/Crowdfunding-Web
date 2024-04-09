@@ -37,8 +37,11 @@
             </div>
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item text-center" href="#">Log out &nbsp;<i
-                  class=" fa-solid fa-right-from-bracket"></i></a>
+            <li><router-link to="profile" class="dropdown-item text-center" >Profile &nbsp;<i
+                  class=" fa-solid fa-right-from-bracket"></i></router-link>
+            </li>
+            <li><router-link to="" class="dropdown-item text-center" >Log out &nbsp;<i
+                  class=" fa-solid fa-right-from-bracket"></i></router-link>
             </li>
           </ul>
         </div>
@@ -57,7 +60,7 @@ export default {
   name: 'navbar',
   data() {
     return {
-      isAuthenticated: false,
+      isAuthenticated: true,
       avatarSrc: require('@/assets/images/avatar.png')
     }
   },
