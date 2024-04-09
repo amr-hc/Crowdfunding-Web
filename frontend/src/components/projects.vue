@@ -14,7 +14,7 @@
                             <h3 class="title">Williamson</h3>
                             <span class="post">Web Developer</span>
                             <ul class="icon">
-                                <li><a href="#"><i class="fa fa-search"></i></a></li>
+                                <li><a href="#"><i class="fa-solid fa-diamond-turn-right"></i></a></li>
                                 <li><a href="#"><i class="fa fa-link"></i></a></li>
                             </ul>
                         </div>
@@ -30,7 +30,7 @@
                             <h3 class="title">Kristiana</h3>
                             <span class="post">Web Designer</span>
                             <ul class="icon">
-                                <li><a href="#"><i class="fa fa-search"></i></a></li>
+                                <li><a href="#"><i class="fa-solid fa-diamond-turn-right"></i></a></li>
                                 <li><a href="#"><i class="fa fa-link"></i></a></li>
                             </ul>
                         </div>
@@ -46,7 +46,7 @@
                             <h3 class="title">Kristiana</h3>
                             <span class="post">Web Designer</span>
                             <ul class="icon">
-                                <li><a href="#"><i class="fa fa-search"></i></a></li>
+                                <li><a href="#"><i class="fa-solid fa-diamond-turn-right"></i></a></li>
                                 <li><a href="#"><i class="fa fa-link"></i></a></li>
                             </ul>
                         </div>
@@ -62,7 +62,7 @@
                             <h3 class="title">Kristiana</h3>
                             <span class="post">Web Designer</span>
                             <ul class="icon">
-                                <li><a href="#"><i class="fa fa-search"></i></a></li>
+                                <li><a href="#"><i class="fa-solid fa-diamond-turn-right"></i></a></li>
                                 <li><a href="#"><i class="fa fa-link"></i></a></li>
                             </ul>
                         </div>
@@ -78,7 +78,7 @@
                             <h3 class="title">Kristiana</h3>
                             <span class="post">Web Designer</span>
                             <ul class="icon">
-                                <li><a href="#"><i class="fa fa-search"></i></a></li>
+                                <li><a href="#"><i class="fa-solid fa-diamond-turn-right"></i></a></li>
                                 <li><a href="#"><i class="fa fa-link"></i></a></li>
                             </ul>
                         </div>
@@ -94,7 +94,7 @@
                             <h3 class="title">Kristiana</h3>
                             <span class="post">Web Designer</span>
                             <ul class="icon">
-                                <li><a href="#"><i class="fa fa-search"></i></a></li>
+                                <li><a href="#"><i class="fa-solid fa-diamond-turn-right"></i></a></li>
                                 <li><a href="#"><i class="fa fa-link"></i></a></li>
                             </ul>
                         </div>
@@ -110,7 +110,7 @@
                             <h3 class="title">Kristiana</h3>
                             <span class="post">Web Designer</span>
                             <ul class="icon">
-                                <li><a href="#"><i class="fa fa-search"></i></a></li>
+                                <li><a href="#"><i class="fa-solid fa-diamond-turn-right"></i></a></li>
                                 <li><a href="#"><i class="fa fa-link"></i></a></li>
                             </ul>
                         </div>
@@ -126,7 +126,7 @@
                             <h3 class="title">Kristiana</h3>
                             <span class="post">Web Designer</span>
                             <ul class="icon">
-                                <li><a href="#"><i class="fa fa-search"></i></a></li>
+                                <li><a href="#"><i class="fa-solid fa-diamond-turn-right"></i></a></li>
                                 <li><a href="#"><i class="fa fa-link"></i></a></li>
                             </ul>
                         </div>
@@ -142,7 +142,7 @@
                             <h3 class="title">Kristiana</h3>
                             <span class="post">Web Designer</span>
                             <ul class="icon">
-                                <li><a href="#"><i class="fa fa-search"></i></a></li>
+                                <li><a href="#"><i class="fa-solid fa-diamond-turn-right"></i></a></li>
                                 <li><a href="#"><i class="fa fa-link"></i></a></li>
                             </ul>
                         </div>
