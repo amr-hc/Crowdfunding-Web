@@ -31,7 +31,7 @@
                   </div>
               </div>
             </div>
-              <div class="card mb-3 col-8 m-1 bg-dark">
+              <div class="card mb-3 col-md-8 mb-3 bg-dark">
                 <div class="card-body">
                   <div class="row">
                     <div class="col-sm-3">
