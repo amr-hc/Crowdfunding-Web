@@ -1,7 +1,14 @@
 <template>
     <section style=" background-color: rgb(91 91 91 / 50%) !important;">
-      <div class="text-center container py-5">
-    <h4 class="mt-4 mb-5"><strong>ALL PROJECTS </strong></h4>
+
+        <div class="jumbotron h-25 text-white mb-2 row align-items-center">
+    <div class=" py-5 text-center   ">
+        <h1 class="display-4 font-weight-bold">Browse Our Projects</h1>
+        <h2 class="font-italic mb-0">Try To Be A Part Of The Solution.</h2>
+    </div>
+</div>
+      <div class="text-center container py-3">
+    
       <div class=" ">
     <div class="container">
         <div class="row wall">
@@ -285,6 +292,12 @@
 @media only screen and (max-width:990px){
     .box{ margin-bottom: 30px; }
 }
-
+.jumbotron{
+  background-image: url('../assets/imges/pexels-pixabay-461049.jpg');
+  background-position:center;
+  background-size:cover ;
+ 
+  
+}
   </style>
   
