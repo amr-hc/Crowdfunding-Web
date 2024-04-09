@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from rating.models import Rating
+from api.models import Rate
 class RatingSerializer(serializers.ModelSerializer):
   
     class Meta:
-        model = Rating
+        model = Rate
         fields = "__all__"  
 
 

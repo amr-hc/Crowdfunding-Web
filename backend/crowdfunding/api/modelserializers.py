@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 
-from api.models import User, Category , Project
+from api.models import User, Category , Project , Rate
 from comment.models import Comment
 from replay.models import Replay
 from comment_report.models import Report_comment
@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         # fields = "__all__"
         fields = ["id", "email", "password", "first_name", "last_name", "is_superuser", "is_active", "birth_date", "photo"]
-        extra_kwargs = {'password': {'write_only': True}}  # Ensure password is write-only
+        extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
         validated_data['password'] = make_password(validated_data['password'])
@@ -21,7 +21,6 @@ class UserSerializer(serializers.ModelSerializer):
         print(type(instance))
         validated_data['password'] = make_password(validated_data['password'])
         return super(UserSerializer, self).update(instance, validated_data)
-
 
 
 class LoginSerializer(serializers.Serializer):
@@ -35,11 +34,17 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class RateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rate
+        fields = "__all__"
+
 class ProjectSerializer(serializers.ModelSerializer):
     owner = UserSerializer(read_only=True)
     owner_id = serializers.IntegerField(write_only=True)
     category = CategorySerializer(read_only=True)
     category_id = serializers.IntegerField(write_only=True)
+
 
     class Meta:
         model = Project

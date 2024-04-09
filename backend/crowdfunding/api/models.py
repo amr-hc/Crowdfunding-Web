@@ -76,6 +76,6 @@ class Project(models.Model):
 
 
 class Rate(models.Model):
+    rate = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    rate = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])

@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "comment_report.apps.CommentReportConfig",
     "replay.apps.ReplayConfig",
     "corsheaders",
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
@@ -91,7 +92,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "crowdfunding",
         "USER": "root",
-        "PASSWORD": "1234",
+        "PASSWORD": "",
         "HOST": "localhost",
         "PORT": 3306,
     }
