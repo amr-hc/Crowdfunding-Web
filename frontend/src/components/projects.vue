@@ -165,6 +165,9 @@
   
   <script>
   export default {
+    data:()=>{
+
+    },
     name: 'HelloWorld',
     props: {
       msg: String

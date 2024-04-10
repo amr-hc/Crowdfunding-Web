@@ -1,7 +1,5 @@
 <template>
-  <form
-    action="post"
-    enctype="multipart/form-data"
+  <section
     class="row justify-content-center">
     <div
       class="container p-5 row align-items-center flex-column gap-2 w-50"
@@ -86,7 +84,7 @@
         @click="addProject"
       />
     </div>
-  </form>
+  </section>
 </template>
 <script>
 export default {
@@ -96,7 +94,8 @@ export default {
     targetMoney: 0,
     category: "",
     photos: [],
-    endDate: new Date().toISOString().split("T")[0]
+    endDate: new Date().toISOString().split("T")[0],
+    categories:[]
   }),
   methods: {
     addProject($event) {
@@ -117,8 +116,23 @@ export default {
       const pics = $event.target.files;
       this.photos = Array.from(pics);
     },
-    
   },
+  created() {
+    fetch("http://127.0.0.1:8000/api/categories/")
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch categories');
+        }
+        return response.json(); // Return the promise from data.json()
+      })
+      .then(categories => {
+        console.log(categories);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+}
+
 };
 </script>
 <style></style>
