@@ -1,38 +1,20 @@
 <template>
-  <div class="login vh-100 row justify-content-center align-items-center">
-    <div class="loginCard w-50 h-100 bg-white row flex-column">
-      <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
-        <li class="nav-item" role="presentation">
-          <router-link to="/login"
-            ><button
-              class="nav-link"
-              id="tab-register"
-              data-mdb-toggle="pill"
-              role="tab"
-              aria-controls="pills-register"
-              aria-selected="false"
-            >
-              Login
-            </button></router-link
-          >
-        </li>
+ <div class="login vh-100 row justify-content-center align-items-center ">
+<div class="loginCard w-50  bg-white  row flex-column   ">
 
-        <li class="nav-item" role="presentation">
-          <router-link to="/registration"
-            ><button
-              class="nav-link"
-              id="tab-register"
-              data-mdb-toggle="pill"
-              role="tab"
-              aria-controls="pills-register"
-              aria-selected="false"
-            >
-              Register
-            </button></router-link
-          >
-        </li>
-      </ul>
-      <!-- Pills navs -->
+<ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
+  <li class="nav-item" role="presentation">
+    <router-link to="/login"><button class="nav-link " id="tab-register" data-mdb-toggle="pill" role="tab"
+      aria-controls="pills-register" aria-selected="false">Login</button></router-link>
+     
+  </li>
+  
+  <li class="nav-item" role="presentation">
+    <router-link to="/registration"><button class="nav-link " id="tab-register" data-mdb-toggle="pill" role="tab"
+      aria-controls="pills-register" aria-selected="false">Register</button></router-link>
+  </li>
+</ul>
+<!-- Pills navs -->
 
       <!-- Pills content -->
       <div class="tab-content">
@@ -107,121 +89,44 @@
               Sign in
             </button>
 
-            <!-- Register buttons -->
-            <div class="text-center">
-              <p>Not a member? <a href="#!">Register</a></p>
-            </div>
-          </form>
-        </div>
-        <div
-          class="tab-pane fade"
-          id="pills-register"
-          role="tabpanel"
-          aria-labelledby="tab-register"
-        >
-          <form>
-            <div class="text-center mb-3">
-              <p>Sign up with:</p>
-              <button type="button" class="btn btn-link btn-floating mx-1">
-                <i class="fab fa-facebook-f"></i>
-              </button>
-
-              <button type="button" class="btn btn-link btn-floating mx-1">
-                <i class="fab fa-google"></i>
-              </button>
-
-              <button type="button" class="btn btn-link btn-floating mx-1">
-                <i class="fab fa-twitter"></i>
-              </button>
-
-              <button type="button" class="btn btn-link btn-floating mx-1">
-                <i class="fab fa-github"></i>
-              </button>
-            </div>
-
-            <p class="text-center">or:</p>
-
-            <!-- Name input -->
-            <div class="form-outline mb-4">
-              <input type="text" id="registerName" class="form-control" />
-              <label class="form-label" for="registerName">Name</label>
-            </div>
-
-            <!-- Username input -->
-            <div class="form-outline mb-4">
-              <input type="text" id="registerUsername" class="form-control" />
-              <label class="form-label" for="registerUsername">Username</label>
-            </div>
-
-            <!-- Email input -->
-            <div class="form-outline mb-4">
-              <input type="email" id="registerEmail" class="form-control" />
-              <label class="form-label" for="registerEmail">Email</label>
-            </div>
-
-            <!-- Password input -->
-            <div class="form-outline mb-4">
-              <input
-                type="password"
-                id="registerPassword"
-                class="form-control"
-              />
-              <label class="form-label" for="registerPassword">Password</label>
-            </div>
-
-            <!-- Repeat Password input -->
-            <div class="form-outline mb-4">
-              <input
-                type="password"
-                id="registerRepeatPassword"
-                class="form-control"
-              />
-              <label class="form-label" for="registerRepeatPassword"
-                >Repeat password</label
-              >
-            </div>
-
-            <!-- Checkbox -->
-            <div class="form-check d-flex justify-content-center mb-4">
-              <input
-                class="form-check-input me-2"
-                type="checkbox"
-                value=""
-                id="registerCheck"
-                checked
-                aria-describedby="registerCheckHelpText"
-              />
-              <label class="form-check-label" for="registerCheck">
-                I have read and agree to the terms
-              </label>
-            </div>
-
-            <!-- Submit button -->
-            <button type="submit" class="btn btn-primary btn-block mb-3">
-              Sign in
-            </button>
-          </form>
-        </div>
+      <!-- Register buttons -->
+      <div class="text-center">
+        <p>Not a member? <a href="#!">Register</a></p>
       </div>
-    </div>
+    </form>
   </div>
-</template>
-
-<script>
-export default {};
-</script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.login {
-  background-image: url("../assets/imges/pexels-branimir-balogović-3959485.jpg");
-  background-position: center;
-  background-size: cover;
+   
+</div>
+</div>
+</div>
+  </template>
   
-}
-.loginCard {
-  border-radius: 10%;
+  <script>
+  export default {
+    name: 'HelloWorld',
+    props: {
+      msg: String
+    }
+  }
+  </script>
+  
+  <!-- Add "scoped" attribute to limit CSS to this component only -->
+  <style scoped>
+  .login{
+    background-image: url("../assets/imges/pexels-branimir-balogović-3959485.jpg");
+    background-position: center ;
+    background-size: cover ;
+    height: 100vh;
+    flex-wrap: nowrap !important;
+
+    
+  }
+  .loginCard{border-radius: 10%;
   opacity: 0.8;
-  color: black;
-}
-</style>
+  color:black;
+
+  height: 100%;
+
+  }
+  </style>
+  

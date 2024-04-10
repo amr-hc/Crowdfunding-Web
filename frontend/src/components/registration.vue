@@ -203,12 +203,16 @@ export default {
   background-image: url("../assets/imges/pexels-branimir-balogović-3959485.jpg");
   background-position: center ;
   background-size: cover ;
-  
+  height: 100vh;
+  flex-wrap: nowrap !important;
 }
-.registerCard{border-radius: 10%;
+.registerCard{
+  
+  padding: 30px;
+  border-radius: 10%;
 opacity: 0.8;
 color:black;
-height: 98vh;
+height: 100%;
 width: 60vw ;
 }
 p{
