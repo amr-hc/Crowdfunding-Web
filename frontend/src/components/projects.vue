@@ -293,11 +293,19 @@
     .box{ margin-bottom: 30px; }
 }
 .jumbotron{
-  background-image: url('../assets/imges/pexels-pixabay-461049.jpg');
+  background-image: url('../assets/imges/pexels-alan-henrique-9425961.jpg');
   background-position:center;
   background-size:cover ;
- 
+  
   
 }
+.jumbotron  * {
+    color: #d37819 !important;
+    font-weight:600 !important;
+  
+  
+}
+
+
   </style>
   
