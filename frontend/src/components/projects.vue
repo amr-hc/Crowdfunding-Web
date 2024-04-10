@@ -1,7 +1,7 @@
 <template>
     <section style=" background-color: rgb(91 91 91 / 50%) !important;">
-
         <div class="jumbotron h-25 text-white mb-2 row align-items-center">
+        <router-link class="btn btn-outline-success  mt-3 col-2 ms-2" to="/add">Add Project</router-link>
     <div class=" py-5 text-center   ">
         <h1 class="display-4 font-weight-bold">Browse Our Projects</h1>
         <h2 class="font-italic mb-0">Try To Be A Part Of The Solution.</h2>
