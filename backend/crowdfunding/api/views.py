@@ -8,7 +8,7 @@ from api.models import User, Category , Project , Rate
 
 from api.modelserializers import UserSerializer,LoginSerializer,CategorySerializer , ProjectSerializer,RateSerializer ,CommentSerializer,ReplaySerializer,ReportCommentListCreateAPIView 
 
-from rest_framework.permissions import IsAuthenticated , IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated , IsAuthenticatedOrReadOnly,AllowAny
 
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.viewsets import ModelViewSet
@@ -50,7 +50,8 @@ class UserModelViewSet(ModelViewSet):
 
 class CategoryModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAdminOrReadOnly]
+    # permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [AllowAny]
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
@@ -58,7 +59,8 @@ class CategoryModelViewSet(ModelViewSet):
 
 class ProjectModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsOwnerOrReadOnly]
+    # permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [AllowAny]
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
 
