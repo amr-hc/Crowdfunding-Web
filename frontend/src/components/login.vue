@@ -126,6 +126,7 @@
   color:black;
 
   height: 100%;
+  flex-wrap: nowrap !important;
 
   }
   </style>

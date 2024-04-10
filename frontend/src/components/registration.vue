@@ -14,7 +14,7 @@
   </li>
 </ul>
       <form 
-      @submit.prevent="HTMLValidations($event);"
+      @submit.prevent="handleFormSubmission($event);"
       class="row flex-column  justify-content-center align-items-center needs-validation"
        novalidate>
   
@@ -163,6 +163,7 @@ export default {
       country:'',
       birthdate:'',
       facebook:'',
+      file:null,
       countries: []
       }),
       async created() {
@@ -193,7 +194,115 @@ export default {
           return true;
         }
     },
-  },
+    jsValidations()
+    {
+       
+        const namePattern = /^[a-zA-Z ,.'-]+$/;
+        const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+        const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+        const mobilePattern = /^[1-9]\d*$/;
+        const countryPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+/;
+        const birthdatePattern = /^(((0[13-9]|1[012])[-/]?(0[1-9]|[12][0-9]|30)|(0[13578]|1[02])[-/]?31|02[-/]?(0[1-9]|1[0-9]|2[0-8]))[-/]?[0-9]{4}|02[-/]?29[-/]?([0-9]{2}(([2468][048]|[02468][48])|[13579][26])|([13579][26]|[02468][048]|0[0-9]|1[0-6])00))$/;
+        const facebookPattern = /^(?:https?:\/\/)?(?:www\.)?(mbasic.facebook|m\.facebook|facebook|fb)\.(com|me)\/(?:(?:\w\.)*#!\/)?(?:pages\/)?(?:[\w\-\.]*\/)*([\w\-\.]*)/;
+        if(this.country!="")
+        {
+          if(countryPattern.test(this.country))
+              {
+                return true;
+              }
+          else
+              {
+                
+                return false;
+               
+
+              }
+        }
+        if(this.birthdate!="")
+        {
+          if(birthdatePattern.test(this.birthdate))
+            {
+              return true;
+            }
+          else
+            {
+            
+
+              return false;
+            }
+        }
+        if(this.facebook!="")
+        {
+          if(facebookPattern.test(this.facebook))
+              {
+                return true;
+              }
+          else
+              {
+                
+
+                return false;
+              }
+        }
+        if(
+        namePattern.test(this.fname)
+        &&namePattern.test(this.lname)
+        &&emailPattern.test(this.email)
+        &&passwordPattern.test(this.password)
+        &&mobilePattern.test(this.mobile)    
+          )
+        {
+          return true;
+        }
+        else
+        {
+         
+          return false;
+        }
+    },
+  
+  handleFileChange(event)
+    {
+      this.file = event.target.files[0];
+    },
+     
+
+ async sendrequest()
+    {
+       
+        const formData = new FormData();
+        formData.append('first_name', this.fname);
+        formData.append('last_name',this.lname);
+        formData.append('email', this.email);
+        formData.append('password', this.password);
+        formData.append('birth_date', this.birthdate);
+        formData.append('facebook', this.facebook);
+        formData.append('country', this.country);
+        formData.append('img', this.file);
+        try 
+        {
+              const response = await fetch('http://127.0.0.1:8000/api/users/',{
+            method: "POST",
+            body: formData,
+          });
+              const data = await response.json(); 
+            console.log(data)
+        }
+      catch (error) 
+          {
+              console.error("Error fetching country codes:", error);
+          }
+    },
+
+    handleFormSubmission(e) 
+      {
+        if(this.HTMLValidations(e)&&this.jsValidations())
+        {
+          
+          this.sendrequest();
+        }
+      },
+    }
 }
 </script>
 
@@ -207,7 +316,7 @@ export default {
   flex-wrap: nowrap !important;
 }
 .registerCard{
-  
+  flex-wrap: nowrap !important;
   padding: 30px;
   border-radius: 10%;
 opacity: 0.8;
