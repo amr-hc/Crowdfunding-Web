@@ -1,4 +1,14 @@
+#Send Mails
+from django.core.mail import send_mail
+from django.http import HttpResponse
+
+
+
 from api.models import Category, Project, Rate, User
+
+
+
+
 from api.modelserializers import (
     CategorySerializer,
     CommentSerializer,
@@ -93,8 +103,6 @@ class ReportCommentListCreateAPIView(ListCreateAPIView):
     serializer_class = ReportCommentListCreateAPIView
 
 
-from django.core.mail import send_mail
-from django.http import HttpResponse
 
 
 def send_test_email(request):
