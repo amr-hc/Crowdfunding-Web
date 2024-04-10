@@ -1,5 +1,5 @@
 from django.urls import path,include
-from api.views import CategoryModelViewSet, ProjectModelViewSet, UserModelViewSet, login, RateModelViewSet, CommentListCreateAPIView , ReplayListCreateAPIView , ReportCommentListCreateAPIView
+from api.views import CategoryModelViewSet, ProjectModelViewSet, UserModelViewSet, login, RateModelViewSet, CommentListCreateAPIView , ReplayListCreateAPIView , ReportCommentListCreateAPIView,send_test_email
 
 
 from rest_framework.routers import DefaultRouter
@@ -16,6 +16,7 @@ urlpatterns = [
     path('comment',CommentListCreateAPIView.as_view()),
     path('replay',ReplayListCreateAPIView.as_view()),
     path('report_comment',ReportCommentListCreateAPIView.as_view()),
+    path('email/', send_test_email)
 ]
 
 

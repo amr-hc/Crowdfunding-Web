@@ -1,9 +1,15 @@
 <template>
     <section style=" background-color: rgb(91 91 91 / 50%) !important;">
-    <router-link class="btn btn-outline-success text-light mt-3" to="/add">Add Project</router-link>
-    <div class="text-center container py-4">
-    <h4 class="mt-4 mb-5"><strong>ALL PROJECTS </strong></h4>
-    <div class=" ">
+
+        <div class="jumbotron h-25 text-white mb-2 row align-items-center">
+    <div class=" py-5 text-center   ">
+        <h1 class="display-4 font-weight-bold">Browse Our Projects</h1>
+        <h2 class="font-italic mb-0">Try To Be A Part Of The Solution.</h2>
+    </div>
+</div>
+      <div class="text-center container py-3">
+    
+      <div class=" ">
     <div class="container">
         <div class="row wall">
             <div class="col-md-4 col-sm-6">
@@ -15,7 +21,7 @@
                             <h3 class="title">Williamson</h3>
                             <span class="post">Web Developer</span>
                             <ul class="icon">
-                                <li><a href="#"><i class="fa fa-search"></i></a></li>
+                                <li><a href="#"><i class="fa-solid fa-diamond-turn-right"></i></a></li>
                                 <li><a href="#"><i class="fa fa-link"></i></a></li>
                             </ul>
                         </div>
@@ -31,7 +37,7 @@
                             <h3 class="title">Kristiana</h3>
                             <span class="post">Web Designer</span>
                             <ul class="icon">
-                                <li><a href="#"><i class="fa fa-search"></i></a></li>
+                                <li><a href="#"><i class="fa-solid fa-diamond-turn-right"></i></a></li>
                                 <li><a href="#"><i class="fa fa-link"></i></a></li>
                             </ul>
                         </div>
@@ -47,7 +53,7 @@
                             <h3 class="title">Kristiana</h3>
                             <span class="post">Web Designer</span>
                             <ul class="icon">
-                                <li><a href="#"><i class="fa fa-search"></i></a></li>
+                                <li><a href="#"><i class="fa-solid fa-diamond-turn-right"></i></a></li>
                                 <li><a href="#"><i class="fa fa-link"></i></a></li>
                             </ul>
                         </div>
@@ -63,7 +69,7 @@
                             <h3 class="title">Kristiana</h3>
                             <span class="post">Web Designer</span>
                             <ul class="icon">
-                                <li><a href="#"><i class="fa fa-search"></i></a></li>
+                                <li><a href="#"><i class="fa-solid fa-diamond-turn-right"></i></a></li>
                                 <li><a href="#"><i class="fa fa-link"></i></a></li>
                             </ul>
                         </div>
@@ -79,7 +85,7 @@
                             <h3 class="title">Kristiana</h3>
                             <span class="post">Web Designer</span>
                             <ul class="icon">
-                                <li><a href="#"><i class="fa fa-search"></i></a></li>
+                                <li><a href="#"><i class="fa-solid fa-diamond-turn-right"></i></a></li>
                                 <li><a href="#"><i class="fa fa-link"></i></a></li>
                             </ul>
                         </div>
@@ -95,7 +101,7 @@
                             <h3 class="title">Kristiana</h3>
                             <span class="post">Web Designer</span>
                             <ul class="icon">
-                                <li><a href="#"><i class="fa fa-search"></i></a></li>
+                                <li><a href="#"><i class="fa-solid fa-diamond-turn-right"></i></a></li>
                                 <li><a href="#"><i class="fa fa-link"></i></a></li>
                             </ul>
                         </div>
@@ -111,7 +117,7 @@
                             <h3 class="title">Kristiana</h3>
                             <span class="post">Web Designer</span>
                             <ul class="icon">
-                                <li><a href="#"><i class="fa fa-search"></i></a></li>
+                                <li><a href="#"><i class="fa-solid fa-diamond-turn-right"></i></a></li>
                                 <li><a href="#"><i class="fa fa-link"></i></a></li>
                             </ul>
                         </div>
@@ -127,7 +133,7 @@
                             <h3 class="title">Kristiana</h3>
                             <span class="post">Web Designer</span>
                             <ul class="icon">
-                                <li><a href="#"><i class="fa fa-search"></i></a></li>
+                                <li><a href="#"><i class="fa-solid fa-diamond-turn-right"></i></a></li>
                                 <li><a href="#"><i class="fa fa-link"></i></a></li>
                             </ul>
                         </div>
@@ -143,7 +149,7 @@
                             <h3 class="title">Kristiana</h3>
                             <span class="post">Web Designer</span>
                             <ul class="icon">
-                                <li><a href="#"><i class="fa fa-search"></i></a></li>
+                                <li><a href="#"><i class="fa-solid fa-diamond-turn-right"></i></a></li>
                                 <li><a href="#"><i class="fa fa-link"></i></a></li>
                             </ul>
                         </div>
@@ -286,6 +292,20 @@
 @media only screen and (max-width:990px){
     .box{ margin-bottom: 30px; }
 }
+.jumbotron{
+  background-image: url('../assets/imges/pexels-alan-henrique-9425961.jpg');
+  background-position:center;
+  background-size:cover ;
+  
+  
+}
+.jumbotron  * {
+    color: #d37819 !important;
+    font-weight:600 !important;
+  
+  
+}
+
 
   </style>
   
