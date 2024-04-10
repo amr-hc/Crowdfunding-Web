@@ -1,8 +1,9 @@
 <template>
     <section style=" background-color: rgb(91 91 91 / 50%) !important;">
-      <div class="text-center container py-5">
+    <router-link class="btn btn-outline-success text-light mt-3" to="/add">Add Project</router-link>
+    <div class="text-center container py-4">
     <h4 class="mt-4 mb-5"><strong>ALL PROJECTS </strong></h4>
-      <div class=" ">
+    <div class=" ">
     <div class="container">
         <div class="row wall">
             <div class="col-md-4 col-sm-6">

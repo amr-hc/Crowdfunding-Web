@@ -9,6 +9,7 @@ import login from "../components/login.vue";
 import Home from "@/components/home.vue";
 import profile from "../components/profile.vue";
 import updateUserProfile from "../components/updateUserProfile.vue";
+import addProject from "@/components/addProject.vue";
 
 const routes = [
   {
@@ -27,6 +28,10 @@ const routes = [
   {
     path: "/projects",
     component: projects,
+  },
+  {
+    path: "/add",
+    component: addProject,
   },
   {
     path: "/investors",
