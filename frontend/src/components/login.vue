@@ -1,6 +1,6 @@
 <template>
  <div class="login vh-100 row justify-content-center align-items-center ">
-<div class="loginCard w-50 h-75 bg-white  row flex-column   ">
+<div class="loginCard w-50  bg-white  row flex-column   ">
 
 <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
   <li class="nav-item" role="presentation">
@@ -164,11 +164,17 @@
     background-image: url("../assets/imges/pexels-branimir-balogović-3959485.jpg");
     background-position: center ;
     background-size: cover ;
+    height: 100vh;
+    flex-wrap: nowrap !important;
+
     
   }
   .loginCard{border-radius: 10%;
   opacity: 0.8;
-  color:black
+  color:black;
+
+  height: 100%;
+
   }
   </style>
   
