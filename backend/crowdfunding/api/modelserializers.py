@@ -64,3 +64,9 @@ class ReportCommentListCreateAPIView(serializers.ModelSerializer):
     class Meta:
         model = Report_comment
         fields = "__all__"
+
+
+class DonationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Donation
+        fields = '__all__'

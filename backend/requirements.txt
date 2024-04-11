@@ -20,13 +20,11 @@ ipython==8.23.0
 jedi==0.19.1
 Markdown==3.6
 matplotlib-inline==0.1.6
-mysql-connector==2.2.9
-mysqlclient==2.2.4
 oauthlib==3.2.2
 parso==0.8.4
 pillow==10.3.0
 prompt-toolkit==3.0.43
-psycopg2==2.9.9
+psycopg2-binary==2.9.9
 pure-eval==0.2.2
 pycparser==2.22
 Pygments==2.17.2
