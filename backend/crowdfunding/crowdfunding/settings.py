@@ -50,9 +50,12 @@ INSTALLED_APPS = [
     "comment.apps.CommentConfig",
     "comment_report.apps.CommentReportConfig",
     "replay.apps.ReplayConfig",
+    # Donation App
+    "Donation.apps.DonationConfig",
     "corsheaders",
     'rest_framework.authtoken',
     "djoser"
+
 ]
 
 MIDDLEWARE = [
