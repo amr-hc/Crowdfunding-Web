@@ -109,7 +109,7 @@
 
 button {
   border-radius: 4px;
-  background-color: #1a3105bd;
+  background-color: #007bd3bd;
   border: none;
   color: #fff;
   text-align: center;
