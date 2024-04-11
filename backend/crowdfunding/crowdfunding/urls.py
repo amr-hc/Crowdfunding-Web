@@ -33,4 +33,8 @@ urlpatterns = [
     path('social_auth/', include(('social_auth.urls', 'social_auth'),
                                  namespace="social_auth")),
 
+
+    # Donation Path
+    path('donation/', include('Donation.api.urls')),
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
