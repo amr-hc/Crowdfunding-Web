@@ -287,13 +287,13 @@ export default {
         formData.append('password', this.password);
         formData.append('phone', this.mobile);
         formData.append('birth_date', this.birthdate);
-        formData.append('facebook', this.facebook);
-         formData.append('country', this.country);
-        formData.append('photo', this.file);
+        // formData.append('facebook', this.facebook);
+        //  formData.append('country', this.country);
+        // formData.append('photo', this.file);
         try 
         {
           
-              const response = await fetch('http://127.0.0.1:8000/api/users/',{
+              const response = await fetch('http://127.0.0.1:8000/auth/users/',{
             method: "POST",
             body: formData,
           });
