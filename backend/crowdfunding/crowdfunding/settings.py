@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     "replay.apps.ReplayConfig",
     # Donation App
     "Donation.apps.DonationConfig",
+    # Project Pics App
+    "Project_Pics.apps.ProjectPicsConfig",
     "corsheaders",
     'rest_framework.authtoken',
     "djoser"
