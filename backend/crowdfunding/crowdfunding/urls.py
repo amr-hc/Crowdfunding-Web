@@ -30,4 +30,7 @@ urlpatterns = [
     path("report/", include('project_report.api.urls')),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
+    path('social_auth/', include(('social_auth.urls', 'social_auth'),
+                                 namespace="social_auth")),
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

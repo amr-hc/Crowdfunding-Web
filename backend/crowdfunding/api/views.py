@@ -6,7 +6,6 @@ from api.modelserializers import (
     ProjectSerializer,
     RateSerializer,
     ReplaySerializer,
-    ReportCommentListCreateAPIView,
     UserSerializer,
 )
 from api.permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly, IsSameUserOrReadOnly
@@ -31,6 +30,7 @@ from rest_framework.viewsets import ModelViewSet
 
 
 class login(ObtainAuthToken):
+    
     def post(self, request, *args, **kwargs):
         print(request.data)
         serializer = self.serializer_class(
@@ -45,6 +45,7 @@ class login(ObtainAuthToken):
 class UserModelViewSet(ModelViewSet):
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsSameUserOrReadOnly]
+    permission_classes = [AllowAny]
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -78,19 +79,7 @@ class CategoryListCreateAPIView(ListCreateAPIView):
     serializer_class = CategorySerializer
 
 
-class CommentListCreateAPIView(ListCreateAPIView):
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
 
-
-class ReplayListCreateAPIView(ListCreateAPIView):
-    queryset = Replay.objects.all()
-    serializer_class = ReplaySerializer
-
-
-class ReportCommentListCreateAPIView(ListCreateAPIView):
-    queryset = Report_comment.objects.all()
-    serializer_class = ReportCommentListCreateAPIView
 
 
 from django.core.mail import send_mail

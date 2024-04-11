@@ -194,3 +194,13 @@ DEFAULT_FROM_EMAIL = 'amr.abdullah.elrefaey@gmail.comm'
 
 
 
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
+}
