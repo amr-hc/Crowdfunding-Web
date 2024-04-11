@@ -50,9 +50,12 @@ INSTALLED_APPS = [
     "comment.apps.CommentConfig",
     "comment_report.apps.CommentReportConfig",
     "replay.apps.ReplayConfig",
+    # Donation App
+    "Donation.apps.DonationConfig",
     "corsheaders",
     'rest_framework.authtoken',
     "djoser"
+
 ]
 
 MIDDLEWARE = [
@@ -91,16 +94,34 @@ WSGI_APPLICATION = "crowdfunding.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+
+"IF YOU ARE CONFIGURING THIS APP USING WINDOWS UNCOMMENT THE FOLLOWING LINE CODE"
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.mysql",
+#         "NAME": "crowdfunding",
+#         "USER": "root",
+#         "PASSWORD": "",
+#         "HOST": "localhost",
+#         "PORT": 3306,
+#     }
+# }
+
+"IF YOU ARE CONFIGURING THIS APP USING LINUX UNCOMMENT THE FOLLOWING LINE CODE"
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "crowdfunding",
-        "USER": "root",
-        "PASSWORD": "",
-        "HOST": "localhost",
-        "PORT": 3306,
+    'default': {
+        'ENGINE': 'mysql.connector.django',
+        'NAME': 'crowdfunding',
+        'USER': 'nagy',
+        'PASSWORD': 'nagy',
+        'HOST': 'localhost',
+        'PORT': 3306
+
     }
 }
+
 
 
 # Password validation
