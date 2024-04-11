@@ -192,7 +192,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'amr.abdullah.elrefaey@gmail.com'
-EMAIL_HOST_PASSWORD = os.getenv("PASSWORD")
+EMAIL_HOST_PASSWORD = 'tlcq qebd rstp elpz'
 DEFAULT_FROM_EMAIL = 'amr.abdullah.elrefaey@gmail.comm'
 
 
