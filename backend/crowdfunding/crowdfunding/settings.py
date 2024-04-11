@@ -196,9 +196,6 @@ EMAIL_HOST_PASSWORD = os.getenv("PASSWORD")
 DEFAULT_FROM_EMAIL = 'amr.abdullah.elrefaey@gmail.comm'
 
 
-<<<<<<< HEAD
-
-
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
         'Bearer': {
@@ -208,5 +205,4 @@ SWAGGER_SETTINGS = {
         }
     }
 }
-=======
->>>>>>> b9d511485128a5b22b4d750fabb69eb56f153773
+
