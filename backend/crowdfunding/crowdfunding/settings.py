@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 
+from dotenv import load_dotenv
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -93,7 +96,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "crowdfunding",
         "USER": "root",
-        "PASSWORD": "1234",
+        "PASSWORD": "",
         "HOST": "localhost",
         "PORT": 3306,
     }
@@ -189,10 +192,11 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'amr.abdullah.elrefaey@gmail.com'
-EMAIL_HOST_PASSWORD = 'ezwc olhu eqzn bfss'
+EMAIL_HOST_PASSWORD = os.getenv("PASSWORD")
 DEFAULT_FROM_EMAIL = 'amr.abdullah.elrefaey@gmail.comm'
 
 
+<<<<<<< HEAD
 
 
 SWAGGER_SETTINGS = {
@@ -204,3 +208,5 @@ SWAGGER_SETTINGS = {
         }
     }
 }
+=======
+>>>>>>> b9d511485128a5b22b4d750fabb69eb56f153773
