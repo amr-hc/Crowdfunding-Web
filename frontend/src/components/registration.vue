@@ -88,10 +88,11 @@
   <div class="col-md-6">
 
     <label for="validationCustom3" class="form-label">Confirm password</label>
-    <input type="password" class="form-control" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
-      id="validationCustom3" placeholder="Renter password" v-model="cpassword" required>
+    <input type="password" class="form-control"  
+    pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+      id="validationCustom3" placeholder="Renter password" v-model="cpassword" @blur="confirm" required>
     <div class="invalid-feedback">
-      Please enter a valid password Minimum eight characters, at least one letter and one number!.
+      Please enter a valid password that matchs with previous input  !.
     </div>
   </div>
  </div>
@@ -212,7 +213,7 @@ export default {
               }
           else
               {
-                console.log("1");
+              
                 return false;
                
 
@@ -227,7 +228,7 @@ export default {
           else
             {
             
-              console.log("2");
+           
               return false;
             }
         }
@@ -240,7 +241,7 @@ export default {
           else
               {
                 
-                console.log("3");
+              
                 return false;
               }
         }
@@ -260,7 +261,16 @@ export default {
           return false;
         }
     },
-  
+    confirm(e){
+      if(this.cpassword!=this.password)
+      {
+        e.target.setCustomValidity("Passwords don't match");
+      }
+      else
+      {
+        e.target.setCustomValidity('');
+      }
+    },
   handleFileChange(event)
     {
       this.file = event.target.files[0];
@@ -275,10 +285,11 @@ export default {
         formData.append('last_name',this.lname);
         formData.append('email', this.email);
         formData.append('password', this.password);
+        formData.append('phone', this.mobile);
         formData.append('birth_date', this.birthdate);
         formData.append('facebook', this.facebook);
-        formData.append('country', this.country);
-        formData.append('img', this.file);
+         formData.append('country', this.country);
+        formData.append('photo', this.file);
         try 
         {
           

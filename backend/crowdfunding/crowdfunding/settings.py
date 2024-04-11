@@ -164,7 +164,7 @@ CORS_ALLOWED_ORIGINS = ["http://localhost:8080", "http://127.0.0.1:8080"]
 DJOSER = {
     'USER_MODEL': 'users.Users',
     'LOGIN_FIELD': 'email',
-    # 'ACTIVATION_URL': 'auth/users/activation/{uid}/{token}',
+    'ACTIVATION_URL': 'auth/users/activation/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
     'SEND_CONFIRM_EMAIL': False,
     'PASSWORD_RESET_CONFIRM_URL' : 'reset-password-confirm/{uid}/{token}/',
