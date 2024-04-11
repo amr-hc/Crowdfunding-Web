@@ -1,5 +1,4 @@
 <template>
-      <!-- Password Reset 1 - Bootstrap Brain Component -->
 <div class=" basecont py-3 py-md-5">
   <div class="container">
     <div class="row justify-content-md-center">
@@ -9,24 +8,23 @@
             <div class="col-12">
               <div class="text-center">
                 <a href="#!">
-                  <!-- <img src="./assets/img/bsb-logo.svg" alt="BootstrapBrain Logo" width="175" height="57"> -->
                 </a>
               </div>
             </div>
             <div class="col-12">
-              <h2 class="fs-4 fw-normal text-center text-secondary gont m-0 px-md-5">Provide the email address associated with your account to recover your password.</h2>
+              <h2 class="fs-4 fw-normal text-center text-secondary gont m-0 px-md-5">Now Enter a new password that you want reset to your account.</h2>
             </div>
           </div>
           <form action="#!">
             <div class="row gy-3 gy-md-4 overflow-hidden">
               <div class="col-12">
                 <div class="input-group row flex-column ">
-                  <label for="password" class="form-label p-0 ">password <span class="text-danger">*</span></label>
+                  <label for="password" class="form-label p-0 ">New Password <span class="text-danger">*</span></label>
                   <input type="password" class="form-control rounded w-75 mb-2" name="password" id="password" required>
                 </div>
                 <div class="col-12">
                 <div class="input-group row flex-column">
-                <label for="confirmpassword" class="form-label p-0">confirmPassword <span class="text-danger">*</span></label>
+                <label for="confirmpassword" class="form-label p-0">Confirm New Password <span class="text-danger">*</span></label>
 
                 <input type="password" class="form-control form-control rounded w-75" name="confirmpassword" id="confirmpassword" required>
 

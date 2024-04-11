@@ -1,6 +1,5 @@
 <template>
-      <!-- Password Reset 1 - Bootstrap Brain Component -->
-<div class=" basecont py-3 py-md-5">
+ <div class=" basecont py-3 py-md-5">
   <div class="container">
     <div class="row justify-content-md-center">
       <div class="col-12 col-md-11 col-lg-8 col-xl-7 col-xxl-6">
@@ -9,7 +8,6 @@
             <div class="col-12">
               <div class="text-center">
                 <a href="#!">
-                  <!-- <img src="./assets/img/bsb-logo.svg" alt="BootstrapBrain Logo" width="175" height="57"> -->
                 </a>
               </div>
             </div>
