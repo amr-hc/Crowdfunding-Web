@@ -2,6 +2,9 @@ from django.contrib.auth import authenticate
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+
+# rest_framework
+from rest_framework.decorators import action
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -38,6 +41,7 @@ from api.modelserializers import (
     ReportCommentListCreateAPIView,
     UserSerializer,
     DonationSerializer,
+    ProjectPicsSerializer
 )
 
 # Permissions
@@ -106,12 +110,22 @@ class ReportCommentListCreateAPIView(ListCreateAPIView):
     serializer_class = ReportCommentListCreateAPIView
 
 
+# Donation
 class DonationViewSet(ModelViewSet):
     queryset = Donation.objects.all()
     serializer_class = DonationSerializer
 
+    # Top Five Donations (Custom Action)
+    @action(detail=False, methods=['get'])
+    def top_five_donations(self, request):
+        top_five = Donation.objects.order_by('-amount')[:5]
+        serializer = self.get_serializer(top_five, many=True)
+        return Response(serializer.data)
 
-
+# Project Pics
+class ProjectPicsViewSet(viewsets.ModelViewSet):
+    queryset = ProjectPics.objects.all()
+    serializer_class = ProjectPicsSerializer
 
 
 def send_test_email(request):
