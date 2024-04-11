@@ -3,24 +3,19 @@
         <div class="container">
             <div class="congratulation-wrapper">
                 <div class="congratulation-contents center-text">
-                     
-                         
                         <div class="success-animation">
-<svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" /><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg>
-</div>
-                     
-                    <h4 class="congratulation-contents-title"> Congratulations! </h4>
-                    <p class="congratulation-contents-para"> 
-                        You have successfully completed the registration. The only remaining step is to verify the account via email. Please check your email to activate the account. </p>
+                            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                            </svg>
+                        </div>
+                             <h4 class="congratulation-contents-title"> Congratulations! </h4>
+                            <p class="congratulation-contents-para"> 
+                                 You have successfully completed the registration. The only remaining step is to verify the account via email. Please check your email to activate the account. </p>
                     <div class="btn-wrapper mt-4">
-                <router-link to="/" class=" m-1 text-decoration-none ">
-                    <button><span>Go to Home Page</span></button></router-link>
-
-                        
-
-                    
-                     
-                      
+                        <router-link to="/" class=" m-1 text-decoration-none ">
+                             <button><span>Go to Home Page</span></button>
+                        </router-link>
                     </div>
                 </div>
             </div>
@@ -107,14 +102,14 @@
     animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
 }
 
-button {
-  border-radius: 4px;
+.congratulation-contents button {
+  border-radius: 16px;
   background-color: #007bd3bd;
   border: none;
   color: #fff;
   text-align: center;
   font-size: 32px;
-  padding: 16px;
+  padding: 6px;
   width: 300px;
   transition: all 0.5s;
   cursor: pointer;
@@ -133,7 +128,7 @@ button:after {
   content: '»';
   position: absolute;
   opacity: 0;  
-  top: 14px;
+  top: 6px;
   right: -20px;
   transition: 0.5s;
 }
