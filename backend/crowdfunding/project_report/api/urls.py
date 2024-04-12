@@ -1,13 +1,13 @@
-from django.urls import path 
-from project_report.api.views import ReportListCreateAPIView ,ReportRetrieveUpdateDestroyAPIView
- 
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from project_report.api.views import ReportAPIView
+
+router = DefaultRouter()
+router.register(r'', ReportAPIView)
 
 urlpatterns = [
-    path('', ReportListCreateAPIView.as_view()),
-    path('<int:pk>/', ReportRetrieveUpdateDestroyAPIView.as_view(), name='update&destroy'),
- 
+    path('', include(router.urls)),
 ]
-
 
 
 
