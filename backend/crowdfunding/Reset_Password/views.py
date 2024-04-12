@@ -31,8 +31,8 @@ def forget_password(request):
 
         # Send email
         email_subject = 'Password Reset'
-        email_body_html = render_to_string('password_reset_email.html', {'reset_link': reset_link})
-        send_reset_email(email, email_subject, email_body_html)
+        email_body = f"Use the following link to reset your password: {reset_link}"
+        send_reset_email(email, email_subject, email_body)
 
         return Response({'message': 'Password reset link sent successfully'}, status=status.HTTP_200_OK)
 
