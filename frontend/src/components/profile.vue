@@ -70,10 +70,28 @@
                   <hr>
                   <div class="row">
                     <div class="col-sm-3">
-                      <h6 class="mb-0">Address</h6>
+                      <h6 class="mb-0">Country</h6>
                     </div>
                     <div class="col-sm-9  ">
-                      Bay Area, San Francisco, CA
+                      Egypt
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Birthdate</h6>
+                    </div>
+                    <div class="col-sm-9  ">
+                      22-9-1997
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">facebook account</h6>
+                    </div>
+                    <div class="col-sm-9  ">
+                      www.facebook.com
                     </div>
                   </div>
                   <hr>
