@@ -95,7 +95,8 @@ export default {
     category: "",
     photos: [],
     endDate: new Date().toISOString().split("T")[0],
-    categories:[]
+    categories:[],
+    userInfo:localStorage.getItem("userInfo")
   }),
   methods: {
     addProject($event) {
@@ -127,6 +128,7 @@ export default {
       })
       .then(categories => {
         console.log(categories);
+        
       })
       .catch(error => {
         console.error(error);
