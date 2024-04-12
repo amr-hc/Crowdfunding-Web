@@ -101,16 +101,16 @@ WSGI_APPLICATION = "crowdfunding.wsgi.application"
 
 "IF YOU ARE CONFIGURING THIS APP USING WINDOWS UNCOMMENT THE FOLLOWING LINE CODE"
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.mysql",
-#         "NAME": "crowdfunding",
-#         "USER": "root",
-#         "PASSWORD": "",
-#         "HOST": "localhost",
-#         "PORT": 3306,
-#     }
-# }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "crowdfunding",
+        "USER": "root",
+        "PASSWORD": "1234",
+        "HOST": "localhost",
+        "PORT": 3306,
+    }
+}
 
 "IF YOU ARE CONFIGURING THIS APP USING LINUX UNCOMMENT THE FOLLOWING LINE CODE"
 

@@ -105,7 +105,7 @@
  <div class="name col-md-10 p-0 row  ">
   <div class="col-md-6">
     <label for="validationCustom04" class="form-label">Country</label>
-    <select class="form-select" id="validationCustom04" pattern="[^@\s]+@[^@\s]+\.[^@\s]+" v-model="country">
+    <select class="form-select" id="validationCustom04" pattern="^[a-zA-Z ,.'\-]+$" v-model="country">
       <option selected disabled value="">Choose...</option>
       <option v-for="country in countries" :key="country ">{{ country}}</option>
       <option  
