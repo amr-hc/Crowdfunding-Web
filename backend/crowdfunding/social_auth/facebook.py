@@ -1,4 +1,4 @@
-from . import facebook
+import facebook
 
 
 class Facebook:

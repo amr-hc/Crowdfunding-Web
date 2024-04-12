@@ -17,6 +17,7 @@ djangorestframework-simplejwt==5.3.1
 djoser==2.2.2
 exceptiongroup==1.2.0
 executing==2.0.1
+facebook-sdk==3.1.0
 idna==3.6
 ipython==8.23.0
 jedi==0.19.1
