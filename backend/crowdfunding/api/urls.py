@@ -1,21 +1,22 @@
 from django.urls import path,include
-from api.views import CategoryModelViewSet, ProjectModelViewSet, UserModelViewSet, login, RateModelViewSet, CommentListCreateAPIView , ReplayListCreateAPIView , ReportCommentListCreateAPIView,send_test_email
-
-
+from api.views import CategoryModelViewSet, ProjectModelViewSet, UserModelViewSet, login, RateModelViewSet,send_test_email
+from comment.views import CommentModelViewSet
+from comment_report.views import CommentReportModelViewSet
+from replay.views import ReplayModelViewSet
 from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 router.register(r'projects', ProjectModelViewSet)
 router.register(r'users', UserModelViewSet)
 router.register(r'categories', CategoryModelViewSet)
-router.register(r'rate', RateModelViewSet)
-
+router.register(r'rate', RateModelViewSet),
+router.register(r'comment', CommentModelViewSet),
+router.register(r'comment_report', CommentReportModelViewSet),
+router.register(r'replay', ReplayModelViewSet),
 
 urlpatterns = [
     path('', include(router.urls)),
     path('login', login.as_view()),
-    path('comment',CommentListCreateAPIView.as_view()),
-    path('replay',ReplayListCreateAPIView.as_view()),
-    path('report_comment',ReportCommentListCreateAPIView.as_view()),
+
     path('email/', send_test_email)
 ]
 

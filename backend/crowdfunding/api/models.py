@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.forms import TimeField
 from django.core.validators import MinValueValidator, MaxValueValidator
+from rest_framework_simplejwt.tokens import RefreshToken
 
 # Create your models here.
 
@@ -33,6 +34,8 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser',True)
         return self._create_user(email, password, first_name, last_name, phone, birth_date, **extra_fields)
 
+AUTH_PROVIDERS = {'facebook': 'facebook', 'email': 'email'}
+
 class User(AbstractBaseUser,PermissionsMixin):
 
     email = models.EmailField(db_index=True, unique=True, max_length=254)
@@ -44,6 +47,10 @@ class User(AbstractBaseUser,PermissionsMixin):
     birth_date = models.DateField()
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
+    auth_provider = models.CharField(
+        max_length=255, blank=False,
+        null=False, default=AUTH_PROVIDERS.get('email'))
+
 
     objects = CustomUserManager()
 
@@ -79,3 +86,12 @@ class Rate(models.Model):
     rate = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
+
+
+
+def tokens(self):
+        refresh = RefreshToken.for_user(self)
+        return {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token)
+        }

@@ -10,6 +10,9 @@ import Home from "@/components/home.vue";
 import profile from "../components/profile.vue";
 import updateUserProfile from "../components/updateUserProfile.vue";
 import addProject from "@/components/addProject.vue";
+import congratulations from "@/components/congratulations.vue";
+import forgetPassword from "@/components/forgetPassword.vue";
+import confirmForgetPassword from "@/components/confirmForgetPassword.vue";
 
 const routes = [
   {
@@ -48,6 +51,18 @@ const routes = [
   {
     path: "/updateUserProfile",
     component: updateUserProfile,
+  },
+  {
+    path: "/forgetPassword",
+    component: forgetPassword,
+  },
+  {
+    path: "/confirmForgetPassword",
+    component: confirmForgetPassword,
+  },
+  {
+    path: "/congs",
+    component: congratulations,
   },
   {
     path: "/:catchAll(.*)",

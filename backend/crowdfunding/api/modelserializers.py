@@ -60,7 +60,7 @@ class ReplaySerializer(serializers.ModelSerializer):
         model = Replay
         fields = "__all__"
 
-class ReportCommentListCreateAPIView(serializers.ModelSerializer):
+class ReportCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Report_comment
         fields = "__all__"
