@@ -5,7 +5,7 @@ from api.models import User, Category , Project , Rate
 from comment.models import Comment
 from replay.models import Replay
 from comment_report.models import Report_comment
-
+from Project_Pics.api.serializer import ProjectPicsSerializer
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -39,16 +39,20 @@ class RateSerializer(serializers.ModelSerializer):
         model = Rate
         fields = "__all__"
 
+
 class ProjectSerializer(serializers.ModelSerializer):
     owner = UserSerializer(read_only=True)
     owner_id = serializers.IntegerField(write_only=True)
     category = CategorySerializer(read_only=True)
     category_id = serializers.IntegerField(write_only=True)
-
+    pics = ProjectPicsSerializer(many=True, read_only=True)
 
     class Meta:
         model = Project
         fields = "__all__"
+
+
+
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
