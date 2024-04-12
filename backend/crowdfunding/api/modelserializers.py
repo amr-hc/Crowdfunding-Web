@@ -46,16 +46,29 @@ class ProjectSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
     category_id = serializers.IntegerField(write_only=True)
     pics = ProjectPicsSerializer(many=True, read_only=True)
-    allrate = serializers.SerializerMethodField()
-
+    allrate = RateSerializer(many=True, read_only=True)
+    average_rate = serializers.SerializerMethodField()
 
     class Meta:
         model = Project
         fields = "__all__"
 
-    def get_allrate(self, obj):
-        print(obj.allrate)
-        return list(obj.allrate.values_list('rate', flat=True))
+    # def get_allrate(self, obj):
+    #     list_rates = list(obj.allrate.values_list('rate', flat=True))
+    #     if len(list_rates)>0:
+    #         avg = sum(list_rates) / len(list_rates)
+    #     else:
+    #         avg = 5
+    #     print(avg)
+    #     return list(obj.allrate.values_list('rate', flat=True))
+
+    def get_average_rate(self, obj):
+        list_rates = list(obj.allrate.values_list('rate', flat=True))
+        if len(list_rates)>0:
+            avg = sum(list_rates) / len(list_rates)
+        else:
+            avg = 5
+        return avg
 
 
 class CommentSerializer(serializers.ModelSerializer):
