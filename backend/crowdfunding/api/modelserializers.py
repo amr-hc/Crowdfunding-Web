@@ -9,8 +9,8 @@ from comment_report.models import Report_comment
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        # fields = "__all__"
-        fields = ["id", "email", "password", "first_name", "last_name", "is_superuser", "is_active", "birth_date", "photo"]
+        fields = "__all__"
+        # fields = ["id", "email", "password", "first_name", "last_name", "is_superuser", "is_active", "birth_date", "photo","country","facebook"]
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
