@@ -1,8 +1,9 @@
+<!-- TODO: Validations & add category -->
+
 <template>
-  <section
-    class="row justify-content-center">
+  <section class="row justify-content-center">
     <div
-      class="container p-5 row align-items-center flex-column gap-2 w-50"
+      class="container row align-items-center flex-column gap-2 w-50 rounded"
       style="background-color: rgb(91 91 91 / 50%) !important"
     >
       <div class="form-floating">
@@ -46,16 +47,20 @@
           class="form-select"
           name="category"
           id="category"
-          v-model="category"
+          v-model="categoryResult"
         >
-          <option selected>Plz select category</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
+          <option disabled>Plz seect a category</option>
+          <option
+            :value="category.name"
+            v-for="category in categories"
+            :key="category.name"
+          >
+            {{ category.name }}
+          </option>
         </select>
         <label for="category" class="text-dark ms-2">Category</label>
       </div>
-      <div>
+      <div class="photos">
         <label class="input-group-text" for="photo"
           >Upload multiple photo</label
         >
@@ -74,7 +79,8 @@
           name="endDate"
           id="endDate"
           placeholder="endDate"
-          v-model="endDate"/>
+          v-model="endDate"
+        />
         <label for="endDate" class="text-dark ms-2">Project End Date</label>
       </div>
       <input
@@ -92,26 +98,27 @@ export default {
     title: "",
     description: "",
     targetMoney: 0,
-    category: "",
+    categoryResult: "",
     photos: [],
     endDate: new Date().toISOString().split("T")[0],
-    categories:[],
-    userInfo:localStorage.getItem("userInfo")
+    categories: [],
+    userInfo:
+      JSON.parse(localStorage.getItem("userInfo")) ||
+      JSON.parse(sessionStorage.getItem("userInfo")),
   }),
   methods: {
-    addProject($event) {
-      $event.preventDefault();
+    addProject() {
       const form = new FormData();
-      form.append('title', this.title);
-      form.append('description', this.description);
-      form.append('targetMoney', this.targetMoney);
-      form.append('category', this.category);
-      form.append('endDate', this.endDate);
+      form.append("title", this.title);
+      form.append("description", this.description);
+      form.append("targetMoney", this.targetMoney);
+      form.append("category", this.category);
+      form.append("endDate", this.endDate);
+      form.append("user_id", this.userInfo["user_id"]);
       for (let i = 0; i < this.photos.length; i++) {
-        form.append('photos[]', this.photos[i]);
-      }    
-       //user_ID From Session !!
-      form.forEach(item=>console.log(item)) 
+        form.append("photos[]", this.photos[i]);
+      }
+      form.forEach((item) => console.log(item));
     },
     takePhotos($event) {
       const pics = $event.target.files;
@@ -120,21 +127,27 @@ export default {
   },
   created() {
     fetch("http://127.0.0.1:8000/api/categories/")
-      .then(response => {
+      .then((response) => {
         if (!response.ok) {
-          throw new Error('Failed to fetch categories');
+          throw new Error("Failed to fetch categories");
         }
-        return response.json(); // Return the promise from data.json()
+        return response.json();
       })
-      .then(categories => {
-        console.log(categories);
-        
+      .then((categories) => {
+        this.categories = categories;
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
-}
-
+  },
 };
 </script>
-<style></style>
+<style scoped>
+.form-floating,
+.photos {
+  opacity: 0.8;
+}
+.container {
+  padding: 2.5rem 3rem !important;
+}
+</style>
