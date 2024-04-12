@@ -67,17 +67,11 @@ class ProjectModelViewSet(ModelViewSet):
 
 
 class RateModelViewSet(ModelViewSet):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
-    permission_classes = [AllowAny]
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    # permission_classes = [AllowAny]
     queryset = Rate.objects.all()
     serializer_class = RateSerializer
-
-
-class CategoryListCreateAPIView(ListCreateAPIView):
-    # permission_classes = [IsAuthenticatedOrReadOnly]
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
 
 
 class ImportantProjectAPIView(ModelViewSet):
@@ -87,19 +81,3 @@ class ImportantProjectAPIView(ModelViewSet):
     serializer_class = ImportantProjectSerializer
 
 
-
-from django.core.mail import send_mail
-from django.http import HttpResponse
-
-
-def send_test_email(request):
-    subject = "Test Email"
-    message = "This is a test email sent from Django using Gmail SMTP."
-    from_email = "amr.abdullah.elrefaey@gmail.com"  # Use your Gmail address here
-    to_email = "ef64b54e13@emailbbox.pro"
-
-    try:
-        send_mail(subject, message, from_email, [to_email])
-        return HttpResponse("Test email sent successfully!")
-    except Exception as e:
-        return HttpResponse(f"Failed to send test email: {str(e)}")
