@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     "Donation.apps.DonationConfig",
     # Project Pics App
     "Project_Pics.apps.ProjectPicsConfig",
+    # Reset Password
+    "Reset_Password.apps.ResetPasswordConfig",
     "corsheaders",
     'rest_framework.authtoken',
     "djoser"

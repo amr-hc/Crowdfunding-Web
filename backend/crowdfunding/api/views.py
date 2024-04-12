@@ -1,4 +1,4 @@
-from api.models import Category, Project, Rate, User
+from api.models import Category, Project, Rate, User, ImportantProject
 from api.modelserializers import (
     CategorySerializer,
     CommentSerializer,
@@ -6,7 +6,7 @@ from api.modelserializers import (
     ProjectSerializer,
     RateSerializer,
     ReplaySerializer,
-    UserSerializer,
+    UserSerializer, ImportantProjectSerializer,
 )
 from api.permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly, IsSameUserOrReadOnly
 from comment.models import Comment
@@ -69,6 +69,7 @@ class ProjectModelViewSet(ModelViewSet):
 class RateModelViewSet(ModelViewSet):
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     queryset = Rate.objects.all()
     serializer_class = RateSerializer
 
@@ -79,6 +80,11 @@ class CategoryListCreateAPIView(ListCreateAPIView):
     serializer_class = CategorySerializer
 
 
+class ImportantProjectAPIView(ModelViewSet):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [AllowAny]
+    queryset = ImportantProject.objects.all()
+    serializer_class = ImportantProjectSerializer
 
 
 
