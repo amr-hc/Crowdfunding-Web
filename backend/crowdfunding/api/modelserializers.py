@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 
-from api.models import User, Category , Project , Rate
+from api.models import User, Category, Project, Rate, ImportantProject
 from comment.models import Comment
 from replay.models import Replay
 from comment_report.models import Report_comment
@@ -46,12 +46,16 @@ class ProjectSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
     category_id = serializers.IntegerField(write_only=True)
     pics = ProjectPicsSerializer(many=True, read_only=True)
+    allrate = serializers.SerializerMethodField()
+
 
     class Meta:
         model = Project
         fields = "__all__"
 
-
+    def get_allrate(self, obj):
+        print(obj.allrate)
+        return list(obj.allrate.values_list('rate', flat=True))
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -67,4 +71,10 @@ class ReplaySerializer(serializers.ModelSerializer):
 class ReportCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Report_comment
+        fields = "__all__"
+
+
+class ImportantProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ImportantProject
         fields = "__all__"

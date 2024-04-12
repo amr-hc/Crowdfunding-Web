@@ -83,11 +83,13 @@ class Project(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="owner")
     rates = models.ManyToManyField(User, through="Rate")
 
+class ImportantProject(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
 class Rate(models.Model):
     rate = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE,related_name="allrate")
 
 
 
