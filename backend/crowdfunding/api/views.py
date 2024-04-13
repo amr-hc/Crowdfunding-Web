@@ -1,4 +1,7 @@
-from api.models import Category, Project, Rate, User
+from djoser.compat import get_user_email,settings
+from djoser import signals
+
+from api.models import Category, Project, Rate, User, ImportantProject
 from api.modelserializers import (
     CategorySerializer,
     CommentSerializer,
@@ -6,7 +9,7 @@ from api.modelserializers import (
     ProjectSerializer,
     RateSerializer,
     ReplaySerializer,
-    UserSerializer,
+    UserSerializer, ImportantProjectSerializer,
 )
 from api.permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly, IsSameUserOrReadOnly
 from comment.models import Comment
@@ -15,6 +18,8 @@ from django.contrib.auth import authenticate
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+
+
 from replay.models import Replay
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
@@ -31,7 +36,6 @@ from rest_framework.viewsets import ModelViewSet
 
 class login(ObtainAuthToken):
     permission_classes = [AllowAny]
-
     def post(self, request, *args, **kwargs):
         print(request.data)
         serializer = self.serializer_class(
@@ -44,11 +48,24 @@ class login(ObtainAuthToken):
 
 
 class UserModelViewSet(ModelViewSet):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsSameUserOrReadOnly]
-    permission_classes = [AllowAny]
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsSameUserOrReadOnly]
+    # permission_classes = [AllowAny]
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+    def perform_create(self, serializer, *args, **kwargs):
+        user = serializer.save(*args, **kwargs)
+        signals.user_registered.send(
+            sender=self.__class__, user=user, request=self.request
+        )
+
+        context = {"user": user}
+        to = [get_user_email(user)]
+        if settings.SEND_ACTIVATION_EMAIL:
+            settings.EMAIL.activation(self.request, context).send(to)
+        elif settings.SEND_CONFIRMATION_EMAIL:
+            settings.EMAIL.confirmation(self.request, context).send(to)
 
 
 class CategoryModelViewSet(ModelViewSet):
@@ -69,33 +86,18 @@ class ProjectModelViewSet(ModelViewSet):
 
 
 class RateModelViewSet(ModelViewSet):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    # permission_classes = [AllowAny]
     queryset = Rate.objects.all()
     serializer_class = RateSerializer
 
 
-class CategoryListCreateAPIView(ListCreateAPIView):
-    # permission_classes = [IsAuthenticatedOrReadOnly]
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
+class ImportantProjectAPIView(ModelViewSet):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAdminOrReadOnly]
+    # permission_classes = [AllowAny]
+    queryset = ImportantProject.objects.all()
+    serializer_class = ImportantProjectSerializer
 
 
-
-
-
-from django.core.mail import send_mail
-from django.http import HttpResponse
-
-
-def send_test_email(request):
-    subject = "Test Email"
-    message = "This is a test email sent from Django using Gmail SMTP."
-    from_email = "amr.abdullah.elrefaey@gmail.com"  # Use your Gmail address here
-    to_email = "ef64b54e13@emailbbox.pro"
-
-    try:
-        send_mail(subject, message, from_email, [to_email])
-        return HttpResponse("Test email sent successfully!")
-    except Exception as e:
-        return HttpResponse(f"Failed to send test email: {str(e)}")

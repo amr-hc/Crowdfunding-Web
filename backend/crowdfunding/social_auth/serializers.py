@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from . import facebook
+from social_auth import facebook
 from .register import register_social_user
 import os
 from rest_framework.exceptions import AuthenticationFailed

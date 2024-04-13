@@ -1,3 +1,5 @@
+<!-- TODO: Validations & add category -->
+
 <template>
   <section class="row justify-content-center">
     <form class="container row align-items-center flex-column ">
@@ -92,10 +94,13 @@ export default {
     title: "",
     description: "",
     targetMoney: 0,
-    category: "",
+    categoryResult: "",
     photos: [],
     endDate: new Date().toISOString().split("T")[0],
     categories: [],
+    userInfo:
+      JSON.parse(localStorage.getItem("userInfo")) ||
+      JSON.parse(sessionStorage.getItem("userInfo")),
   }),
   methods: {
     addProject($event) {
@@ -104,21 +109,26 @@ export default {
 
       $event.preventDefault();
       const form = new FormData();
+      form.append("owner", this.userInfo["user_id"]);
       form.append("category", this.category);
       form.append("title", this.title);
       form.append("description", this.description);
       form.append("startDate", startDate);
       form.append("endDate", this.endDate);
       form.append("targetMoney", this.targetMoney);
+      
       for (let i = 0; i < this.photos.length; i++) {
         form.append("photos[]", this.photos[i]);
       }
       //user_ID From Session !!
+      const token = this.userInfo.token;
+      
       form.forEach((item) => console.log(item));
       fetch("http://127.0.0.1:8000/api/projects/", {
         method: "POST",
         headers:{
-          "Content-Type":"application/json"
+          "Content-Type":"application/json",
+          "Authorization": `Bearer ${token}`,
         },
         body: form, 
       })
@@ -150,10 +160,10 @@ export default {
         if (!response.ok) {
           throw new Error("Failed to fetch categories");
         }
-        return response.json(); // Return the promise from data.json()
+        return response.json();
       })
       .then((categories) => {
-        console.log(categories);
+        this.categories = categories;
       })
       .catch((error) => {
         console.error(error);
@@ -161,7 +171,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .form-control:focus,
 select:focus {
   border-color: #28a745 !important;
@@ -182,5 +192,13 @@ p {
 .form-floating{
   opacity: .6;
 }
+.form-floating,
+.photos {
+  opacity: 0.8;
+}
+.container {
+  padding: 2.5rem 3rem !important;
+}
+
 
 </style>

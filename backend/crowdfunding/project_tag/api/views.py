@@ -1,11 +1,14 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.viewsets import ModelViewSet
 from project_tag.models import ProjectTag
 from project_tag.api.serializers import ProjectTagSerializer
-
-class ProjectTagListCreateAPIView(ListCreateAPIView):
+from rest_framework.permissions import (
+    AllowAny,
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly,
+)
+class ProjectTagAPIView(ModelViewSet):
+    permission_classes = [AllowAny]
     queryset = ProjectTag.objects.all()
     serializer_class = ProjectTagSerializer
 
-class ProjectTagRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    queryset = ProjectTag.objects.all()
-    serializer_class = ProjectTagSerializer
+ 

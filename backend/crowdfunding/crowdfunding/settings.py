@@ -50,9 +50,16 @@ INSTALLED_APPS = [
     "comment.apps.CommentConfig",
     "comment_report.apps.CommentReportConfig",
     "replay.apps.ReplayConfig",
+    # Donation App
+    "Donation.apps.DonationConfig",
+    # Project Pics App
+    "Project_Pics.apps.ProjectPicsConfig",
+    # Reset Password
+    "Reset_Password.apps.ResetPasswordConfig",
     "corsheaders",
     'rest_framework.authtoken',
     "djoser"
+
 ]
 
 MIDDLEWARE = [
@@ -91,6 +98,9 @@ WSGI_APPLICATION = "crowdfunding.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+
+"IF YOU ARE CONFIGURING THIS APP USING WINDOWS UNCOMMENT THE FOLLOWING LINE CODE"
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
@@ -98,9 +108,24 @@ DATABASES = {
         "USER": "root",
         "PASSWORD": "",
         "HOST": "localhost",
-        "PORT": 3306,
+        "PORT": 3306, 
     }
 }
+
+"IF YOU ARE CONFIGURING THIS APP USING LINUX UNCOMMENT THE FOLLOWING LINE CODE"
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'mysql.connector.django',
+#         'NAME': 'crowdfunding',
+#         'USER': 'nagy',
+#         'PASSWORD': 'nagy',
+#         'HOST': 'localhost',
+#         'PORT': 3306
+
+#     }
+# }
+
 
 
 # Password validation
@@ -164,7 +189,7 @@ CORS_ALLOWED_ORIGINS = ["http://localhost:8080", "http://127.0.0.1:8080"]
 DJOSER = {
     'USER_MODEL': 'users.Users',
     'LOGIN_FIELD': 'email',
-    # 'ACTIVATION_URL': 'auth/users/activation/{uid}/{token}',
+    'ACTIVATION_URL': 'auth/users/activation/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
     'SEND_CONFIRM_EMAIL': False,
     'PASSWORD_RESET_CONFIRM_URL' : 'reset-password-confirm/{uid}/{token}/',
@@ -192,7 +217,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'amr.abdullah.elrefaey@gmail.com'
-EMAIL_HOST_PASSWORD = os.getenv("PASSWORD")
+EMAIL_HOST_PASSWORD = 'tlcq qebd rstp elpz'
 DEFAULT_FROM_EMAIL = 'amr.abdullah.elrefaey@gmail.comm'
 
 
