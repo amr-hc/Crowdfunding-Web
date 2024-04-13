@@ -1,3 +1,6 @@
+from djoser.compat import get_user_email,settings
+from djoser import signals
+
 from api.models import Category, Project, Rate, User, ImportantProject
 from api.modelserializers import (
     CategorySerializer,
@@ -15,6 +18,8 @@ from django.contrib.auth import authenticate
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+
+
 from replay.models import Replay
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
@@ -30,7 +35,7 @@ from rest_framework.viewsets import ModelViewSet
 
 
 class login(ObtainAuthToken):
-    
+    permission_classes = [AllowAny]
     def post(self, request, *args, **kwargs):
         print(request.data)
         serializer = self.serializer_class(
@@ -49,6 +54,19 @@ class UserModelViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+    def perform_create(self, serializer, *args, **kwargs):
+        user = serializer.save(*args, **kwargs)
+        signals.user_registered.send(
+            sender=self.__class__, user=user, request=self.request
+        )
+
+        context = {"user": user}
+        to = [get_user_email(user)]
+        if settings.SEND_ACTIVATION_EMAIL:
+            settings.EMAIL.activation(self.request, context).send(to)
+        elif settings.SEND_CONFIRMATION_EMAIL:
+            settings.EMAIL.confirmation(self.request, context).send(to)
+
 
 class CategoryModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
@@ -60,6 +78,7 @@ class CategoryModelViewSet(ModelViewSet):
 
 class ProjectModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
+    
     # permission_classes = [IsOwnerOrReadOnly]
     permission_classes = [AllowAny]
     queryset = Project.objects.all()
