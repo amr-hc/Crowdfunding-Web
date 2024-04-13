@@ -1,4 +1,6 @@
 <template>
+   
+
     <div class="container">
     <div class="main-body">
     
@@ -37,7 +39,7 @@
                       <h6 class="mb-0">Full Name</h6>
                     </div>
                     <div class="col-sm-9  ">
-                      Kenneth Valdez
+                      {{user.first_name}} {{user.last_name}}
                     </div>
                   </div>
                   <hr>
@@ -46,7 +48,7 @@
                       <h6 class="mb-0">Email</h6>
                     </div>
                     <div class="col-sm-9  ">
-                      fip@jukmuh.al
+                      {{user.email}}
                     </div>
                   </div>
                   <hr>
@@ -55,7 +57,7 @@
                       <h6 class="mb-0">Phone</h6>
                     </div>
                     <div class="col-sm-9  ">
-                      (239) 816-9029
+                      {{user.last_name}}
                     </div>
                   </div>
                   <hr>
@@ -64,7 +66,7 @@
                       <h6 class="mb-0">Mobile</h6>
                     </div>
                     <div class="col-sm-9 ">
-                      (320) 380-4539
+                      {{user.phone}}
                     </div>
                   </div>
                   <hr>
@@ -147,16 +149,14 @@
   </template>
   
   <script>
- 
+ import{datastore}from '@/stors/crowdfundingStore'
 
   export default {
     
-    data() {
-    return {
-     
-      
-    }
-  },
+    data:()=>({
+      storData:datastore(),
+   user:{}
+   }),
   methods: {
    
   },
@@ -168,25 +168,8 @@
     }
     else if(localStorageData||sessionStorageData){
       let userData=localStorageData?localStorageData : sessionStorageData 
-      console.log(userData)
-      try 
-          {
-           const response = await fetch(`http://127.0.0.1:8000/api/users/${userData.user_id}`,{
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${userData.token} `
-            }
-           });
-           const data = await response.json(); 
-            
-
-
-          }
-        catch (error) 
-            {
-                console.error("Error fetching country codes:", error);
-            }
+      this.user=await this.storData.getUserData(userData.user_id,userData.token) 
+      console.log(this.user);
     }
   }
   }

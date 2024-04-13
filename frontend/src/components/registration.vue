@@ -200,12 +200,11 @@ export default {
 }
 .registerCard{
   flex-wrap: nowrap !important;
-  padding: 30px;
+  padding: 50px 20px;
   border-radius: 10%;
-/* opacity: 0.5; */
 background-color: rgb(91 91 91 / 50%) !important;
 color:rgb(235, 227, 227);
-height: 100%;
+
 width: 60vw ;
 }
 p{
