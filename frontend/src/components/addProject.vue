@@ -20,7 +20,7 @@
           <label for="title" class="text-dark ms-2">Project Title</label>
           <div class="invalid-feedback">Please provide a title.</div>
         </div>
-        
+
         <div class="form-floating">
           <input
             type="number"
@@ -84,7 +84,7 @@
           <label for="endDate" class="text-dark ms-2">Project End Date</label>
           <div class="invalid-feedback">Please provide an end date.</div>
         </div>
-        <div  class="input-style">
+        <div class="input-style">
           <label class="input-group-text" for="photo"
             >Upload multiple photo</label
           >
@@ -114,14 +114,12 @@ export default {
     description: "",
     targetMoney: 0,
     categoryResult: "",
-    photos: [],
     endDate: new Date().toISOString().split("T")[0],
     categories: [],
     userInfo:
       JSON.parse(localStorage.getItem("userInfo")) ||
       JSON.parse(sessionStorage.getItem("userInfo")),
-      images: [], 
-      imagePaths: []
+    images: [],
   }),
   methods: {
     addProject($event) {
@@ -134,20 +132,19 @@ export default {
       const token = userInfo.token;
       console.log(token);
 
+      let images = [];
+      for (let i = 0; i < this.images.length; i++) {
+        console.log(images[i]);
+      }
       $event.preventDefault();
       const form = new FormData();
       form.append("owner_id", userInfo["user_id"]);
       form.append("categoryResult", this.categoryResult);
       form.append("title", this.title);
       form.append("description", this.description);
-      form.append("startDate", startDate);
       form.append("endDate", this.endDate);
       form.append("targetMoney", this.targetMoney);
-
-      let images = [];
-      for (let i = 0; i < this.photos.length; i++) {
-        images.append("photos[]", this.photos[i]);
-      }
+      form.append("photos", this.images);
 
       form.forEach((item) => console.log(item));
       fetch("http://127.0.0.1:8000/api/projects/", {
@@ -165,7 +162,7 @@ export default {
             this.targetMoney = "";
             this.categoryResult = "";
             this.endDate = "";
-            this.photos = [];
+            this.images = [];
           } else {
             console.error("Failed to add project.");
           }
@@ -173,20 +170,15 @@ export default {
         .catch((error) => {
           console.error("Error adding project:", error);
         });
-
-
     },
     takePhotos(event) {
-      const selectedImages = event.target.files; 
-      this.images = Array.from(selectedImages); 
-      // Extract file paths from selected images
-      this.imagePaths = [];
+      const selectedImages = event.target.files;
       for (let i = 0; i < selectedImages.length; i++) {
-        const imagePath = URL.createObjectURL(selectedImages[i]); 
-        this.imagePaths.push(imagePath); // Store the image path
+        const file = selectedImages[i];
+        this.images.push(file);
       }
-      console.log("Selected Images:", this.images);
-      console.log("Image Paths:", this.imagePaths);
+
+      console.log("Images:", this.images);
     },
   },
   created() {
