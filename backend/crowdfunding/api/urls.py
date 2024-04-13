@@ -1,6 +1,6 @@
 from django.urls import path,include
 from api.views import CategoryModelViewSet, ProjectModelViewSet, UserModelViewSet, login, RateModelViewSet, \
-     ImportantProjectAPIView
+     ImportantProjectAPIView,confirmActivate
 from comment.views import CommentModelViewSet
 from comment_report.views import CommentReportModelViewSet
 from replay.views import ReplayModelViewSet
@@ -18,6 +18,7 @@ router.register(r'replay', ReplayModelViewSet),
 urlpatterns = [
     path('', include(router.urls)),
     path('login', login.as_view()),
+    path('activate/', confirmActivate.as_view()),
 ]
 
 
