@@ -67,8 +67,8 @@
     </div>
  
     <div class="col-md-6">
-        <label for="room" class="form-label">Mobile phone </label>
-        <input type="text" min="1" class="form-control" id="room" pattern='^01[012]\d{8}$'
+        <label for="phone" class="form-label">Mobile phone </label>
+        <input type="text"   class="form-control" id="phone" pattern='^01[012]\d{8}$'
           placeholder="phone number" v-model="mobile" required>
         <div class="invalid-feedback">
           Please enter user Mobile no.!.

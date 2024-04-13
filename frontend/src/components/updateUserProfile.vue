@@ -1,4 +1,5 @@
 <template>
+	 
     <div class="container">
 		<div class="main-body">
 			<form  @submit.prevent="handleFormSubmission($event);" class="needs-validation" novalidate> 
@@ -8,7 +9,8 @@
 						<div class="card-body">
 							<div class="d-flex flex-column align-items-center text-center">
                                 <div class="image">
-									<div   class=" imgdiv rounded-circle p-1 bg-primary"  > 
+									<div class="imgdiv rounded-circle p-1 bg-primary"
+   										 :style="{ 'background-image': 'url(' + user.photo + ')' }">
 											
 										<label class="rounded-5 rounded-top-0" for="inputimg"><i class="fa fa-2x fa-camera" aria-hidden="true"></i><br> new image</label>
 											<input type="file" id="inputimg" @change="handleFileChange">
@@ -18,10 +20,8 @@
 
                                 </div>
 								<div class="mt-3">
-									<h4>John Doe</h4>
-									<p class="text-secondary mb-1">Full Stack Developer</p>
-									<p class="text-secondary font-size-sm">Bay Area, San Francisco, CA</p>
-									
+									<h4>  {{user.first_name}} {{user.last_name}}</h4>
+									 
 								</div>
 							</div>
 							<hr class="my-4">
@@ -73,34 +73,13 @@
 									<h6 class="mb-0">Phone</h6>
 								</div>
 								<div class="col-sm-9 text-secondary">
-									<input type="number" class="form-control" v-model="mobile"  pattern="^[1-9]\d*$" value="(239) 816-9029">
+									<input type="text" class="form-control" v-model="mobile"   pattern='^01[012]\d{8}$'  >
 									<div class="invalid-feedback">
 										Please enter user Mobile no.!.
 										</div>
 								</div>
 							</div>
-							<div class="row mb-3">
-								<div class="col-sm-3">
-									<h6 class="mb-0">password</h6>
-								</div>
-								<div class="col-sm-9 text-secondary">
-									<input type="password" class="form-control" v-model="password"  pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" value="(239) 816-9029">
-									<div class="invalid-feedback">
-										Please enter a valid password Minimum eight characters, at least one letter and one number!.
-										</div>
-								</div>
-							</div>
-							<div class="row mb-3">
-								<div class="col-sm-3">
-									<h6 class="mb-0">Confirm password</h6>
-								</div>
-								<div class="col-sm-9 text-secondary">
-									<input type="password" class="form-control"  v-model="cpassword" @blur="confirm"   pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" value="(239) 816-9029">
-									<div class="invalid-feedback">
-										Please enter a valid password that matchs with previous input  !.
-										</div>
-								</div>
-							</div>
+						 
 							<div class="row mb-3">
 								<div class="col-sm-3">
 									<h6 class="mb-0">Country</h6>
@@ -121,10 +100,10 @@
 									<h6 class="mb-0">Birthdate</h6>
 								</div>
 								<div class="col-sm-9 text-secondary">
-									<input type="date" class="form-control"
-									v-model="birthdate"
+									<input type="date" class="form-control "  
+									v-model="birthdate" 
 									pattern="^(((0[13-9]|1[012])[-/]?(0[1-9]|[12][0-9]|30)|(0[13578]|1[02])[-/]?31|02[-/]?(0[1-9]|1[0-9]|2[0-8]))[-/]?[0-9]{4}|02[-/]?29[-/]?([0-9]{2}(([2468][048]|[02468][48])|[13579][26])|([13579][26]|[02468][048]|0[0-9]|1[0-6])00))$"
-									value="22-09-1997">
+									 >
 									<div class="invalid-feedback">
 										Please provide a valid Birthdate.
 										</div>
@@ -163,34 +142,43 @@
   </template>
   
   <script>
+   import{datastore}from '@/stors/crowdfundingStore'
   import FunctionsClass from '../assets/js/registerAndUpdate'
    const functionsObject=new FunctionsClass();
   export default {
 	data:()=>({
-      fname:'',
-      lname:'',
+		storData:datastore(),
+	  user:{},
+      fname: '',
+      lname: '',
       email:'',
       mobile:'',
-      password:'',
-      cpassword:'',
       country:'',
       birthdate:'',
       facebook:'',
+      id:'',
       file:null,
-      countries: []
+      countries: [],
       }),
-	  created(){
-		functionsObject.created(this)
+	  async  created(){
+		await functionsObject.logedInPagesCreated(this)
+		await functionsObject.created(this)
+		this.fname=this.user.first_name;
+		this.lname=this.user.last_name;
+		this.email=this.user.email;
+		this.mobile=this.user.phone;
+        this.country=this.user.country;
+        this.birthdate=this.user.birth_date;
+        this.facebook=this.user.facebook;
+        this.id=this.user.id;
 	  },
 	  methods:{
+		
 		handleFormSubmission(e)
 		{ 
-			functionsObject.handleFormSubmission(e,this)
+			functionsObject.handleFormSubmission(e,this,'update')
         },
-		confirm(e){
-			functionsObject.confirm(e,this);	
-
-		},
+		 
 		handleFileChange(e){
 			functionsObject.handleFileChange(e,this)
 		}

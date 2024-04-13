@@ -23,7 +23,7 @@ export default {
     'about',
     'projects',
     'add',
-    'profeil',
+    'profile',
     'updateUserProfile',
     'congs',
     ]
