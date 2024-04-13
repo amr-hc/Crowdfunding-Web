@@ -5,6 +5,7 @@ import registration from "../components/registration.vue";
 import about from "../components/about.vue";
 import investors from "../components/investors.vue";
 import projects from "../components/projects.vue";
+import projectDetails from "@/components/project/project-details.vue";
 import login from "../components/login.vue";
 import Home from "@/components/home.vue";
 
@@ -25,6 +26,10 @@ const routes = [
   {
     path: "/projects",
     component: projects,
+  },
+  {
+    path: "/projects/:id",
+    component: projectDetails,
   },
   {
     path: "/investors",
