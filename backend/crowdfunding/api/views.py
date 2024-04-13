@@ -1,4 +1,4 @@
-from djoser.compat import get_user_email,settings
+from djoser.compat import get_user_email, settings
 from djoser import signals
 
 from api.models import Category, Project, Rate, User, ImportantProject
@@ -9,7 +9,7 @@ from api.modelserializers import (
     ProjectSerializer,
     RateSerializer,
     ReplaySerializer,
-    UserSerializer, ImportantProjectSerializer,confirmActivation
+    UserSerializer, ImportantProjectSerializer, confirmActivation
 )
 from api.permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly, IsSameUserOrReadOnly
 from comment.models import Comment
@@ -18,7 +18,6 @@ from django.contrib.auth import authenticate
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-
 
 from replay.models import Replay
 from rest_framework.authentication import TokenAuthentication
@@ -36,15 +35,17 @@ from rest_framework.viewsets import ModelViewSet
 from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.tokens import default_token_generator
-from django.utils.http import urlsafe_base64_decode , urlsafe_base64_encode
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+
 class login(ObtainAuthToken):
     permission_classes = [AllowAny]
+
     def post(self, request, *args, **kwargs):
         print(request.data)
         serializer = self.serializer_class(
@@ -53,10 +54,9 @@ class login(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"]
         token, created = Token.objects.get_or_create(user=user)
-        return Response({"token": token.key, "user_id": user.pk, "email": user.email,"first_name": user.first_name,"last_name": user.last_name,"photo": user.photo.url,"is_superuser": user.is_superuser,"country": user.country,"facebook": user.facebook,"address": user.address})
-
-
-
+        return Response({"token": token.key, "user_id": user.pk, "email": user.email, "first_name": user.first_name,
+                         "last_name": user.last_name, "photo": user.photo.url, "is_superuser": user.is_superuser,
+                         "country": user.country, "facebook": user.facebook, "address": user.address})
 
 
 class UserModelViewSet(ModelViewSet):
@@ -81,8 +81,6 @@ class UserModelViewSet(ModelViewSet):
         send_mail(subject, message, from_email, [to_email])
 
 
-
-
 class CategoryModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAdminOrReadOnly]
@@ -93,7 +91,7 @@ class CategoryModelViewSet(ModelViewSet):
 
 class ProjectModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
-    
+
     # permission_classes = [IsOwnerOrReadOnly]
     permission_classes = [AllowAny]
     queryset = Project.objects.all()
@@ -116,11 +114,10 @@ class ImportantProjectAPIView(ModelViewSet):
     serializer_class = ImportantProjectSerializer
 
 
-
-
 class confirmActivate(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [AllowAny]
+
     def post(self, request):
         serializer = confirmActivation(data=request.data)
         if serializer.is_valid():
