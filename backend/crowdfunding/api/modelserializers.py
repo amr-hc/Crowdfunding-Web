@@ -31,6 +31,11 @@ class LoginSerializer(serializers.Serializer):
     email = serializers.CharField()
     password = serializers.CharField()
 
+class confirmActivation(serializers.Serializer):
+    uid = serializers.CharField()
+    token = serializers.CharField()
+
+
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
