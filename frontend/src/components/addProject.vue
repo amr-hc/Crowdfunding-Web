@@ -1,4 +1,4 @@
-<!-- TODO: Validations & add category -->
+<!-- TODO: Validations -->
 
 <template>
   <section class="row justify-content-center">
@@ -130,21 +130,19 @@ export default {
         JSON.parse(localStorage.getItem("userInfo")) ||
         JSON.parse(sessionStorage.getItem("userInfo"));
       const token = userInfo.token;
-      console.log(token);
 
       let images = [];
-      for (let i = 0; i < this.images.length; i++) {
-        console.log(images[i]);
-      }
       $event.preventDefault();
       const form = new FormData();
       form.append("owner_id", userInfo["user_id"]);
-      form.append("categoryResult", this.categoryResult);
+      form.append("category_id", this.categoryResult);
       form.append("title", this.title);
       form.append("description", this.description);
-      form.append("endDate", this.endDate);
-      form.append("targetMoney", this.targetMoney);
-      form.append("photos", this.images);
+      form.append("end_date", this.endDate);
+      form.append("target_money", this.targetMoney);
+      for (let i = 0; i < this.images.length; i++) {
+        form.append("photos", this.images[i]);
+      }
 
       form.forEach((item) => console.log(item));
       fetch("http://127.0.0.1:8000/api/projects/", {
@@ -178,7 +176,6 @@ export default {
         this.images.push(file);
       }
 
-      console.log("Images:", this.images);
     },
   },
   created() {
