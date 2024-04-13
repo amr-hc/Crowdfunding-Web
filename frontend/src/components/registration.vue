@@ -68,7 +68,7 @@
  
     <div class="col-md-6">
         <label for="room" class="form-label">Mobile phone </label>
-        <input type="number" min="1" class="form-control" id="room" pattern="^[1-9]\d*$"
+        <input type="text" min="1" class="form-control" id="room" pattern='^01[012]\d{8}$'
           placeholder="phone number" v-model="mobile" required>
         <div class="invalid-feedback">
           Please enter user Mobile no.!.
@@ -175,6 +175,7 @@ export default {
 	  methods:{
 		handleFormSubmission(e)
 		{ 
+      console.log(this.birthdate);
 			functionsObject.handleFormSubmission(e,this)
         },
     confirm(e){
