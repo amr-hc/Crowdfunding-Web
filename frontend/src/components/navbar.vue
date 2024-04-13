@@ -16,8 +16,8 @@
                 class="nav-link ">Projects</button></router-link>
           </li>
           <li class="nav-item">
-            <router-link to="investors" class="text-decoration-none"><button
-                class="nav-link ">Investors</button></router-link>
+            <router-link to="profile" class="text-decoration-none"><button
+                class="nav-link ">Profile</button></router-link>
           </li>
           <li class="nav-item">
             <router-link to="/about" class="text-decoration-none"><button class="nav-link ">About</button></router-link>
@@ -37,8 +37,11 @@
             </div>
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item text-center" href="#">Log out &nbsp;<i
-                  class=" fa-solid fa-right-from-bracket"></i></a>
+            <li><router-link to="profile" class="dropdown-item text-center" >Profile &nbsp;<i
+                  class=" fa-solid fa-right-from-bracket"></i></router-link>
+            </li>
+            <li><router-link to="" class="dropdown-item text-center" >Log out &nbsp;<i
+                  class=" fa-solid fa-right-from-bracket"></i></router-link>
             </li>
           </ul>
         </div>

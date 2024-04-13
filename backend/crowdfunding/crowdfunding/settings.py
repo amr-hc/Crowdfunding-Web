@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 
+from dotenv import load_dotenv
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -47,7 +50,16 @@ INSTALLED_APPS = [
     "comment.apps.CommentConfig",
     "comment_report.apps.CommentReportConfig",
     "replay.apps.ReplayConfig",
+    # Donation App
+    "Donation.apps.DonationConfig",
+    # Project Pics App
+    "Project_Pics.apps.ProjectPicsConfig",
+    # Reset Password
+    "Reset_Password.apps.ResetPasswordConfig",
     "corsheaders",
+    'rest_framework.authtoken',
+    "djoser"
+
 ]
 
 MIDDLEWARE = [
@@ -86,16 +98,34 @@ WSGI_APPLICATION = "crowdfunding.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+
+"IF YOU ARE CONFIGURING THIS APP USING WINDOWS UNCOMMENT THE FOLLOWING LINE CODE"
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "crowdfunding",
         "USER": "root",
-        "PASSWORD": "1234",
+        "PASSWORD": "",
         "HOST": "localhost",
-        "PORT": 3306,
+        "PORT": 3306, 
     }
 }
+
+"IF YOU ARE CONFIGURING THIS APP USING LINUX UNCOMMENT THE FOLLOWING LINE CODE"
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'mysql.connector.django',
+#         'NAME': 'crowdfunding',
+#         'USER': 'nagy',
+#         'PASSWORD': 'nagy',
+#         'HOST': 'localhost',
+#         'PORT': 3306
+
+#     }
+# }
+
 
 
 # Password validation
@@ -148,3 +178,56 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
 
 CORS_ALLOWED_ORIGINS = ["http://localhost:8080", "http://127.0.0.1:8080"]
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework.authentication.TokenAuthentication',
+#     )
+# }
+
+
+DJOSER = {
+    'USER_MODEL': 'users.Users',
+    'LOGIN_FIELD': 'email',
+    'ACTIVATION_URL': 'auth/users/activation/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True,
+    'SEND_CONFIRM_EMAIL': False,
+    'PASSWORD_RESET_CONFIRM_URL' : 'reset-password-confirm/{uid}/{token}/',
+    'LOGIN_REDIRECT_URL': '/',
+    'LOGOUT_REDIRECT_URL': '/',
+    'SERIALIZERS': {
+        'user': 'api.modelserializers.UserSerializer',
+    },
+
+}
+
+# Authentication settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'amr.abdullah.elrefaey@gmail.com'
+EMAIL_HOST_PASSWORD = 'tlcq qebd rstp elpz'
+DEFAULT_FROM_EMAIL = 'amr.abdullah.elrefaey@gmail.comm'
+
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
+}
+

@@ -1,7 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.forms import TimeField
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.core.exceptions import ValidationError
+from datetime import date
+
 
 # Create your models here.
 
@@ -33,22 +37,30 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser',True)
         return self._create_user(email, password, first_name, last_name, phone, birth_date, **extra_fields)
 
+AUTH_PROVIDERS = {'facebook': 'facebook', 'email': 'email'}
+
 class User(AbstractBaseUser,PermissionsMixin):
 
     email = models.EmailField(db_index=True, unique=True, max_length=254)
     first_name = models.CharField(max_length=240)
     last_name = models.CharField(max_length=255)
-    phone = models.CharField(max_length=50)
+    phone = models.CharField(max_length=50, validators=[RegexValidator('^01[012]\d{8}$')])
     address = models.CharField( max_length=250)
     photo = models.ImageField(upload_to='images/user',default='images/user/default.jpg',blank=True)
-    birth_date = models.DateField()
+    birth_date = models.DateField(null=True, blank=True)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
+    country = models.CharField(max_length=225)
+    facebook = models.URLField(null=True, blank=True)
+    auth_provider = models.CharField(
+        max_length=255, blank=False,
+        null=False, default=AUTH_PROVIDERS.get('email'))
+
 
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ["first_name", "last_name", "phone", "birth_date"]
+    REQUIRED_FIELDS = ["first_name", "last_name", "phone"]
 
     class Meta:
         verbose_name = 'User'
@@ -74,8 +86,19 @@ class Project(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="owner")
     rates = models.ManyToManyField(User, through="Rate")
 
+class ImportantProject(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
 class Rate(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
     rate = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE,related_name="allrate")
+
+
+
+def tokens(self):
+        refresh = RefreshToken.for_user(self)
+        return {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token)
+        }

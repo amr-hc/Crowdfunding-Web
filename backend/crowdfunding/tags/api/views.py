@@ -1,11 +1,15 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.viewsets import ModelViewSet
 from tags.models import Tag
 from tags.api.serializers import TagSerializer
+from rest_framework.permissions import (
+    AllowAny,
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly,
+)
+class TagAPIView(ModelViewSet):
+    permission_classes = [AllowAny]
 
-class TagListCreateAPIView(ListCreateAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
 
-class TagRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    queryset = Tag.objects.all()
-    serializer_class = TagSerializer
+ 

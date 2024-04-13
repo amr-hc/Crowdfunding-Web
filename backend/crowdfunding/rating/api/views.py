@@ -1,11 +1,14 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from rating.models import Rating
+from rest_framework.viewsets import ModelViewSet
+from api.models import Rate
 from rating.api.serializers import RatingSerializer
-
-class RatingListCreateAPIView(ListCreateAPIView):
-    queryset = Rating.objects.all()
+from rest_framework.permissions import (
+    AllowAny,
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly,
+)
+class RatingAPIView(ModelViewSet):
+    permission_classes = [AllowAny]
+    queryset = Rate.objects.all()
     serializer_class = RatingSerializer
 
-class RatingRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    queryset = Rating.objects.all()
-    serializer_class = RatingSerializer
+ 

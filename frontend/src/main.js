@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import "./assets/css/style.css";
 import "./assets/css/map.css";
+import "./assets/css/profile.css";
 import router from './routers/index'
 
 const app = createApp(App);

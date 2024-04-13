@@ -1,14 +1,15 @@
-
-
-from django.urls import path 
-from project_tag.api.views import ProjectTagListCreateAPIView ,ProjectTagRetrieveUpdateDestroyAPIView
- 
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from project_tag.api.views import  ProjectTagAPIView
+router = DefaultRouter()
+router.register(r'', ProjectTagAPIView)
 
 urlpatterns = [
-    path('', ProjectTagListCreateAPIView.as_view()),
-    path('<int:pk>/', ProjectTagRetrieveUpdateDestroyAPIView.as_view(), name='update&destroy'),
- 
+    path('', include(router.urls)),
 ]
+
+
+ 
 
 
 

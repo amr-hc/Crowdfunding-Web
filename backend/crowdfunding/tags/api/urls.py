@@ -1,15 +1,14 @@
-
-
-from django.urls import path 
-from tags.api.views import TagListCreateAPIView ,TagRetrieveUpdateDestroyAPIView
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from tags.api.views import TagAPIView
  
+router = DefaultRouter()
+router.register(r'', TagAPIView)
 
 urlpatterns = [
-    path('', TagListCreateAPIView.as_view()),
-    path('<int:pk>/', TagRetrieveUpdateDestroyAPIView.as_view(), name='update&destroy'),
- 
+    path('', include(router.urls)),
 ]
-
+ 
 
 
 
