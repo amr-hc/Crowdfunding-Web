@@ -18,7 +18,7 @@ router.register(r'replay', ReplayModelViewSet),
 urlpatterns = [
     path('', include(router.urls)),
     path('login', login.as_view()),
-    path('activate/', confirmActivate.as_view())
+    path('activate/', confirmActivate.as_view()),
 ]
 
 

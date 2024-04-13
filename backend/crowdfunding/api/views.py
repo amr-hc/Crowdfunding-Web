@@ -88,14 +88,25 @@ class CategoryModelViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
+from Project_Pics.api.serializer import ProjectPicsSerializer
+from Project_Pics.models import ProjectPics
+
 
 class ProjectModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
-
     # permission_classes = [IsOwnerOrReadOnly]
     permission_classes = [AllowAny]
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+
+    def perform_create(self, serializer):
+        project = serializer.save()
+        allPhotos = self.request.FILES.getlist('photos')
+        for photo in allPhotos:
+            newPhoto = ProjectPics()
+            newPhoto.image_path=photo
+            newPhoto.project=project
+            newPhoto.save()
 
 
 class RateModelViewSet(ModelViewSet):
