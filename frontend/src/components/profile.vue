@@ -147,8 +147,48 @@
   </template>
   
   <script>
+  import { mapState } from 'vuex';
+
   export default {
-  
+    
+    data() {
+    return {
+     
+      
+    }
+  },
+  methods: {
+   
+  },
+  async created(){
+  const localStorageData =JSON.parse(localStorage.getItem('userInfo'));
+  const sessionStorageData=JSON.parse(sessionStorage.getItem("userInfo"));
+    if(!sessionStorageData&&!localStorageData){
+      this.$router.push('/login');
+    }
+    else if(localStorageData||sessionStorageData){
+      let userData=localStorageData?localStorageData : sessionStorageData 
+      console.log(userData)
+      try 
+          {
+           const response = await fetch(`http://127.0.0.1:8000/api/users/${userData.user_id}`,{
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${userData.token} `
+            }
+           });
+           const data = await response.json(); 
+            
+
+
+          }
+        catch (error) 
+            {
+                console.error("Error fetching country codes:", error);
+            }
+    }
+  }
   }
    
   </script>
