@@ -44,7 +44,7 @@ class login(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"]
         token, created = Token.objects.get_or_create(user=user)
-        return Response({"token": token.key, "user_id": user.pk, "email": user.email})
+        return Response({"token": token.key, "user_id": user.pk, "email": user.email,"first_name": user.first_name,"last_name": user.last_name,"photo": user.photo.url,"is_superuser": user.is_superuser})
 
 
 class UserModelViewSet(ModelViewSet):
