@@ -30,7 +30,8 @@ from rest_framework.viewsets import ModelViewSet
 
 
 class login(ObtainAuthToken):
-    
+    permission_classes = [AllowAny]
+
     def post(self, request, *args, **kwargs):
         print(request.data)
         serializer = self.serializer_class(
@@ -60,6 +61,7 @@ class CategoryModelViewSet(ModelViewSet):
 
 class ProjectModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
+    
     # permission_classes = [IsOwnerOrReadOnly]
     permission_classes = [AllowAny]
     queryset = Project.objects.all()
