@@ -194,9 +194,7 @@ export default {
 
 <style scoped>
 .register{
-  background-image: url("../assets/imges/pexels-branimir-balogović-3959485.jpg");
-  background-position: center ;
-  background-size: cover ;
+   
   height: 100vh;
   flex-wrap: nowrap !important;
 }
@@ -204,8 +202,9 @@ export default {
   flex-wrap: nowrap !important;
   padding: 30px;
   border-radius: 10%;
-opacity: 0.8;
-color:black;
+/* opacity: 0.5; */
+background-color: rgb(91 91 91 / 50%) !important;
+color:rgb(235, 227, 227);
 height: 100%;
 width: 60vw ;
 }
@@ -215,5 +214,8 @@ p{
 }
 #userimg{
   display: block;
+}
+input{
+  background-color: rgb(91 91 91 / 100%) !important;
 }
 </style>
