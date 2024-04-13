@@ -20,7 +20,7 @@
           <label for="title" class="text-dark ms-2">Project Title</label>
           <div class="invalid-feedback">Please provide a title.</div>
         </div>
-
+        
         <div class="form-floating">
           <input
             type="number"
@@ -84,6 +84,18 @@
           <label for="endDate" class="text-dark ms-2">Project End Date</label>
           <div class="invalid-feedback">Please provide an end date.</div>
         </div>
+        <div  class="input-style">
+          <label class="input-group-text" for="photo"
+            >Upload multiple photo</label
+          >
+          <input
+            type="file"
+            class="form-control"
+            id="photo"
+            multiple
+            @change="takePhotos($event)"
+          />
+        </div>
 
         <input
           type="submit"
@@ -108,6 +120,8 @@ export default {
     userInfo:
       JSON.parse(localStorage.getItem("userInfo")) ||
       JSON.parse(sessionStorage.getItem("userInfo")),
+      images: [], 
+      imagePaths: []
   }),
   methods: {
     addProject($event) {
@@ -122,19 +136,18 @@ export default {
 
       $event.preventDefault();
       const form = new FormData();
-      form.append("id", 10);
+      form.append("owner_id", userInfo["user_id"]);
+      form.append("categoryResult", this.categoryResult);
       form.append("title", this.title);
       form.append("description", this.description);
       form.append("startDate", startDate);
       form.append("endDate", this.endDate);
       form.append("targetMoney", this.targetMoney);
-      form.append("hidden", 0);
-      form.append("categoryResult", this.categoryResult);
-      form.append("owner_id", userInfo["user_id"]);
 
-      // for (let i = 0; i < this.photos.length; i++) {
-      //   form.append("photos[]", this.photos[i]);
-      // }
+      let images = [];
+      for (let i = 0; i < this.photos.length; i++) {
+        images.append("photos[]", this.photos[i]);
+      }
 
       form.forEach((item) => console.log(item));
       fetch("http://127.0.0.1:8000/api/projects/", {
@@ -160,10 +173,20 @@ export default {
         .catch((error) => {
           console.error("Error adding project:", error);
         });
+
+
     },
-    takePhotos($event) {
-      const pics = $event.target.files;
-      this.photos = Array.from(pics);
+    takePhotos(event) {
+      const selectedImages = event.target.files; 
+      this.images = Array.from(selectedImages); 
+      // Extract file paths from selected images
+      this.imagePaths = [];
+      for (let i = 0; i < selectedImages.length; i++) {
+        const imagePath = URL.createObjectURL(selectedImages[i]); 
+        this.imagePaths.push(imagePath); // Store the image path
+      }
+      console.log("Selected Images:", this.images);
+      console.log("Image Paths:", this.imagePaths);
     },
   },
   created() {
@@ -204,6 +227,7 @@ p {
 .form-floating {
   opacity: 0.6;
 }
+.input-style,
 .form-floating,
 .photos {
   opacity: 0.8;
