@@ -40,8 +40,26 @@
                 <router-link v-if="images.length > 3" to="projects" class="btn text-light-emphasis mt-2">See
                     More</router-link>
                 <hr>
-                <div class="reviews">
-                    <h5 class="text-light-emphasis">Reviews</h5>
+                <div class="reviews ">
+                    <h5 class="text-light-emphasis my-3">Reviews</h5>
+                    <!-- Add review input -->
+                    <textarea data-bs-theme="dark" id="newComment" class="col form-control bg-transparent text-light"
+                        rows="3" placeholder="Write your comment"></textarea>
+
+                    <div class="d-flex align-items-baseline justify-content-between gap-3 my-3">
+                        <div data-bs-theme="dark">
+                            <select id="newRating" class="col form-select bg-body-secondary ">
+                                <option selected>Your Rating</option>
+                                <option value="1">1 star</option>
+                                <option value="2">2 stars</option>
+                                <option value="3">3 stars</option>
+                                <option value="4">4 stars</option>
+                                <option value="5">5 stars</option>
+                            </select>
+                        </div>
+                        <button class=" col text-center btn btn-main btn-outline-dark">Comment</button>
+                    </div>
+                    <hr>
                     <div class="reviewer text-end  border-bottom border-dark my-2">
                         <div class="d-flex justify-content-between align-items-baseline">
                             <div class="d-flex align-items-center gap-2">
@@ -98,7 +116,6 @@
                     </div>
                     <p class="text-white-50 text-start">Donated $1000
                     </p>
-
 
                 </div>
 
@@ -288,5 +305,9 @@ export default {
 .progress-bar {
     transition: width 0.3s ease-in-out;
     background-color: var(--secondary-color-2);
+}
+
+option {
+    background-color: transparent;
 }
 </style>
