@@ -61,13 +61,10 @@ class login(ObtainAuthToken):
 
 class UserModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
-<<<<<<< HEAD
     # permission_classes = [IsSameUserOrReadOnly]
-    permission_classes = [AllowAny]
-=======
+    # permission_classes = [AllowAny]
     permission_classes = [IsSameUserOrReadOnly]
     # permission_classes = [AllowAny]
->>>>>>> 0a890704b87939ef4f20981dad905bf5c25fd83c
     queryset = User.objects.all()
     serializer_class = UserSerializer
 

@@ -13,17 +13,20 @@
                         <img width="100%" height="100%" :src="image.url" alt="Thumbnail Image" />
                     </div>
                 </div>
-                <h5 class="text-light-emphasis">Title: Need for speed <div class="rating my-2">
+                <h5 class="text-light-emphasis">Title: {{projectData.title}} <div class="rating my-2">
                         <i v-for="n in 5" :key="n"
                             :class="{ 'plus fa-solid fa-star': n <= rating, 'minus fa-regular fa-star': n > rating }"></i>
                     </div>
                 </h5>
-                <div class="text-white-50">
+                <!-- <div class="text-white-50">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis quam iste beatae incidunt vitae
                     ad.
                     Iure deserunt recusandae neque aut dolorem, nisi delectus molestiae repudiandae aliquid possimus ab
                     odio
                     voluptas?
+                </div> -->
+                <div class="text-white-50">
+                  {{projectData.description}}        
                 </div>
                 <hr>
                 <h5 class="text-light-emphasis">Similar Projects</h5>
@@ -143,38 +146,72 @@
     </div>
 </template>
 
+
+
 <script>
 export default {
     name: 'project-details',
     data() {
         return {
-            images: [
-                { url: 'https://s3.amazonaws.com/ooomf-com-files/wdXqHcTwSTmLuKOGz92L_Landscape.jpg', title: 'New carousel layout', description: 'Responsive thumbnail preview in carousel indicators.' },
-                { url: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg', title: 'One more for good measure.', description: 'Nullam id dolor id nibh ultricies vehicula ut id elit.' },
-                { url: 'https://s3.amazonaws.com/ooomf-com-files/tU3ptNgGSP6U2fE67Gvy_SYDNEY-162.jpg', title: 'Another example headline.', description: 'Cras justo odio, dapibus ac facilisis in, egestas eget quam.' },
-            ],
+            projectData: {}, // Object to hold project data
+            images: [],
             activeImg: '',
             isFeatured: true,
             rating: 4,
             showAllProjects: false,
             totalAmount: 1000,
             currentDonation: 630
-
-
         };
     },
-
-    mounted() {
-        this.activeImg = this.images[0].url;
+    async mounted() {
+        // Fetch project data when the component is mounted
+        await this.fetchProjectData();
+        await this.fetchProjectPicsData();
     },
     methods: {
+        async fetchProjectData() {
+            try {
+                const projectId = 1; //this.$route.params.id;
+                const response = await fetch(`http://localhost:8000/projects/${projectId}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch project data');
+                }
+                const data = await response.json();
+                this.projectData = data;
+                this.totalAmount = data.target_money;
+                this.rating = data.rates;
+            } catch (error) {
+                console.error('Error fetching project data:', error);
+            }
+        },
+       async fetchProjectPicsData() {
+            try {
+                const projectId = 1;
+                const response = await fetch(`http://localhost:8000/project_pics/get_pics_of_project/?project_id=${projectId}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch project pics data');
+                }
+                const data = await response.json();
+                this.images = data.map(image => ({
+                    url: image.url,
+                    active: false
+                }));
+                // Set the active image to the first image in the array
+                if (this.images.length > 0) {
+                    this.activeImg = this.images[0].url;
+                }
+            } catch (error) {
+                console.error('Error fetching project pics data:', error);
+            }
+        },
+
         selectActiveImage(index) {
             this.activeImg = this.images[index].url;
             this.images.forEach((img, i) => {
                 img.active = i === index;
             });
-        }
-        , showAllSimilarProjects() {
+        },
+        showAllSimilarProjects() {
             this.showAllProjects = true;
         }
     },
@@ -191,9 +228,10 @@ export default {
         donationProgress() {
             return (this.currentDonation / this.totalAmount) * 100;
         }
-    },
+    }
 }
 </script>
+
 
 <style scoped>
 .card {
@@ -311,3 +349,62 @@ option {
     background-color: transparent;
 }
 </style>
+
+
+
+
+<!--<script>
+   Template
+
+
+
+// export default {
+//     name: 'project-details',
+//     data() {
+//         return {
+//             images: [
+//                 { url: 'https://s3.amazonaws.com/ooomf-com-files/wdXqHcTwSTmLuKOGz92L_Landscape.jpg', title: 'New carousel layout', description: 'Responsive thumbnail preview in carousel indicators.' },
+//                 { url: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg', title: 'One more for good measure.', description: 'Nullam id dolor id nibh ultricies vehicula ut id elit.' },
+//                 { url: 'https://s3.amazonaws.com/ooomf-com-files/tU3ptNgGSP6U2fE67Gvy_SYDNEY-162.jpg', title: 'Another example headline.', description: 'Cras justo odio, dapibus ac facilisis in, egestas eget quam.' },
+//             ],
+//             activeImg: '',
+//             isFeatured: true,
+//             rating: 4,
+//             showAllProjects: false,
+//             totalAmount: 1000,
+//             currentDonation: 630
+
+
+//         };
+//     },
+
+//     mounted() {
+//         this.activeImg = this.images[0].url;
+//     },
+//     methods: {
+//         selectActiveImage(index) {
+//             this.activeImg = this.images[index].url;
+//             this.images.forEach((img, i) => {
+//                 img.active = i === index;
+//             });
+//         }
+//         , showAllSimilarProjects() {
+//             this.showAllProjects = true;
+//         }
+//     },
+//     computed: {
+//         filledStars() {
+//             return this.rating;
+//         },
+//         emptyStars() {
+//             return 5 - this.rating;
+//         },
+//         limitedImages() {
+//             return this.showAllProjects ? this.images : this.images.slice(0, 3);
+//         },
+//         donationProgress() {
+//             return (this.currentDonation / this.totalAmount) * 100;
+//         }
+//     },
+// }
+</script> -->
