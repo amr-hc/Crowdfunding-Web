@@ -34,7 +34,7 @@
         const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
         const mobilePattern = /^01[012]\d{8}$/;
         const countryPattern = /^[a-zA-Z ,.'-]+$/;
-        // const birthdatePattern = /^(((0[13-9]|1[012])[-/]?(0[1-9]|[12][0-9]|30)|(0[13578]|1[02])[-/]?31|02[-/]?(0[1-9]|1[0-9]|2[0-8]))[-/]?[0-9]{4}|02[-/]?29[-/]?([0-9]{2}(([2468][048]|[02468][48])|[13579][26])|([13579][26]|[02468][048]|0[0-9]|1[0-6])00))$/;
+        const birthdatePattern = /^([0-9]{4}[-/]?((0[13-9]|1[012])[-/]?(0[1-9]|[12][0-9]|30)|(0[13578]|1[02])[-/]?31|02[-/]?(0[1-9]|1[0-9]|2[0-8]))|([0-9]{2}(([2468][048]|[02468][48])|[13579][26])|([13579][26]|[02468][048]|0[0-9]|1[0-6])00)[-/]?02[-/]?29)$/;
         const facebookPattern = /^(?:https?:\/\/)?(?:www\.)?(mbasic.facebook|m\.facebook|facebook|fb)\.(com|me)\/(?:(?:\w\.)*#!\/)?(?:pages\/)?(?:[\w\-\.]*\/)*([\w\-\.]*)/;
         if(par.country!="")
         {
@@ -47,18 +47,18 @@
                 return false;
               }
         }
-        // if(par.birthdate!="")
-        // {
-        //   if(birthdatePattern.test(par.birthdate))
-        //     {
-        //       return true;
-        //     }
-        //   else
-        //     {
-        //       console.log(par.birthdate)
-        //       return false;
-        //     }
-        // }
+        if(par.birthdate!="")
+        {
+          if(birthdatePattern.test(par.birthdate))
+            {
+              return true;
+            }
+          else
+            {
+              console.log(par.birthdate)
+              return false;
+            }
+        }
         if(par.facebook!=null)
         {
           if(facebookPattern.test(par.facebook))
