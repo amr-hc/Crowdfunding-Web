@@ -42,7 +42,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .intro {
-    min-height: calc(100vh - 62px);
+    min-height: calc(100vh);
     display: flex;
     flex-direction: column;
     align-items: center;

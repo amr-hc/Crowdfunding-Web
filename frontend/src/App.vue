@@ -4,12 +4,15 @@
     <div class="row">
       <router-view></router-view>
     </div>
+    <pageFooter />
+
   </div>
 
 </template>
 
 <script>
 import navbar from './components/navbar.vue'
+import pageFooter from './components/footer.vue';
 export default {
 
   data:()=>({
@@ -23,7 +26,7 @@ export default {
     'about',
     'projects',
     'add',
-    'profeil',
+    'profile',
     'updateUserProfile',
     'congs',
     ]
@@ -36,7 +39,7 @@ export default {
     
   },
   components: {
-    navbar
+    navbar, pageFooter
   },
 
 }

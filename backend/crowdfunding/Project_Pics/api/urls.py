@@ -7,4 +7,4 @@ router.register(r'project_pics', ProjectPicsViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-]
+   ]

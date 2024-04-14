@@ -1,5 +1,5 @@
 <template>
-  <nav class=" navbar navbar-expand-lg">
+  <nav class=" navbar navbar-expand-lg position-sticky sticky-top top-0 z-3">
     <div class="container-fluid">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
         aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
@@ -8,19 +8,21 @@
       <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
         <a class="navbar-brand" href="#">Arise</a>
         <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <router-link to="/" class="text-decoration-none"><button class="nav-link ">Home</button></router-link>
+          <li class="nav-item ">
+            <router-link to="/" class="text-decoration-none "><button class="nav-link "
+                :class="{ active: $route.path === '/' }">Home</button></router-link>
           </li>
           <li class="nav-item">
-            <router-link to="projects" class="text-decoration-none"><button
-                class="nav-link ">Projects</button></router-link>
+            <router-link to="projects" class="text-decoration-none"><button class="nav-link "
+                :class="{ active: $route.path === '/projects' }">Projects</button></router-link>
           </li>
           <li class="nav-item">
-            <router-link to="profile" class="text-decoration-none"><button
-                class="nav-link ">Profile</button></router-link>
+            <router-link to="profile" class="text-decoration-none"><button class="nav-link "
+                :class="{ active: $route.path === '/profile' }">Profile</button></router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/about" class="text-decoration-none"><button class="nav-link ">About</button></router-link>
+            <router-link to="/about" class="text-decoration-none"><button class="nav-link "
+                :class="{ active: $route.path === '/about' }">About</button></router-link>
 
           </li>
           <!-- <li class="nav-item">
@@ -37,10 +39,10 @@
             </div>
           </a>
           <ul class="dropdown-menu">
-            <li><router-link to="profile" class="dropdown-item text-center" >Profile &nbsp;<i
+            <li><router-link to="profile" class="dropdown-item text-center">Profile &nbsp;<i
                   class=" fa-solid fa-right-from-bracket"></i></router-link>
             </li>
-            <li><router-link to="" class="dropdown-item text-center" >Log out &nbsp;<i
+            <li><router-link to="" class="dropdown-item text-center">Log out &nbsp;<i
                   class=" fa-solid fa-right-from-bracket"></i></router-link>
             </li>
           </ul>
@@ -76,6 +78,11 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Bungee+Spice&display=swap');
+
+nav {
+  background-color: var(--primary-color-1);
+  box-shadow: 0px 0 31px 0px rgb(0 0 0 / 10%);
+}
 
 .navbar-brand {
   font-family: "Bungee Spice", sans-serif;

@@ -28,11 +28,17 @@
   background-color: var(--secondary-color-1);
   outline: 1px solid var(--primary-color-2);
 }
-
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+}
 body {
   margin: 0;
   background-color: var(--primary-color-1);
   color: var(--primary-text-light);
+  font-family: "Poppins", sans-serif;
 }
 .btn-main {
   background-color: var(--secondary-color-3);
