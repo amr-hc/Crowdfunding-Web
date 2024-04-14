@@ -83,7 +83,7 @@ class Project(models.Model):
     target_money = models.DecimalField(max_digits=10, decimal_places=2)
     hidden = models.BooleanField(default=False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="owner")
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="owner_projects")
     rates = models.ManyToManyField(User, through="Rate")
 
 class ImportantProject(models.Model):

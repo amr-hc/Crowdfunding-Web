@@ -26,8 +26,8 @@ def forget_password(request):
 
         # Build reset link
         uid = urlsafe_base64_encode(force_bytes(user.pk))
-        domain = get_current_site(request).domain
-        reset_link = f"http://{domain}/reset-password/{uid}/{token}/"
+        domain = 8080
+        reset_link = f"http://localhost:8080/confirmForgetPassword?uid={uid}&token={token}/"
 
         # Send email
         email_subject = 'Password Reset'
