@@ -20,7 +20,7 @@ export default {
    }),
   created() {
 
-    // this.$route.path   Won't work properly
+    // this.$route.path   Won't work properly with navpar
     const paths=[
     '',
     'about',

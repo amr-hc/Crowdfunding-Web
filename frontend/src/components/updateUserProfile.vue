@@ -138,6 +138,28 @@
 			</div>
 		</form>
 		</div>
+	<button id="delete" data-bs-toggle="modal" 
+	data-bs-target="#deleteModal"
+	 class="  btn btn-danger px-4">Delete User Account</button>
+
+<div class="modal fade " id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content bg-dark ">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Book</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete your account?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" @click="deleteUser"  class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 	</div>
   </template>
   
@@ -156,6 +178,7 @@
       country:'',
       birthdate:'',
       facebook:'',
+      storgData:{},
       id:'',
       file:null,
       countries: [],
@@ -181,6 +204,9 @@
 		 
 		handleFileChange(e){
 			functionsObject.handleFileChange(e,this)
+		},
+		deleteUser(){
+		    functionsObject.deleteUser(this)
 		}
 	  }
 		}
@@ -216,5 +242,12 @@
   .imgdiv:hover label{
     opacity: 1; 
 
+  }
+  #delete{
+	float: right;
+    /* clear: both; */
+  }
+  .modal-content{
+	background-color: rgb(56, 54, 54)!important;
   }
   </style>

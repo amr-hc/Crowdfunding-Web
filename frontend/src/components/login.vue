@@ -106,10 +106,15 @@
 
 <script>
 export default {
+
   data: () => ({
     email: "",
     password: "",
   }),
+  beforeCreate(){
+    localStorage.clear();
+    sessionStorage.clear();
+  },
   methods: {
     checkUser() {
       const userData = {
@@ -133,8 +138,13 @@ export default {
         .then((data) => {
           if (document.querySelector("input[type=checkbox]").checked) {
             localStorage.setItem("userInfo", JSON.stringify(data));
+                // this.$route.path   Won't work properly with navpar
+
+            window.location.href='http://localhost:8080/'
           } else {
             sessionStorage.setItem("userInfo", JSON.stringify(data));
+            window.location.href='http://localhost:8080/'
+
           }
         })
         .catch((err) => console.error(err));
