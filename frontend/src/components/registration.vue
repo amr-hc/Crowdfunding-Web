@@ -67,8 +67,8 @@
     </div>
  
     <div class="col-md-6">
-        <label for="room" class="form-label">Mobile phone </label>
-        <input type="number" min="1" class="form-control" id="room" pattern="^[1-9]\d*$"
+        <label for="phone" class="form-label">Mobile phone </label>
+        <input type="text"   class="form-control" id="phone" pattern='^01[012]\d{8}$'
           placeholder="phone number" v-model="mobile" required>
         <div class="invalid-feedback">
           Please enter user Mobile no.!.
@@ -175,6 +175,7 @@ export default {
 	  methods:{
 		handleFormSubmission(e)
 		{ 
+      console.log(this.birthdate);
 			functionsObject.handleFormSubmission(e,this)
         },
     confirm(e){
@@ -193,19 +194,17 @@ export default {
 
 <style scoped>
 .register{
-  background-image: url("../assets/imges/pexels-branimir-balogović-3959485.jpg");
-  background-position: center ;
-  background-size: cover ;
+   
   height: 100vh;
   flex-wrap: nowrap !important;
 }
 .registerCard{
   flex-wrap: nowrap !important;
-  padding: 30px;
+  padding: 50px 20px;
   border-radius: 10%;
-opacity: 0.8;
-color:black;
-height: 100%;
+background-color: rgb(91 91 91 / 50%) !important;
+color:rgb(235, 227, 227);
+
 width: 60vw ;
 }
 p{
@@ -214,5 +213,8 @@ p{
 }
 #userimg{
   display: block;
+}
+input{
+  background-color: rgb(91 91 91 / 100%) !important;
 }
 </style>

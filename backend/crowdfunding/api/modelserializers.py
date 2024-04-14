@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         # fields = "__all__"
-        fields = ["id", "email", "password", "first_name", "last_name", "is_superuser", "is_active", "birth_date", "photo","country","facebook"]
+        fields = ["id", "email", "password", "first_name", "last_name", "is_superuser", "is_active", "birth_date", "photo","country","facebook","phone"]
         extra_kwargs = {'password': {'write_only': True}}
     def validate(self, data):
         if 'password' in data:
@@ -30,6 +30,11 @@ class UserSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.Serializer):
     email = serializers.CharField()
     password = serializers.CharField()
+
+class confirmActivation(serializers.Serializer):
+    uid = serializers.CharField()
+    token = serializers.CharField()
+
 
 
 class CategorySerializer(serializers.ModelSerializer):
