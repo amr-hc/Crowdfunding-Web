@@ -5,6 +5,7 @@ import registration from "../components/registration.vue";
 import about from "../components/about.vue";
 import investors from "../components/investors.vue";
 import projects from "../components/projects.vue";
+import projectDetails from "@/components/project/project-details.vue";
 import login from "../components/login.vue";
 import Home from "@/components/home.vue";
 import profile from "../components/profile.vue";
@@ -33,13 +34,14 @@ const routes = [
     component: projects,
   },
   {
+    path: "/projects",
+    component: projectDetails,
+  },
+  {
     path: "/add",
     component: addProject,
   },
-  {
-    path: "/investors",
-    component: investors,
-  },
+   
   {
     path: "/login",
     component: login,

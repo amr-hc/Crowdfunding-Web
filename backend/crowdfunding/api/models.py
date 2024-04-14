@@ -3,6 +3,9 @@ from django.contrib.auth.models import AbstractUser, AbstractBaseUser, BaseUserM
 from django.forms import TimeField
 from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.core.exceptions import ValidationError
+from datetime import date
+
 
 # Create your models here.
 
@@ -57,7 +60,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ["first_name", "last_name", "phone"]
+    REQUIRED_FIELDS = ["first_name", "last_name", "phone","birth_date","photo"]
 
     class Meta:
         verbose_name = 'User'
@@ -88,7 +91,7 @@ class ImportantProject(models.Model):
 
 class Rate(models.Model):
     rate = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE,related_name="allrate")
 
 

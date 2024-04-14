@@ -1,4 +1,6 @@
 <template>
+   
+
     <div class="container">
     <div class="main-body">
     
@@ -20,9 +22,9 @@
               <div class="card col-md-3 mb-3 bg-dark">
                 <div class="card-body">
                   <div class="d-flex flex-column align-items-center text-center">
-                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+                    <img :src="user.photo" alt="Admin" class="rounded-circle" width="150">
                     <div class="mt-3">
-                      <h4>John Doe</h4>
+                      <h4> {{user.first_name}} {{user.last_name}}</h4>
                       <p class="text-secondary mb-1">Full Stack Developer</p>
                       <p class=" text-secondary font-size-sm">Bay Area, San Francisco, CA</p>
                       
@@ -37,7 +39,7 @@
                       <h6 class="mb-0">Full Name</h6>
                     </div>
                     <div class="col-sm-9  ">
-                      Kenneth Valdez
+                      {{user.first_name}} {{user.last_name}}
                     </div>
                   </div>
                   <hr>
@@ -46,7 +48,7 @@
                       <h6 class="mb-0">Email</h6>
                     </div>
                     <div class="col-sm-9  ">
-                      fip@jukmuh.al
+                      {{user.email}}
                     </div>
                   </div>
                   <hr>
@@ -55,7 +57,7 @@
                       <h6 class="mb-0">Phone</h6>
                     </div>
                     <div class="col-sm-9  ">
-                      (239) 816-9029
+                      {{user.last_name}}
                     </div>
                   </div>
                   <hr>
@@ -64,7 +66,7 @@
                       <h6 class="mb-0">Mobile</h6>
                     </div>
                     <div class="col-sm-9 ">
-                      (320) 380-4539
+                      {{user.phone}}
                     </div>
                   </div>
                   <hr>
@@ -73,7 +75,7 @@
                       <h6 class="mb-0">Country</h6>
                     </div>
                     <div class="col-sm-9  ">
-                      Egypt
+                      {{user.country}}
                     </div>
                   </div>
                   <hr>
@@ -82,7 +84,7 @@
                       <h6 class="mb-0">Birthdate</h6>
                     </div>
                     <div class="col-sm-9  ">
-                      22-9-1997
+                      {{user.birth_date}}
                     </div>
                   </div>
                   <hr>
@@ -91,7 +93,7 @@
                       <h6 class="mb-0">facebook account</h6>
                     </div>
                     <div class="col-sm-9  ">
-                      www.facebook.com
+                      {{user.facebook}}
                     </div>
                   </div>
                   <hr>
@@ -147,8 +149,23 @@
   </template>
   
   <script>
+ import{datastore}from '@/stors/crowdfundingStore'
+ import FunctionsClass from '../assets/js/registerAndUpdate'
+  const functionsObject=new FunctionsClass();
   export default {
-  
+    
+    data:()=>({
+      storData:datastore(),
+   user:{}
+   }),
+  methods: {
+   
+  },
+  async created(){
+  await functionsObject.logedInPagesCreated(this);
+ 
+
+  }
   }
    
   </script>
