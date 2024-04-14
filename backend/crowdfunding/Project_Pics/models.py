@@ -5,7 +5,7 @@ from api.models import Project
 
 class ProjectPics(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='pics')
-    image = models.ImageField(upload_to='images/project')
+    image_path = models.ImageField(upload_to='images/project')
 
     # to String
     def __str__(self):
