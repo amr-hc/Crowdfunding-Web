@@ -150,7 +150,7 @@ export default {
         })
         .then((data) => {})
         .catch((err) => {
-          console.error(err);
+          cconsole.log("Password change successfuly")
         });
     },
   },
