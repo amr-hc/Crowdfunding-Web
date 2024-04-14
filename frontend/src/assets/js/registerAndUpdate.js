@@ -97,7 +97,31 @@
           return false;
         }
     }
-
+    projectValidations(par) {
+      const titlePattern = /^[a-zA-Z0-9\s]{1,50}$/; // Pattern for alphanumeric and spaces, maximum 50 characters
+      const targetPattern = /^\d+$/; // Pattern for positive integers
+      const descriptionPattern = /^.{1,400}$/; // Pattern for maximum 255 characters
+      
+      if (titlePattern.test(par.title)
+          && targetPattern.test(par.target)
+          && descriptionPattern.test(par.description))
+           {
+          return true;
+      } else {
+          console.log(
+              titlePattern.test(par.title),
+              targetPattern.test(par.target),
+              descriptionPattern.test(par.description),
+          );
+          console.log(
+              par.title,
+              par.target,
+              par.description,
+          );
+          return false;
+      }
+  }
+  
 
 
     confirm(e,par){

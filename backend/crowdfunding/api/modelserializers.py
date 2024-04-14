@@ -8,34 +8,7 @@ from comment_report.models import Report_comment
 from Project_Pics.api.serializer import ProjectPicsSerializer
 from datetime import date
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        # fields = "__all__"
-        fields = ["id", "email", "password", "first_name", "last_name", "is_superuser", "is_active", "birth_date", "photo","country","facebook","phone"]
-        extra_kwargs = {'password': {'write_only': True}}
-    def validate(self, data):
-        if 'password' in data:
-            data['password'] = make_password(data['password'])
-        if data['birth_date'] >= date.today():
-            raise serializers.ValidationError("You didn't born yet")
-        return data
-    # def create(self, validated_data):
-    #     return super(UserSerializer, self).create(validated_data)
-    #
-    # def update(self, instance, validated_data):
-    #     return super(UserSerializer, self).update(instance, validated_data)
-
-
-class LoginSerializer(serializers.Serializer):
-    email = serializers.CharField()
-    password = serializers.CharField()
-
-class confirmActivation(serializers.Serializer):
-    uid = serializers.CharField()
-    token = serializers.CharField()
-
-
+from Donation.api.serializer import DonationSerializer
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -55,6 +28,57 @@ class RateSerializer(serializers.ModelSerializer):
         if old.exists():
             raise serializers.ValidationError("You Already Have rate for this project")
         return super().create(validated_data)
+
+
+class ProjectWithoutOwner(serializers.ModelSerializer):
+    category = CategorySerializer(read_only=True)
+    category_id = serializers.IntegerField(write_only=True)
+    pics = ProjectPicsSerializer(many=True, read_only=True)
+    allrate = RateSerializer(many=True, read_only=True)
+    average_rate = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Project
+        fields = "__all__"
+    def get_average_rate(self, obj):
+        list_rates = list(obj.allrate.values_list('rate', flat=True))
+        if len(list_rates)>0:
+            avg = sum(list_rates) / len(list_rates)
+        else:
+            avg = 5
+        return avg
+
+
+
+
+class UserSerializer(serializers.ModelSerializer):
+    owner_projects=ProjectWithoutOwner(read_only=True,many=True)
+    donations=DonationSerializer(read_only=True,many=True)
+
+    class Meta:
+        model = User
+        fields = "__all__"
+        # fields = ["id", "email", "password", "first_name", "last_name", "is_superuser", "is_active", "birth_date", "photo","country","facebook","phone"]
+        extra_kwargs = {'password': {'write_only': True}}
+    def validate(self, data):
+        if 'password' in data:
+            data['password'] = make_password(data['password'])
+        if data['birth_date'] >= date.today():
+            raise serializers.ValidationError("You didn't born yet")
+        return data
+
+
+
+class LoginSerializer(serializers.Serializer):
+    email = serializers.CharField()
+    password = serializers.CharField()
+
+class confirmActivation(serializers.Serializer):
+    uid = serializers.CharField()
+    token = serializers.CharField()
+
+
+
 
 
 class ProjectSerializer(serializers.ModelSerializer):
