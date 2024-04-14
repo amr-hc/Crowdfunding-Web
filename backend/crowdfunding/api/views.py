@@ -1,3 +1,4 @@
+from rest_framework.decorators import action
 from djoser.compat import get_user_email, settings
 from djoser import signals
 
@@ -109,6 +110,13 @@ class ProjectModelViewSet(ModelViewSet):
             newPhoto.image_path=photo
             newPhoto.project=project
             newPhoto.save()
+
+    @action(detail=True, methods=['get'])
+    def get_project_photos(self, request, pk=None):
+        project = self.get_object()
+        photos = ProjectPics.objects.filter(project=project)
+        serializer = ProjectPicsSerializer(photos, many=True)
+        return Response(serializer.data)
 
 
 class RateModelViewSet(ModelViewSet):
