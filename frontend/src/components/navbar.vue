@@ -123,7 +123,6 @@ export default {
     logOut() {
       localStorage.clear();
       sessionStorage.clear();
-      // this.$router.push("/");
     },
   },
 };

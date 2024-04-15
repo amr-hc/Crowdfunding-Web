@@ -1,7 +1,7 @@
 <template>
   <div class="login mt-3 row justify-content-center align-items-center rounded">
     <div
-      class="loginCard  bg-white rounded row flex-column justify-content-evenly"
+      class="loginCard bg-white rounded row flex-column justify-content-evenly"
     >
       <!-- Pills content -->
 
@@ -106,12 +106,11 @@
 
 <script>
 export default {
-
   data: () => ({
     email: "",
     password: "",
   }),
-  beforeCreate(){
+  beforeCreate() {
     localStorage.clear();
     sessionStorage.clear();
   },
@@ -138,15 +137,10 @@ export default {
         .then((data) => {
           if (document.querySelector("input[type=checkbox]").checked) {
             localStorage.setItem("userInfo", JSON.stringify(data));
-                // this.$route.path   Won't work properly with navpar
-
-            window.location.href='http://localhost:8080/'
           } else {
             sessionStorage.setItem("userInfo", JSON.stringify(data));
-            window.location.href='http://localhost:8080/'
-
           }
-          this.$router.push('/home');
+          this.$router.push("/home");
         })
         .catch((err) => console.error(err));
     },
@@ -191,7 +185,4 @@ export default {
     width: 40%;
   }
 }
-
-
-
 </style>
