@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     "api.apps.ApiConfig",
     "rest_framework",
     "tags.apps.TagsConfig",
-    "project_tag.apps.ProjectTagConfig",
     "rating.apps.RatingConfig",
     "project_report.apps.ProjectReportConfig",
     "comment.apps.CommentConfig",
