@@ -5,7 +5,8 @@ from django.core.validators import MinValueValidator, MaxValueValidator, RegexVa
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.core.exceptions import ValidationError
 from datetime import date
-
+from tags.models import Tag
+# from project_tag.models import ProjectTag
 
 # Create your models here.
 
@@ -85,6 +86,7 @@ class Project(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="owner_projects")
     rates = models.ManyToManyField(User, through="Rate")
+    tages = models.ManyToManyField(Tag, related_name="tagProject")
 
 class ImportantProject(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
@@ -94,6 +96,10 @@ class Rate(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE,related_name="allrate")
 
+
+
+    def __str__(self):
+        return f'{self.tag} - {self.project}'
 
 
 def tokens(self):

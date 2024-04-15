@@ -60,8 +60,6 @@ class login(ObtainAuthToken):
 
 class UserModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsSameUserOrReadOnly]
-    # permission_classes = [AllowAny]
     permission_classes = [IsSameUserOrReadOnly]
     # permission_classes = [AllowAny]
     queryset = User.objects.all()
@@ -71,8 +69,6 @@ class UserModelViewSet(ModelViewSet):
         user = serializer.save(*args, **kwargs)
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         token = default_token_generator.make_token(user)
-        print(uid)
-        print(token)
         subject = "Confirm account Crowdfunding"
         reset_link = f"http://localhost:8080/congs?uid={uid}&token={token}"
         message = f"welcome to Crowdfunding, to confirm your new account please click on <a href=\"{reset_link}\">Click here</a>"
@@ -83,8 +79,8 @@ class UserModelViewSet(ModelViewSet):
 
 class CategoryModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAdminOrReadOnly]
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminOrReadOnly]
+    # permission_classes = [AllowAny]
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
@@ -118,8 +114,8 @@ class ProjectModelViewSet(ModelViewSet):
 
 class RateModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticatedOrReadOnly]
-    # permission_classes = [AllowAny]
+    # permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [AllowAny]
     queryset = Rate.objects.all()
     serializer_class = RateSerializer
 
