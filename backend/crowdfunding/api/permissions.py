@@ -1,7 +1,7 @@
 from rest_framework import permissions
 
 
-class IsOwnerOrReadOnly(permissions.BasePermission):
+class IsOwnerProjectOrReadOnly(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.method == "GET" or request.user.is_authenticated:
             return True
@@ -20,7 +20,7 @@ class IsSameUserOrReadOnly(permissions.BasePermission):
         return True
 
     def has_object_permission(self, request, view, obj):
-        if request.method == "GET" or (request.method == "PATCH" and obj == request.user) or request.user.is_superuser:
+        if request.method == "GET" or obj == request.user or request.user.is_superuser:
             return True
         return False
 
@@ -37,7 +37,7 @@ class IsAdminOrReadOnly(permissions.BasePermission):
 
 
 
-class IsOwnerCommentOrReadOnly(permissions.BasePermission):
+class IsOwnerOrReadOnly(permissions.BasePermission):
     def has_permission(self, request, view):
         # get or post in public link
         if request.method == "GET" or request.user.is_authenticated:
@@ -45,12 +45,24 @@ class IsOwnerCommentOrReadOnly(permissions.BasePermission):
         return False
     def has_object_permission(self, request, view, obj):
         # get or put or patch in private link
-        if request.method == "GET" or (request.method == "PATCH" and obj.user_id.id == request.user.id) or request.user.is_superuser:
+        if request.method == "GET" or obj.user_id == request.user or request.user.is_superuser:
             return True
         return False
 
 
 
 
-
+# class IsOwnerOrAdmin(permissions.BasePermission):
+#     def has_permission(self, request, view):
+#         # get or post in public link
+#         if request.user.is_superuser:
+#             return True
+#         if request.method == "GET" or request.user.is_authenticated:
+#             return True
+#         return False
+#     def has_object_permission(self, request, view, obj):
+#         # get or put or patch in private link
+#         if request.method == "GET" or obj.user_id == request.user or request.user.is_superuser:
+#             return True
+#         return False
 

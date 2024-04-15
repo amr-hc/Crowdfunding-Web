@@ -7,14 +7,14 @@ from rest_framework.permissions import (
     IsAuthenticated,
     IsAuthenticatedOrReadOnly,
 )
-from api.permissions import IsOwnerCommentOrReadOnly
+from api.permissions import IsOwnerOrReadOnly
 from rest_framework.authentication import TokenAuthentication
 
 # Create your views here.
 class CommentModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsOwnerCommentOrReadOnly]
-    # permission_classes = [AllowAny]
+    # permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [AllowAny]
 
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
