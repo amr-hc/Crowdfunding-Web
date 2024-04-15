@@ -18,6 +18,7 @@ export const datastore= defineStore("crowdfunding",{
           }
          });
          const user = await response.json(); 
+         console.log(user)
          
          return user
           
