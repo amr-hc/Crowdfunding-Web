@@ -79,10 +79,13 @@ class confirmActivation(serializers.Serializer):
 
 
 
-
+class userImportantData(UserSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "email", "password", "first_name", "last_name", "is_superuser", "is_active", "birth_date", "photo","country","facebook","phone"]
 
 class ProjectSerializer(serializers.ModelSerializer):
-    owner = UserSerializer(read_only=True)
+    owner = userImportantData(read_only=True)
     owner_id = serializers.IntegerField(write_only=True)
     category = CategorySerializer(read_only=True)
     category_id = serializers.IntegerField(write_only=True)
