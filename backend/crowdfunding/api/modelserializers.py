@@ -9,6 +9,9 @@ from Project_Pics.api.serializer import ProjectPicsSerializer
 from datetime import date
 
 from Donation.api.serializer import DonationSerializer
+from tags.api.serializers import TagSerializer
+from tags.models import Tag
+
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -92,6 +95,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     pics = ProjectPicsSerializer(many=True, read_only=True)
     allrate = RateSerializer(many=True, read_only=True)
     average_rate = serializers.SerializerMethodField()
+    tages= serializers.SlugRelatedField(many=True,slug_field='tagName',queryset=Tag.objects.all())
 
     class Meta:
         model = Project
