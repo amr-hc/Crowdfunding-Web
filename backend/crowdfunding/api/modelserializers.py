@@ -136,6 +136,8 @@ class ReportCommentSerializer(serializers.ModelSerializer):
 
 
 class ImportantProjectSerializer(serializers.ModelSerializer):
+    project=ProjectSerializer(read_only=True)
+    project_id=serializers.IntegerField(write_only=True)
     class Meta:
         model = ImportantProject
         fields = "__all__"

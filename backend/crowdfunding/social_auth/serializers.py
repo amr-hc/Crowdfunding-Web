@@ -1,11 +1,12 @@
 from rest_framework import serializers
 from social_auth import facebook
-from .register import register_social_user
+from social_auth.register import register_social_user
 import os
 from rest_framework.exceptions import AuthenticationFailed
 
 
 class FacebookSocialAuthSerializer(serializers.Serializer):
+    """Handles serialization of facebook related data"""
     auth_token = serializers.CharField()
 
     def validate_auth_token(self, auth_token):
@@ -27,4 +28,3 @@ class FacebookSocialAuthSerializer(serializers.Serializer):
             raise serializers.ValidationError(
                 'The token  is invalid or expired. Please login again.'
             )
-

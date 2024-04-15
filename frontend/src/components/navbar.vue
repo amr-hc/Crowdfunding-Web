@@ -1,57 +1,107 @@
 <template>
-  <nav class=" navbar navbar-expand-lg position-sticky sticky-top top-0 z-3">
+  <nav class="navbar navbar-expand-lg position-sticky sticky-top top-0 z-3">
     <div class="container-fluid">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
-        aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarTogglerDemo01"
+        aria-controls="navbarTogglerDemo01"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
         <a class="navbar-brand" href="#">Arise</a>
         <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-          <li class="nav-item ">
-            <router-link to="/" class="text-decoration-none "><button class="nav-link "
-                :class="{ active: $route.path === '/' }">Home</button></router-link>
+          <li class="nav-item">
+            <router-link to="home" class="text-decoration-none"
+              ><button
+                class="nav-link"
+                :class="{ active: $route.path === '/' }"
+              >
+                Home
+              </button></router-link
+            >
           </li>
           <li class="nav-item">
-            <router-link to="projects" class="text-decoration-none"><button class="nav-link "
-                :class="{ active: $route.path === '/projects' }">Projects</button></router-link>
+            <router-link to="projects" class="text-decoration-none"
+              ><button
+                class="nav-link"
+                :class="{ active: $route.path === '/projects' }"
+              >
+                Projects
+              </button></router-link
+            >
           </li>
           <li class="nav-item">
-            <router-link to="profile" class="text-decoration-none"><button class="nav-link "
-                :class="{ active: $route.path === '/profile' }">Profile</button></router-link>
+            <router-link to="profile" class="text-decoration-none"
+              ><button
+                class="nav-link"
+                :class="{ active: $route.path === '/profile' }"
+              >
+                Profile
+              </button></router-link
+            >
           </li>
           <li class="nav-item">
-            <router-link to="/about" class="text-decoration-none"><button class="nav-link "
-                :class="{ active: $route.path === '/about' }">About</button></router-link>
-
+            <router-link to="/about" class="text-decoration-none"
+              ><button
+                class="nav-link"
+                :class="{ active: $route.path === '/about' }"
+              >
+                About
+              </button></router-link
+            >
           </li>
           <!-- <li class="nav-item">
             <button class="nav-link" @click="navigate('registration')">registration
             </button>
           </li> -->
         </ul>
-        <div v-show="isAuthenticated" class="avatar-container dropdown" data-bs-theme="dark">
-          <a class="dropdown-toggle-split text-decoration-none d-flex align-items-center" href="#" role="button"
-            data-bs-toggle="dropdown" aria-expanded="false">
+        <div
+          v-show="isAuthenticated"
+          class="avatar-container dropdown"
+          data-bs-theme="dark"
+        >
+          <a
+            class="dropdown-toggle-split text-decoration-none d-flex align-items-center"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
             <div class="name">John Doe</div>
             <div class="avatar">
-              <img :src="avatarSrc" alt="Avatar">
+              <img :src="avatarSrc" alt="Avatar" />
             </div>
           </a>
           <ul class="dropdown-menu">
-            <li><router-link to="profile" class="dropdown-item text-center">Profile &nbsp;<i
-                  class=" fa-solid fa-right-from-bracket"></i></router-link>
+            <li>
+              <router-link to="profile" class="dropdown-item text-center"
+                >Profile &nbsp;<i class="fa-solid fa-right-from-bracket"></i
+              ></router-link>
             </li>
-            <li><router-link to="" class="dropdown-item text-center">Log out &nbsp;<i
-                  class=" fa-solid fa-right-from-bracket"></i></router-link>
+            <li>
+              <router-link to="/" class="dropdown-item text-center" @click="logOut">
+                Log out &nbsp;<i class="fa-solid fa-right-from-bracket"></i>
+              </router-link>
             </li>
           </ul>
         </div>
-        <router-link v-show="!isAuthenticated" class=" text-light text-decoration-none m-2" to="registration"><button
-            class="nav-link ">sign up</button></router-link>
-        <router-link v-show="!isAuthenticated" class=" text-light text-decoration-none" to="login"><button
-            class="nav-link ">login</button></router-link>
-
+        <router-link
+          v-show="!isAuthenticated"
+          class="text-light text-decoration-none m-2"
+          to="registration"
+          ><button class="nav-link">sign up</button></router-link
+        >
+        <router-link
+          v-show="!isAuthenticated"
+          class="text-light text-decoration-none"
+          to="login"
+          ><button class="nav-link">login</button></router-link
+        >
       </div>
     </div>
   </nav>
@@ -59,25 +109,27 @@
 
 <script>
 export default {
-  name: 'navbar',
+  name: "navbar",
   data() {
     return {
       isAuthenticated: true,
-      avatarSrc: require('@/assets/images/avatar.png')
-    }
+      avatarSrc: require("@/assets/images/avatar.png"),
+    };
   },
   methods: {
     navigate(selcted) {
-
-      this.$emit("clickEvent", selcted)
-    }
+      this.$emit("clickEvent", selcted);
+    },
+    logOut() {
+      localStorage.clear();
+      sessionStorage.clear();
+    },
   },
-}
+};
 </script>
 
-
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Bungee+Spice&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Bungee+Spice&display=swap");
 
 nav {
   background-color: var(--primary-color-1);
@@ -101,14 +153,13 @@ nav {
 }
 
 .nav-link::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 90%;
   height: 2px;
   left: 5%;
   bottom: 0;
   transform: scaleX(0);
-
 }
 
 .nav-link:hover,

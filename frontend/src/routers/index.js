@@ -18,6 +18,10 @@ import confirmForgetPassword from "@/components/confirmForgetPassword.vue";
 const routes = [
   {
     path: "/",
+    component: login,
+  },
+  {
+    path: "/home",
     component: Home,
   },
   {
@@ -40,11 +44,6 @@ const routes = [
   {
     path: "/add",
     component: addProject,
-  },
-   
-  {
-    path: "/login",
-    component: login,
   },
   {
     path: "/profile",
