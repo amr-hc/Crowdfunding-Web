@@ -1,6 +1,10 @@
 <template>
   <section class="row justify-content-center">
-    <form class="container row align-items-center flex-column needs-validation " novalidate @submit.prevent="addProject">
+    <form
+      class="container row align-items-center flex-column needs-validation"
+      novalidate
+      @submit.prevent="addProject"
+    >
       <div
         class="container p-5 row align-items-center flex-column gap-2 w-50 m-1 rounded"
         style="background-color: rgb(91 91 91 / 50%) !important"
@@ -17,7 +21,9 @@
             pattern="[A-Za-z0-9\s]{1,50}"
           />
           <label for="title" class="text-dark ms-2">Project Title</label>
-          <div class="invalid-feedback">Please provide a valid title ( less than 50 letters ) .</div>
+          <div class="invalid-feedback">
+            Please provide a valid title ( less than 50 letters ) .
+          </div>
         </div>
 
         <div class="form-floating">
@@ -31,7 +37,9 @@
             required
           />
           <label for="target" class="text-dark ms-2">Target Money</label>
-          <div class="invalid-feedback">Please provide a target amount ( Number ) . </div>
+          <div class="invalid-feedback">
+            Please provide a target amount ( Number ) .
+          </div>
         </div>
 
         <div class="form-floating">
@@ -47,7 +55,9 @@
           <label for="description" class="text-dark ms-2"
             >Project Description</label
           >
-          <div class="invalid-feedback">Please provide a valid description ( less than 400 letters).</div>
+          <div class="invalid-feedback">
+            Please provide a valid description ( less than 400 letters).
+          </div>
         </div>
 
         <div class="form-floating">
@@ -95,19 +105,14 @@
           />
         </div>
 
-        <input
-          type="submit"
-          value="Add"
-          class="btn col-3"
-         
-        />
+        <input type="submit" value="Add" class="btn col-3" />
       </div>
     </form>
   </section>
 </template>
 <script>
-import FunctionsClass from '../assets/js/registerAndUpdate'
-const functionsObject=new FunctionsClass();
+import FunctionsClass from "../assets/js/registerAndUpdate";
+const functionsObject = new FunctionsClass();
 
 export default {
   data: () => ({
@@ -123,20 +128,30 @@ export default {
     images: [],
   }),
   methods: {
-    addProject($event) {
-      functionsObject.projectValidations($event);
-      functionsObject.HTMLValidations($event);
-      console.log($event)
-      let currentDate = new Date();
-      let startDate = currentDate.toISOString().split("T")[0];
+    async addProject($event) {
+      const projectValidationResult = functionsObject.projectValidations($event);
+      const HTMLValidationResult = functionsObject.HTMLValidations($event);
 
-      let userInfo =
+      if (projectValidationResult && HTMLValidationResult) {
+        const formData = this.prepareFormData();
+        try {
+          const responseData = await this.sendProjectRequest(formData);
+          console.log("Project added successfully!");
+           this.$router.push(`/projects/${responseData.id}`);
+        } catch (error) {
+          console.error("Error adding project:", error);
+        }
+      }
+    },
+
+    prepareFormData() {
+      const currentDate = new Date();
+      const startDate = currentDate.toISOString().split("T")[0];
+      const userInfo =
         JSON.parse(localStorage.getItem("userInfo")) ||
         JSON.parse(sessionStorage.getItem("userInfo"));
       const token = userInfo.token;
 
-      let images = [];
-      // $event.preventDefault();
       const form = new FormData();
       form.append("owner_id", userInfo["user_id"]);
       form.append("category_id", this.categoryResult);
@@ -147,37 +162,33 @@ export default {
       for (let i = 0; i < this.images.length; i++) {
         form.append("photos", this.images[i]);
       }
+      return { form, token };
+    },
 
-      form.forEach((item) => console.log(item));
-      fetch("http://127.0.0.1:8000/api/projects/", {
+    async sendProjectRequest(formData) {
+      const response = await fetch("http://127.0.0.1:8000/api/projects/", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${formData.token}`,
         },
-        body: form,
-      })
-      .then(async (response) => {
-  if (response.ok) {
-    const responseData = await response.json(); 
-    console.log("Project added successfully!");
-    this.$router.push(`/projects/${responseData.id}`);
-  } else {
-    console.error("Failed to add project.");
-  }
-})
-        .catch((error) => {
-          console.error("Error adding project:", error);
-        });
+        body: formData.form,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to add project.");
+      }
+      return await response.json();
     },
+
     takePhotos(event) {
       const selectedImages = event.target.files;
       for (let i = 0; i < selectedImages.length; i++) {
         const file = selectedImages[i];
         this.images.push(file);
       }
-
     },
   },
+
   created() {
     fetch("http://127.0.0.1:8000/api/categories/")
       .then((response) => {
