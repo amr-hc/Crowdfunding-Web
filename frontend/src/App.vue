@@ -20,7 +20,7 @@ export default {
   computed: {
     showNavbar() {
       const paths = [
-        "home",
+        "",
         "about",
         "projects",
         "add",
@@ -30,6 +30,7 @@ export default {
       ];
       const currentPath = this.$route.path.split("/").pop(); 
       return paths.includes(currentPath);
+
     },
   },
 };

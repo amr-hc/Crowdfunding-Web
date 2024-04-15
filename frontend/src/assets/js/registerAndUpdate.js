@@ -169,6 +169,8 @@
                 formData.delete(key);
             }
         }
+        formData.append('address', 'dssddsdsd');
+
          // sending Request
           try 
           {
@@ -177,10 +179,8 @@
               body: formData,
             });
             const data = await response.json(); 
-            if (!response.ok) {
-              throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            par.$router.push('/congs');
+          sessionStorage.setItem("needactivation", "true");
+            par.$router.push('/befroreactivation');
 
               console.log(data)
           }
@@ -255,16 +255,17 @@
         const storgData=par.storgData;
         try 
         { 
-            const response = await fetch(`http://127.0.0.1:8000/api/users/${storgData.user_id-1}`,{
+          
+            const response = await fetch(`http://127.0.0.1:8000/api/users/${storgData.user_id}`,{
             method: "DELETE",
             headers: {
-              'Authorization': `token ${storgData.token} `
+              'Authorization': `Bearer ${storgData.token} `
             },
           });
             const data = await response.json(); 
-            if (!response.ok) {
-              throw new Error(`HTTP error! Status: ${response.status}`);
-            }
+            // if (!response) {
+            //   throw new Error(`HTTP error! Status: ${response.status}`);
+            // }
             window.location.href='http://localhost:8080/login'
             console.log(data)
         }

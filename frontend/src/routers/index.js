@@ -14,15 +14,20 @@ import addProject from "@/components/addProject.vue";
 import congratulations from "@/components/congratulations.vue";
 import forgetPassword from "@/components/forgetPassword.vue";
 import confirmForgetPassword from "@/components/confirmForgetPassword.vue";
+import befroreactivation from "@/components/befroreactivation.vue";
 
 const routes = [
   {
     path: "/",
-    component: login,
+    component: Home,
   },
   {
-    path: "/home",
-    component: Home,
+    path: "/login",
+    component:login ,
+  },
+  {
+    path: "/befroreactivation",
+    component: befroreactivation,
   },
   {
     path: "/registration",
