@@ -36,7 +36,7 @@ urlpatterns = [
     # Donation Path
     path("donation/", include("Donation.api.urls")),
     # Project Pics
-    path("", include("Project_Pics.api.urls")),
+    path("project/", include("Project_Pics.api.urls")),
     # Forget Password
     path("password/", include("Reset_Password.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

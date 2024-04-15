@@ -1,8 +1,6 @@
-<!-- TODO: Validations -->
-
 <template>
   <section class="row justify-content-center">
-    <form class="container row align-items-center flex-column">
+    <form class="container row align-items-center flex-column needs-validation " novalidate @submit.prevent="addProject">
       <div
         class="container p-5 row align-items-center flex-column gap-2 w-50 m-1 rounded"
         style="background-color: rgb(91 91 91 / 50%) !important"
@@ -16,15 +14,15 @@
             placeholder="title"
             v-model="title"
             required
+            pattern="[A-Za-z0-9\s]{1,50}"
           />
           <label for="title" class="text-dark ms-2">Project Title</label>
-          <div class="invalid-feedback">Please provide a title.</div>
+          <div class="invalid-feedback">Please provide a valid title ( less than 50 letters ) .</div>
         </div>
 
         <div class="form-floating">
           <input
             type="number"
-            min="0"
             class="form-control"
             id="target"
             name="target"
@@ -33,7 +31,7 @@
             required
           />
           <label for="target" class="text-dark ms-2">Target Money</label>
-          <div class="invalid-feedback">Please provide a target amount.</div>
+          <div class="invalid-feedback">Please provide a target amount ( Number ) . </div>
         </div>
 
         <div class="form-floating">
@@ -49,7 +47,7 @@
           <label for="description" class="text-dark ms-2"
             >Project Description</label
           >
-          <div class="invalid-feedback">Please provide a description.</div>
+          <div class="invalid-feedback">Please provide a valid description ( less than 400 letters).</div>
         </div>
 
         <div class="form-floating">
@@ -101,13 +99,16 @@
           type="submit"
           value="Add"
           class="btn col-3"
-          @click="addProject"
+         
         />
       </div>
     </form>
   </section>
 </template>
 <script>
+import FunctionsClass from '../assets/js/registerAndUpdate'
+const functionsObject=new FunctionsClass();
+
 export default {
   data: () => ({
     title: "",
@@ -123,6 +124,9 @@ export default {
   }),
   methods: {
     addProject($event) {
+      functionsObject.projectValidations($event);
+      functionsObject.HTMLValidations($event);
+      console.log($event)
       let currentDate = new Date();
       let startDate = currentDate.toISOString().split("T")[0];
 
@@ -132,7 +136,7 @@ export default {
       const token = userInfo.token;
 
       let images = [];
-      $event.preventDefault();
+      // $event.preventDefault();
       const form = new FormData();
       form.append("owner_id", userInfo["user_id"]);
       form.append("category_id", this.categoryResult);
@@ -152,19 +156,15 @@ export default {
         },
         body: form,
       })
-        .then((response) => {
-          if (response.ok) {
-            console.log("Project added successfully!");
-            this.title = "";
-            this.description = "";
-            this.targetMoney = "";
-            this.categoryResult = "";
-            this.endDate = "";
-            this.images = [];
-          } else {
-            console.error("Failed to add project.");
-          }
-        })
+      .then(async (response) => {
+  if (response.ok) {
+    const responseData = await response.json(); 
+    console.log("Project added successfully!");
+    this.$router.push(`/projects/${responseData.id}`);
+  } else {
+    console.error("Failed to add project.");
+  }
+})
         .catch((error) => {
           console.error("Error adding project:", error);
         });

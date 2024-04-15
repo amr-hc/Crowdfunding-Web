@@ -1,3 +1,4 @@
+from rest_framework.decorators import action
 from djoser.compat import get_user_email, settings
 from djoser import signals
 
@@ -54,15 +55,18 @@ class login(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"]
         token, created = Token.objects.get_or_create(user=user)
-        return Response({"token": token.key, "user_id": user.pk, "email": user.email, "first_name": user.first_name,
-                         "last_name": user.last_name, "photo": user.photo.url, "is_superuser": user.is_superuser,
-                         "country": user.country, "facebook": user.facebook, "address": user.address})
+        return Response({"token": token.key, "user_id": user.pk, "is_superuser": user.is_superuser})
 
 
 class UserModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
+<<<<<<< HEAD
     # permission_classes = [IsSameUserOrReadOnly]
     permission_classes = [AllowAny]
+=======
+    permission_classes = [IsSameUserOrReadOnly]
+    # permission_classes = [AllowAny]
+>>>>>>> a4cf9ed19d7edbdc2995850e91490d64e4dee42e
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -70,11 +74,8 @@ class UserModelViewSet(ModelViewSet):
         user = serializer.save(*args, **kwargs)
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         token = default_token_generator.make_token(user)
-        print(uid)
-        print(token)
         subject = "Confirm account Crowdfunding"
-        domain = get_current_site(self.request).domain
-        reset_link = f"http://{domain}/reset-password/{uid}/{token}/"
+        reset_link = f"http://localhost:8080/congs?uid={uid}&token={token}"
         message = f"welcome to Crowdfunding, to confirm your new account please click on <a href=\"{reset_link}\">Click here</a>"
         from_email = "amr.abdullah.elrefaey@gmail.com"
         to_email = user.email
@@ -83,8 +84,8 @@ class UserModelViewSet(ModelViewSet):
 
 class CategoryModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAdminOrReadOnly]
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminOrReadOnly]
+    # permission_classes = [AllowAny]
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
@@ -108,11 +109,18 @@ class ProjectModelViewSet(ModelViewSet):
             newPhoto.project=project
             newPhoto.save()
 
+    @action(detail=True, methods=['get'])
+    def get_project_photos(self, request, pk=None):
+        project = self.get_object()
+        photos = ProjectPics.objects.filter(project=project)
+        serializer = ProjectPicsSerializer(photos, many=True)
+        return Response(serializer.data)
+
 
 class RateModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticatedOrReadOnly]
-    # permission_classes = [AllowAny]
+    # permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [AllowAny]
     queryset = Rate.objects.all()
     serializer_class = RateSerializer
 

@@ -97,7 +97,31 @@
           return false;
         }
     }
-
+    projectValidations(par) {
+      const titlePattern = /^[a-zA-Z0-9\s]{1,50}$/; // Pattern for alphanumeric and spaces, maximum 50 characters
+      const targetPattern = /^\d+$/; // Pattern for positive integers
+      const descriptionPattern = /^.{1,400}$/; // Pattern for maximum 255 characters
+      
+      if (titlePattern.test(par.title)
+          && targetPattern.test(par.target)
+          && descriptionPattern.test(par.description))
+           {
+          return true;
+      } else {
+          console.log(
+              titlePattern.test(par.title),
+              targetPattern.test(par.target),
+              descriptionPattern.test(par.description),
+          );
+          console.log(
+              par.title,
+              par.target,
+              par.description,
+          );
+          return false;
+      }
+  }
+  
 
 
     confirm(e,par){
@@ -123,23 +147,39 @@
         formData.append('email', par.email);
         formData.append('phone', par.mobile);
         formData.append('birth_date', par.birthdate);
+        formData.append('photo', par.file);
         formData.append('facebook', par.facebook);
          formData.append('country', par.country);
-        formData.append('photo', par.file);
+      
+
         return formData;
       }
       async insertrequest(par)
       {
         const formData=this.createForm(par);
         formData.append('password', par.password);
+         // Validate the form data object to delete empty Properties before sending  
+        const form = Object.fromEntries(formData.entries());
+        for (let [key,value] of Object.entries(form)) 
+        {
+            if (!value ||value === "null") 
+            {
+                formData.delete(key);
+            }
+        }
+         // sending Request
           try 
           {
-            
-                const response = await fetch('http://127.0.0.1:8000/api/users/',{
+            const response = await fetch('http://127.0.0.1:8000/api/users/',{
               method: "POST",
               body: formData,
             });
-                const data = await response.json(); 
+            const data = await response.json(); 
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            par.$router.push('/congs');
+
               console.log(data)
           }
         catch (error) 
@@ -149,15 +189,21 @@
       } 
       async updateRequest(par)
       {
-        const formData=this.createForm(par);
-        if(par.file==null){
-          delete formData.photo;
+
+        const formData = this.createForm(par);
+        // Validate the form data object to delete empty Properties before sending  
+        const form = Object.fromEntries(formData.entries());
+        for (let [key,value] of Object.entries(form)) 
+        {
+            if (!value ||value === "null") 
+            {
+                formData.delete(key);
+            }
         }
-      const localStorageData =JSON.parse(localStorage.getItem('userInfo'));
-      const sessionStorageData=JSON.parse(sessionStorage.getItem("userInfo"));
-        let token=localStorageData?localStorageData : sessionStorageData 
-        token=token.token;
-        console.log(token)
+        // Get user Id and token
+        const token=par.storgData.token;
+        
+        // sending Request
           try 
           { 
               const response = await fetch(`http://127.0.0.1:8000/api/users/${par.id}/`,{
@@ -197,9 +243,30 @@
         }
         else if(localStorageData||sessionStorageData){
           let userData=localStorageData?localStorageData : sessionStorageData 
+          par.storgData=userData;
           par.user=await par.storData.getUserData(userData.user_id,userData.token)
           
         }
+      }
+
+      async deleteUser(par){
+        const storgData=par.storgData;
+        try 
+        { 
+            const response = await fetch(`http://127.0.0.1:8000/api/users/${storgData.user_id-1}`,{
+            method: "DELETE",
+            headers: {
+              'Authorization': `token ${storgData.token} `
+            },
+          });
+            const data = await response.json(); 
+            window.location.href='http://localhost:8080/login'
+            console.log(data)
+        }
+      catch (error) 
+          {
+              console.error("Error fetching api:", error);
+          }
       }
 }
 
