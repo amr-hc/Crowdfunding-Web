@@ -152,12 +152,14 @@
       }
       async insertrequest(par)
       {
+        
         const formData=this.createForm(par);
         formData.append('password', par.password);
          // Validate the form data object to delete empty Properties before sending  
         const form = Object.fromEntries(formData.entries());
         for (let [key,value] of Object.entries(form)) 
         {
+          console.log(key,value);
             if (!value ||value === "null") 
             {
                 formData.delete(key);
@@ -256,6 +258,9 @@
             },
           });
             const data = await response.json(); 
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
             window.location.href='http://localhost:8080/login'
             console.log(data)
         }

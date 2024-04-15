@@ -3,18 +3,6 @@
 
     <div class="container">
     <div class="main-body">
-    
-          <!-- Breadcrumb -->
-          <nav aria-label="breadcrumb" class="main-breadcrumb">
-  <ol class="breadcrumb">
-     
-    <router-link to="/" class=" m-1 text-decoration-none"><button class="nav-link ">Home</button></router-link>
-    <router-link to="/projects" class=" m-1 text-decoration-none"><button class="nav-link ">Projects</button></router-link>
-    <router-link to="/profile" class=" m-1 text-decoration-none "><button class="nav-link  ">User Profile</button></router-link>
-  </ol>
-</nav>
-          <!-- /Breadcrumb -->
-    
 
           <div class="row gutters-sm">
           <div class="row ">

@@ -1,53 +1,42 @@
 <template>
   <div class="container map">
-    <navbar  v-show="showNav"  />
+    <navbar v-show="showNavbar" />
     <div class="row">
       <router-view></router-view>
     </div>
     <pageFooter />
-
   </div>
-
 </template>
 
 <script>
-import navbar from './components/navbar.vue'
-import pageFooter from './components/footer.vue';
+import navbar from "./components/navbar.vue";
+import pageFooter from "./components/footer.vue";
 export default {
-
-  data:()=>({
-    showNav:true
-   }),
-  created() {
-
-    // this.$route.path   Won't work properly with navpar
-    const paths=[
-    '',
-    'about',
-    'projects',
-    'add',
-    'profile',
-    'updateUserProfile',
-    'congs',
-    ]
-
-    let path=window.location.href.split('/') 
-    path=path[path.length-1]
-     if(!paths.includes(path)){
-      this.showNav=false;
-     }
-    
-  },
+  data: () => ({}),
   components: {
-    navbar, pageFooter
+    navbar,
+    pageFooter,
   },
-
-}
+  computed: {
+    showNavbar() {
+      const paths = [
+        "home",
+        "about",
+        "projects",
+        "add",
+        "profile",
+        "updateUserProfile",
+        "congs",
+      ];
+      const currentPath = this.$route.path.split("/").pop(); 
+      return paths.includes(currentPath);
+    },
+  },
+};
 </script>
 
-
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Bungee+Spice&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Bungee+Spice&display=swap");
 
 #app {
   position: relative;
