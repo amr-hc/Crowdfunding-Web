@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import  FacebookSocialAuthView
+from social_auth.views import  FacebookSocialAuthView
 
 urlpatterns = [
     path('facebook/', FacebookSocialAuthView.as_view()),

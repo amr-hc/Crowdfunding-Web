@@ -1,7 +1,7 @@
 <template>
-  <div class="login row justify-content-center align-items-center rounded">
+  <div class="login mt-3 row justify-content-center align-items-center rounded">
     <div
-      class="loginCard bg-white rounded row flex-column justify-content-evenly"
+      class="loginCard  bg-white rounded row flex-column justify-content-evenly"
     >
       <!-- Pills content -->
 
@@ -136,6 +136,7 @@ export default {
           } else {
             sessionStorage.setItem("userInfo", JSON.stringify(data));
           }
+          this.$router.push('/home');
         })
         .catch((err) => console.error(err));
     },
@@ -146,10 +147,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .login {
-  height: 89vh;
+  height: 85vh;
 }
 .loginCard {
-  /* border-radius: 10%; */
   opacity: 0.8;
   color: black;
   width: 33%;
@@ -165,4 +165,23 @@ export default {
 #loginPassword:focus {
   box-shadow: none !important;
 }
+@media (orientation: portrait) {
+  .loginCard {
+    width: 60%;
+  }
+}
+@media (max-width: 768px) {
+  .loginCard {
+    width: 50%;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .loginCard {
+    width: 40%;
+  }
+}
+
+
+
 </style>
