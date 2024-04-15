@@ -55,7 +55,8 @@ class login(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"]
         token, created = Token.objects.get_or_create(user=user)
-        return Response({"token": token.key, "user_id": user.pk, "is_superuser": user.is_superuser})
+        return Response({"token": token.key, "user_id": user.pk, "is_superuser": user.is_superuser, 
+                        "userName": user.first_name + " " + user.last_name })
 
 
 class UserModelViewSet(ModelViewSet):
@@ -122,8 +123,8 @@ class RateModelViewSet(ModelViewSet):
 
 class ImportantProjectAPIView(ModelViewSet):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAdminOrReadOnly]
-    # permission_classes = [AllowAny]
+    # permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [AllowAny]
     queryset = ImportantProject.objects.all()
     serializer_class = ImportantProjectSerializer
 
