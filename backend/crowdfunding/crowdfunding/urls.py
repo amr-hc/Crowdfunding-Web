@@ -25,7 +25,8 @@ urlpatterns = [
     path("api/", include("api.urls")),
     path("tags/", include("tags.api.urls")),
     path("rating/", include("rating.api.urls")),
-    path("report/", include("project_report.api.urls")),
+    path("report/projects/", include("project_report.api.urls")),
+    path("report/comment/", include("comment_report.urls")),
     path("auth/", include("djoser.urls")),
     path("auth/", include("djoser.urls.authtoken")),
     path(
