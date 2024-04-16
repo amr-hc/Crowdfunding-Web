@@ -12,7 +12,7 @@ from api.modelserializers import (
     ReplaySerializer,
     UserSerializer, ImportantProjectSerializer, confirmActivation
 )
-from api.permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly, IsSameUserOrReadOnly
+from api.permissions import IsAdminOrReadOnly, IsOwnerProjectOrReadOnly, IsSameUserOrReadOnly
 from comment.models import Comment
 from comment_report.models import Report_comment
 from django.contrib.auth import authenticate
@@ -55,17 +55,14 @@ class login(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"]
         token, created = Token.objects.get_or_create(user=user)
-        return Response({"token": token.key, "user_id": user.pk, "email": user.email, "first_name": user.first_name,
-                         "last_name": user.last_name, "photo": user.photo.url, "is_superuser": user.is_superuser,
-                         "country": user.country, "facebook": user.facebook, "address": user.address})
+        return Response({"token": token.key, "user_id": user.pk, "is_superuser": user.is_superuser, 
+                        "userName": user.first_name + " " + user.last_name })
 
 
 class UserModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
     # permission_classes = [IsSameUserOrReadOnly]
-    # permission_classes = [AllowAny]
-    permission_classes = [IsSameUserOrReadOnly]
-    # permission_classes = [AllowAny]
+    permission_classes = [AllowAny]
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -73,11 +70,8 @@ class UserModelViewSet(ModelViewSet):
         user = serializer.save(*args, **kwargs)
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         token = default_token_generator.make_token(user)
-        print(uid)
-        print(token)
         subject = "Confirm account Crowdfunding"
-        domain = get_current_site(self.request).domain
-        reset_link = f"http://{domain}/reset-password/{uid}/{token}/"
+        reset_link = f"http://localhost:8080/congs?uid={uid}&token={token}"
         message = f"welcome to Crowdfunding, to confirm your new account please click on <a href=\"{reset_link}\">Click here</a>"
         from_email = "amr.abdullah.elrefaey@gmail.com"
         to_email = user.email
@@ -86,8 +80,8 @@ class UserModelViewSet(ModelViewSet):
 
 class CategoryModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAdminOrReadOnly]
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminOrReadOnly]
+    # permission_classes = [AllowAny]
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
@@ -97,7 +91,7 @@ from Project_Pics.models import ProjectPics
 
 class ProjectModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsOwnerOrReadOnly]
+    # permission_classes = [IsOwnerProjectOrReadOnly]
     permission_classes = [AllowAny]
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
@@ -121,16 +115,16 @@ class ProjectModelViewSet(ModelViewSet):
 
 class RateModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticatedOrReadOnly]
-    # permission_classes = [AllowAny]
+    # permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [AllowAny]
     queryset = Rate.objects.all()
     serializer_class = RateSerializer
 
 
 class ImportantProjectAPIView(ModelViewSet):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAdminOrReadOnly]
-    # permission_classes = [AllowAny]
+    # permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [AllowAny]
     queryset = ImportantProject.objects.all()
     serializer_class = ImportantProjectSerializer
 

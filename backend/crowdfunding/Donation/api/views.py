@@ -9,18 +9,19 @@ from rest_framework.viewsets import ModelViewSet
 # PERMISSIONS
 from rest_framework.permissions import AllowAny
 
+from api.permissions import donation
+
 'from Project'
 # MODEL
 from Donation.models import Donation
 # SERIALIZER
 from Donation.api.serializer import DonationSerializer
-
 class DonationViewSet(ModelViewSet):
-
+    # permission_classes = [donation]
+    permission_classes = [AllowAny]
     queryset = Donation.objects.all()
     serializer_class = DonationSerializer
 
-    permission_classes = [AllowAny]
     # Top Five Donations (Custom Action)
     @action(detail=False, methods=['get'])
     def top_five_donations(self, request):

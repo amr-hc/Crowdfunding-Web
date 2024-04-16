@@ -1,5 +1,5 @@
 <template>
-  <div class="login row justify-content-center align-items-center rounded">
+  <div class="login mt-3 row justify-content-center align-items-center rounded">
     <div
       class="loginCard bg-white rounded row flex-column justify-content-evenly"
     >
@@ -105,11 +105,18 @@
 </template>
 
 <script>
+import { datastore } from "@/stors/crowdfundingStore";
 export default {
+  name: "login",
   data: () => ({
     email: "",
     password: "",
+    datastore:datastore(),
   }),
+  beforeCreate() {
+    localStorage.clear();
+    sessionStorage.clear();
+  },
   methods: {
     checkUser() {
       const userData = {
@@ -136,6 +143,8 @@ export default {
           } else {
             sessionStorage.setItem("userInfo", JSON.stringify(data));
           }
+          this.$router.push("/");
+          this.datastore.setAuthentication(true);
         })
         .catch((err) => console.error(err));
     },
@@ -146,10 +155,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .login {
-  height: 89vh;
+  height: 85vh;
 }
 .loginCard {
-  /* border-radius: 10%; */
   opacity: 0.8;
   color: black;
   width: 33%;
@@ -164,5 +172,25 @@ export default {
 #loginName:focus,
 #loginPassword:focus {
   box-shadow: none !important;
+}
+@media (orientation: portrait) {
+  .loginCard {
+    width: 60%;
+  }
+}
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  transition: background-color 0s 600000s, color 0s 600000s !important;
+}
+@media (max-width: 768px) {
+  .loginCard {
+    width: 50%;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .loginCard {
+    width: 40%;
+  }
 }
 </style>

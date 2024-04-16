@@ -5,7 +5,8 @@ from django.core.validators import MinValueValidator, MaxValueValidator, RegexVa
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.core.exceptions import ValidationError
 from datetime import date
-
+from tags.models import Tag
+# from project_tag.models import ProjectTag
 
 # Create your models here.
 
@@ -44,7 +45,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     email = models.EmailField(db_index=True, unique=True, max_length=254)
     first_name = models.CharField(max_length=240)
     last_name = models.CharField(max_length=255)
-    phone = models.CharField(max_length=50, validators=[RegexValidator('^01[012]\d{8}$')])
+    phone = models.CharField(max_length=50, validators=[RegexValidator(r'^01[012]\d{8}$')])
     address = models.CharField( max_length=250)
     photo = models.ImageField(upload_to='images/user',default='images/user/default.jpg',blank=True)
     birth_date = models.DateField(null=True, blank=True)
@@ -83,8 +84,10 @@ class Project(models.Model):
     target_money = models.DecimalField(max_digits=10, decimal_places=2)
     hidden = models.BooleanField(default=False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="owner")
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="owner_projects")
     rates = models.ManyToManyField(User, through="Rate")
+    tages = models.ManyToManyField(Tag, related_name="tagProject")
+
 
 class ImportantProject(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
@@ -94,6 +97,10 @@ class Rate(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE,related_name="allrate")
 
+
+
+    def __str__(self):
+        return f'{self.tag} - {self.project}'
 
 
 def tokens(self):

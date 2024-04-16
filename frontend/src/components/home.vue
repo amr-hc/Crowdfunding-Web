@@ -1,20 +1,23 @@
 <template>
+  <section>
     <intro />
     <featured />
     <whyus />
+  </section>
 </template>
 
 <script>
-import intro from './home/intro.vue'
-import featured from './home/featured.vue'
-import whyus from './home/whyus.vue';
-
+import intro from "./home/intro.vue";
+import featured from "./home/featured.vue";
+import whyus from "./home/whyus.vue";
 
 export default {
-    components: {
-        intro, featured, whyus
-    },
-}
+  components: {
+    intro,
+    featured,
+    whyus,
+  },
+};
 </script>
 
 <style></style>

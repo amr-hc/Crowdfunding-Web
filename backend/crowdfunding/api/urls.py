@@ -12,7 +12,6 @@ router.register(r'categories', CategoryModelViewSet)
 router.register(r'rate', RateModelViewSet),
 router.register(r'ImportantProject', ImportantProjectAPIView),
 router.register(r'comment', CommentModelViewSet),
-router.register(r'comment_report', CommentReportModelViewSet),
 router.register(r'replay', ReplayModelViewSet),
 
 urlpatterns = [

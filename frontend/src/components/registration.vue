@@ -169,6 +169,10 @@ export default {
       file:null,
       countries: []
       }),
+      beforeCreate(){
+    localStorage.clear();
+    sessionStorage.clear();
+  },
 	  created(){
 		functionsObject.created(this)
 	  },

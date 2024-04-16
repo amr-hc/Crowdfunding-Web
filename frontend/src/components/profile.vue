@@ -3,18 +3,6 @@
 
     <div class="container">
     <div class="main-body">
-    
-          <!-- Breadcrumb -->
-          <nav aria-label="breadcrumb" class="main-breadcrumb">
-  <ol class="breadcrumb">
-     
-    <router-link to="/" class=" m-1 text-decoration-none"><button class="nav-link ">Home</button></router-link>
-    <router-link to="/projects" class=" m-1 text-decoration-none"><button class="nav-link ">Projects</button></router-link>
-    <router-link to="/profile" class=" m-1 text-decoration-none "><button class="nav-link  ">User Profile</button></router-link>
-  </ol>
-</nav>
-          <!-- /Breadcrumb -->
-    
 
           <div class="row gutters-sm">
           <div class="row ">
@@ -117,26 +105,14 @@
             <div class="content">
                 <h2>Card One</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eget velit tristique, sollicitudin leo viverra, suscipit neque. Aliquam ut facilisis urna, in pretium nibh.  Morbi in leo in eros commodo volutpat ac sed dolor.</p>
-            </div>
+                
+                <updateproject :project_id="'hi'" class="btn btn-info m-2" />
+                <router-link to="/updateUserProfile" class=" m-1 text-decoration-none ">  <button class="btn btn-danger m-2 "> Delete</button></router-link>
+         
+              </div>
+            
         </div>
-        <div class="card d-flex position-relative flex-column bg-dark">
-            <div class='imgContainer'>
-                <img src='../assets/imges/vecteezy_person-hike-friends-helping-each-other-up-a-mountain-man_10621923.jpg'>
-            </div>
-            <div class="content">
-                <h2>Card Two</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eget velit tristique, sollicitudin leo viverra, suscipit neque. Aliquam ut facilisis urna, in pretium nibh.  Morbi in leo in eros commodo volutpat ac sed dolor.</p>
-            </div>
-        </div>
-        <div class="card d-flex position-relative flex-column bg-dark ">
-            <div class='imgContainer'>
-                <img src='../assets/imges/vecteezy_travel-man-wait-train-at-platform-people-vacation_8743819.jpg'>
-            </div>
-            <div class="content">
-                <h2>Card Three</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eget velit tristique, sollicitudin leo viverra, suscipit neque. Aliquam ut facilisis urna, in pretium nibh.  Morbi in leo in eros commodo volutpat ac sed dolor.</p>
-            </div>
-        </div>
+         
            
               
               
@@ -151,6 +127,7 @@
   <script>
  import{datastore}from '@/stors/crowdfundingStore'
  import FunctionsClass from '../assets/js/registerAndUpdate'
+ import updateproject from '@/components/updateProject.vue'
   const functionsObject=new FunctionsClass();
   export default {
     
@@ -160,6 +137,9 @@
    }),
   methods: {
    
+  },
+  components: {
+    updateproject,
   },
   async created(){
   await functionsObject.logedInPagesCreated(this);

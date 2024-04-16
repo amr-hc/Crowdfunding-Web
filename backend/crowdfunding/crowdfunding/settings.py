@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     "api.apps.ApiConfig",
     "rest_framework",
     "tags.apps.TagsConfig",
-    "project_tag.apps.ProjectTagConfig",
     "rating.apps.RatingConfig",
     "project_report.apps.ProjectReportConfig",
     "comment.apps.CommentConfig",
@@ -207,7 +206,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
     ],
 }
 
