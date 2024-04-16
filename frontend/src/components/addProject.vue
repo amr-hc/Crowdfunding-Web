@@ -169,14 +169,12 @@ export default {
       const response = await fetch("http://127.0.0.1:8000/api/projects/", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${formData.token}`,
+          Authorization: `token ${formData.token}`,
         },
         body: formData.form,
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to add project.");
-      }
+      
       return await response.json();
     },
 

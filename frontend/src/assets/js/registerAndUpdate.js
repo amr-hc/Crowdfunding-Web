@@ -136,7 +136,7 @@
       {
         par.file = event.target.files[0];
       }
-      createForm(par){
+      createUserForm(par){
         const formData = new FormData();
         formData.append('first_name', par.fname);
         formData.append('last_name',par.lname);
@@ -146,14 +146,23 @@
         formData.append('photo', par.file);
         formData.append('facebook', par.facebook);
          formData.append('country', par.country);
-      
-
         return formData;
       }
-      async insertrequest(par)
+      createProjectForm(par,id){
+        const formData = new FormData();
+        
+        formData.append("owner_id", id);
+        formData.append("category_id", par.category);
+        formData.append("title", par.title);
+        formData.append("description", par.description);
+        formData.append("end_date", par.endDate);
+        formData.append("target_money", par.targetMoney);
+        return formData;
+      }
+      async insertUserRequest(par)
       {
         
-        const formData=this.createForm(par);
+        const formData=this.createUserForm(par);
         formData.append('password', par.password);
          // Validate the form data object to delete empty Properties before sending  
         const form = Object.fromEntries(formData.entries());
@@ -185,10 +194,10 @@
                 console.error("Error fetching api:", error);
             }
       } 
-      async updateRequest(par)
+      async updateUserRequest(par)
       {
 
-        const formData = this.createForm(par);
+        const formData = this.createUserForm(par);
         // Validate the form data object to delete empty Properties before sending  
         const form = Object.fromEntries(formData.entries());
         for (let [key,value] of Object.entries(form)) 
@@ -221,16 +230,60 @@
             }
       } 
 
+      async updateProjectRequest(par){
+        let storg =this.getStorgData()
+        const token=storg.token;
+        const id=storg.user_id;
+        const formData = this.createProjectForm(par,id);
+        try 
+        { 
+            const response = await fetch(`http://127.0.0.1:8000/api/projects/${par.projectId}/`,{
+            method: "PATCH",
+            headers: {
+              'Authorization': `token ${token} `
+            },
+            body: formData,
+          });
+          
+              const data = await response.json(); 
+            console.log(data)
+        }
+      catch (error) 
+          {
+              console.error("Error fetching api:", error);
+          }
+
+
+
+      }
+
     handleFormSubmission(e,par,modul) {
         if (this.HTMLValidations(e) && this.jsValidations(par,modul)) {
           if(modul){
             
-            this.updateRequest(par);
+            this.updateUserRequest(par);
           }else{
-            this.insertrequest(par);
+            this.insertUserRequest(par);
           }
            
         }
+    }
+    handleProjectFormSubmission(e,par) {
+       
+        if (this.HTMLValidations(e) && this.projectValidations(par)) {
+         
+
+            this.updateProjectRequest(par);
+          }
+           
+        
+    }
+
+    getStorgData(){
+      const localStorageData =JSON.parse(localStorage.getItem('userInfo'));
+      const sessionStorageData=JSON.parse(sessionStorage.getItem("userInfo"));
+      let userData=localStorageData?localStorageData : sessionStorageData 
+          return userData;
     }
 
     async logedInPagesCreated(par){
@@ -242,7 +295,8 @@
         else if(localStorageData||sessionStorageData){
           let userData=localStorageData?localStorageData : sessionStorageData 
           par.storgData=userData;
-          par.user=await par.storData.getUserData(userData.user_id,userData.token)
+          await par.storData.getUserData(userData.user_id,userData.token)
+          par.user=par.storData.user
           
         }
       }

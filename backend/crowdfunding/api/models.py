@@ -39,7 +39,7 @@ class CustomUserManager(BaseUserManager):
         return self._create_user(email, password, first_name, last_name, phone, birth_date, **extra_fields)
 
 AUTH_PROVIDERS = {'facebook': 'facebook', 'email': 'email'}
-
+ 
 class User(AbstractBaseUser,PermissionsMixin):
 
     email = models.EmailField(db_index=True, unique=True, max_length=254)
