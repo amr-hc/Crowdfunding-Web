@@ -16,7 +16,7 @@ export default {
   data: () => ({
     showNav: true
   }),
- ,
+ 
   components: {
     navbar,
     pageFooter,
