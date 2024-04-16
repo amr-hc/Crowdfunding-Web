@@ -123,8 +123,8 @@ class RateModelViewSet(ModelViewSet):
 
 class ImportantProjectAPIView(ModelViewSet):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAdminOrReadOnly]
-    # permission_classes = [AllowAny]
+    # permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [AllowAny]
     queryset = ImportantProject.objects.all()
     serializer_class = ImportantProjectSerializer
 

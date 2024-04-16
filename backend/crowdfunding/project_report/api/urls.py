@@ -1,12 +1,10 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from project_report.api.views import ReportAPIView
+from django.urls import path
+from project_report.api.views import ReportListCreateAPIView,ReportRetrieveUpdateDestroyAPIView
 
-router = DefaultRouter()
-router.register(r'', ReportAPIView)
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('', ReportListCreateAPIView.as_view()),
+    path('<int:id>/', ReportRetrieveUpdateDestroyAPIView.as_view()),
 ]
 
 

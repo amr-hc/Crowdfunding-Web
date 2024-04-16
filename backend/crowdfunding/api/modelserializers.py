@@ -145,3 +145,8 @@ class ImportantProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = ImportantProject
         fields = "__all__"
+
+    def create(self, validated_data):
+        if len(list(ImportantProject.objects.all())) >= 5:
+            raise serializers.ValidationError("You Already Have 5 important projects")
+        return super().create(validated_data)
