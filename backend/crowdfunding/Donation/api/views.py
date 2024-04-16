@@ -9,14 +9,15 @@ from rest_framework.viewsets import ModelViewSet
 # PERMISSIONS
 from rest_framework.permissions import AllowAny
 
+from api.permissions import donation
+
 'from Project'
 # MODEL
 from Donation.models import Donation
 # SERIALIZER
 from Donation.api.serializer import DonationSerializer
-from rest_framework.authentication import TokenAuthentication
 class DonationViewSet(ModelViewSet):
-    authentication_classes = [TokenAuthentication]
+    # permission_classes = [donation]
     permission_classes = [AllowAny]
     queryset = Donation.objects.all()
     serializer_class = DonationSerializer

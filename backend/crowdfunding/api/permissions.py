@@ -52,6 +52,14 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
 
 
+#for reports
+class IsAdminOrpost(permissions.BasePermission):
+    def has_permission(self, request, view):
+        # get or post in public link
+        if request.user.is_superuser or (request.method == "POST" and request.user.is_authenticated):
+            return True
+        return False
+
 class IsOwnerOrAdmin(permissions.BasePermission):
     def has_permission(self, request, view):
         # get or post in public link
@@ -66,12 +74,27 @@ class IsOwnerOrAdmin(permissions.BasePermission):
 
 
 
-class IsAdminOrpost(permissions.BasePermission):
+class donation(permissions.BasePermission):
     def has_permission(self, request, view):
         # get or post in public link
-        if request.user.is_superuser or (request.method == "POST" and request.user.is_authenticated):
+        if request.user.is_authenticated:
+            return True
+        return False
+    def has_object_permission(self, request, view, obj):
+        # get or put or patch in private link
+        if request.method == "GET" or request.user.is_superuser:
             return True
         return False
 
 
-
+class photoPermissions(permissions.BasePermission):
+    def has_permission(self, request, view):
+        # get or post in public link
+        if request.user.is_superuser or request.method == "DELETE":
+            return True
+        return False
+    def has_object_permission(self, request, view, obj):
+        # get or put or patch in private link
+        if request.user.is_superuser or (request.method == "DELETE" and obj.project.owner == request.user):
+            return True
+        return False
