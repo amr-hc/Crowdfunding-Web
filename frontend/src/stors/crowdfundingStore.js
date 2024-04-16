@@ -3,6 +3,10 @@ export const datastore = defineStore("crowdfunding", {
   state: () => ({
     isAuthenticated: true,
     user: {},
+    projectData: [],
+    userInfo:
+      JSON.parse(localStorage.getItem("userInfo")) ||
+      JSON.parse(sessionStorage.getItem("userInfo")),
   }),
   actions: {
     async getUserData(id, token) {
@@ -19,6 +23,25 @@ export const datastore = defineStore("crowdfunding", {
         return user;
       } catch (error) {
         console.error("Error fetching country codes:", error);
+      }
+    },
+    async getAllProjects() {
+      try {
+        const res = await fetch("http://127.0.0.1:8000/api/projects/", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${this.userInfo.token} `,
+          },
+        });
+        if (!res.ok) {
+          throw new Error("can't fetch data from server");
+        }
+        const projectData = await res.json();
+        return projectData;
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+        throw error;
       }
     },
     setAuthentication(value) {

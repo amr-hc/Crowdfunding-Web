@@ -151,13 +151,8 @@ export default {
   }),
   methods: {
     async addProject($event) {
-<<<<<<< HEAD
-      const projectValidationResult =
-        functionsObject.projectValidations($event);
-=======
       
       const projectValidationResult = functionsObject.projectValidations($event);
->>>>>>> 4ecfb8336203bd3b8213ff781011744411a8ad4b
       const HTMLValidationResult = functionsObject.HTMLValidations($event);
 
       if (projectValidationResult && HTMLValidationResult) {

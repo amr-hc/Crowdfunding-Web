@@ -1,5 +1,6 @@
 <template>
-    <div class="card h-100 mb-5 pb-5">
+    <section>
+        <div class="card h-100 mb-5 pb-5">
         <div class="row gap-5 g-0 justify-content-center">
             <div class="card-details h-100 w-100 w-md-50 position-relative col-12 col-md ">
                 <div class="img-wrapper">
@@ -26,7 +27,7 @@
                     voluptas?
                 </div> -->
                 <div class="text-white-50">
-                  {{projectData.description}}        
+                {{projectData.description}}        
                 </div>
                 <hr>
                 <h5 class="text-light-emphasis">Similar Projects</h5>
@@ -164,6 +165,7 @@
             </div>
         </div>
     </div>
+    </section>
 </template>
 
 
@@ -192,7 +194,7 @@ export default {
     methods: {
         async fetchProjectData() {
             try {
-                const projectId = 20; //this.$route.params.id;
+                const projectId = this.$route.params.id;
                 const response = await fetch(`http://localhost:8000/api/projects/${projectId}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch project data');

@@ -1,43 +1,39 @@
 <template>
-  <section style="background-color: rgb(91 91 91 / 50%) !important">
-    <div class="jumbotron h-25 text-white mb-2 row align-items-center">
+  <section style="background-color: rgb(91 91 91 / 20%) !important">
+    <div class="jumbotron h-50  mb-4 row align-items-center">
       <router-link
-        class="btn btn-outline-success mt-3 col-2 ms-2"
+        class="btn btn-success  col-2 ms-3 "
         to="/add"
         v-show="showAddBtn"
         >Add Project</router-link
       >
-      <div class="py-5 text-center">
+      <div class="headline text-end pb-4 ">
         <h1 class="display-4 font-weight-bold">Browse Our Projects</h1>
         <h2 class="font-italic mb-0">Try To Be A Part Of The Solution.</h2>
       </div>
     </div>
-    <div class="text-center container py-3">
-      <div class=" ">
-        <div class="container">
-          <div class="row wall">
-            <div class="col-md-4 col-sm-6">
-              <div class="box">
-                <img
-                  src="../assets/imges/vecteezy_travel-man-wait-train-at-platform-people-vacation_8743819.jpg"
-                  alt=""
-                />
-                <div class="box-overlay"></div>
-                <div class="box-content">
-                  <div class="inner-content">
-                    <h3 class="title">Williamson</h3>
-                    <span class="post">Web Developer</span>
-                    <ul class="icon">
-                      <li>
-                        <a href="#"
-                          ><i class="fa-solid fa-diamond-turn-right"></i
-                        ></a>
-                      </li>
-                      <li>
-                        <a href="#"><i class="fa fa-link"></i></a>
-                      </li>
-                    </ul>
-                  </div>
+    <div class="text-center  py-3">
+      <div class="container">
+        <div class="row wall row-gap-5   ">
+          <div
+            class="col-md-4 col-sm-6"
+            v-for="project in this.projectsData"
+            :key="project['id']"
+          >
+            <div class="box">
+              <img :src="project.pics[0]['image_path']" alt="" />
+              <div class="box-overlay"></div>
+              <div class="box-content">
+                <div class="inner-content">
+                  <h3 class="title">{{ project.title }}</h3>
+                  <span class="post">{{ project.category["name"] }}</span>
+                  <ul class="icon">
+                    <li>
+                      <router-link :to="'projects/' + project.id" title="project details"
+                        ><i class="fa-solid fa-diamond-turn-right"></i
+                      ></router-link>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -49,19 +45,16 @@
 </template>
 
 <script>
+import { datastore } from "@/stors/crowdfundingStore";
 export default {
   data: () => ({
-    projects: [],
+    datastore: datastore(),
+    projectsData: [],
   }),
   methods: {},
   async created() {
-    const res = await fetch("http://127.0.0.1:8000/api/projects/");
-    if (!res.ok) {
-      throw new Error("can't fetch data from server");
-    }
-    const data = await res.json();
-    console.log(data);
-    console.log(this.showAddBtn);
+    this.projectsData = await this.datastore.getAllProjects();
+    console.log(this.projectsData);
   },
   computed: {
     showAddBtn() {
@@ -83,7 +76,8 @@ export default {
 }
 .box img {
   width: 100%;
-  height: auto;
+  height: 200px;
+  /* height: auto; */
 }
 .box .box-content {
   width: 100%;
@@ -195,12 +189,18 @@ export default {
   }
 }
 .jumbotron {
-  background-image: url("../assets/imges/pexels-alan-henrique-9425961.jpg");
+  background-image: url("@/assets/images/wallpaperflare.com_wallpaper.jpg");
   background-position: center;
   background-size: cover;
+  /* height: 40%; */
 }
 .jumbotron * {
-  color: #d37819 !important;
+  color: #442b10 !important;
   font-weight: 600 !important;
+}
+.headline{
+  position: relative;
+  bottom: 25%;
+  right: 5%;
 }
 </style>
