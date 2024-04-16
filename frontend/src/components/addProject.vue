@@ -80,10 +80,10 @@
         </div>
         <div >
           <select
+            v-model="selectedTags"
             class="form-select"
             name="tags"
             id="tags"
-            v-model="Tags"
             multiple
             required
             size="2"
@@ -91,7 +91,7 @@
             <option selected disabled hidden value="" >
               Please select tags
             </option>
-            <option v-for="tag in tags" :key="tag.id" :value="tag.id">
+            <option v-for="tag in tags" :key="tag.id" :value="tag.tagName">
               {{ tag.tagName }}
             </option>
             
@@ -143,6 +143,7 @@ export default {
     endDate: new Date().toISOString().split("T")[0],
     categories: [],
     tags:[],
+    selectedTags:[],
     userInfo:
       JSON.parse(localStorage.getItem("userInfo")) ||
       JSON.parse(sessionStorage.getItem("userInfo")),
@@ -150,6 +151,7 @@ export default {
   }),
   methods: {
     async addProject($event) {
+      
       const projectValidationResult = functionsObject.projectValidations($event);
       const HTMLValidationResult = functionsObject.HTMLValidations($event);
 
@@ -183,6 +185,9 @@ export default {
       for (let i = 0; i < this.images.length; i++) {
         form.append("photos", this.images[i]);
       }
+      for(let i=0;i<this.selectedTags.length;i++){
+        form.append("tages",this.selectedTags[i]);
+      }
       return { form, token };
     },
 
@@ -207,7 +212,7 @@ export default {
         const file = selectedImages[i];
         this.images.push(file);
       }
-    },
+    }
   },
 
   created() {
