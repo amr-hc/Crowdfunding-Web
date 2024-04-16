@@ -78,6 +78,26 @@
           <label for="category" class="text-dark ms-2">Category</label>
           <div class="invalid-feedback">Please select a category.</div>
         </div>
+        <div >
+          <select
+            class="form-select"
+            name="tags"
+            id="tags"
+            v-model="Tags"
+            multiple
+            required
+            size="2"
+          >
+            <option selected disabled hidden value="" >
+              Please select tags
+            </option>
+            <option v-for="tag in tags" :key="tag.id" :value="tag.id">
+              {{ tag.tagName }}
+            </option>
+            
+          </select>
+          <div class="invalid-feedback">Please select tags .</div>
+        </div>
 
         <div class="form-floating">
           <input
@@ -122,6 +142,7 @@ export default {
     categoryResult: "",
     endDate: new Date().toISOString().split("T")[0],
     categories: [],
+    tags:[],
     userInfo:
       JSON.parse(localStorage.getItem("userInfo")) ||
       JSON.parse(sessionStorage.getItem("userInfo")),
@@ -199,6 +220,18 @@ export default {
       })
       .then((categories) => {
         this.categories = categories;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    fetch("http://127.0.0.1:8000/tags/")
+    .then((response)=>{
+      if (!response.ok) {
+          throw new Error("Failed to fetch tags");
+        }
+        return response.json();
+    }).then((tags) => {
+        this.tags = tags;
       })
       .catch((error) => {
         console.error(error);
