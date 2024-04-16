@@ -78,6 +78,26 @@
           <label for="category" class="text-dark ms-2">Category</label>
           <div class="invalid-feedback">Please select a category.</div>
         </div>
+        <div >
+          <select
+            v-model="selectedTags"
+            class="form-select"
+            name="tags"
+            id="tags"
+            multiple
+            required
+            size="2"
+          >
+            <option selected disabled hidden value="" >
+              Please select tags
+            </option>
+            <option v-for="tag in tags" :key="tag.id" :value="tag.tagName">
+              {{ tag.tagName }}
+            </option>
+            
+          </select>
+          <div class="invalid-feedback">Please select tags .</div>
+        </div>
 
         <div class="form-floating">
           <input
@@ -122,6 +142,8 @@ export default {
     categoryResult: "",
     endDate: new Date().toISOString().split("T")[0],
     categories: [],
+    tags:[],
+    selectedTags:[],
     userInfo:
       JSON.parse(localStorage.getItem("userInfo")) ||
       JSON.parse(sessionStorage.getItem("userInfo")),
@@ -129,6 +151,7 @@ export default {
   }),
   methods: {
     async addProject($event) {
+      
       const projectValidationResult = functionsObject.projectValidations($event);
       const HTMLValidationResult = functionsObject.HTMLValidations($event);
 
@@ -137,7 +160,7 @@ export default {
         try {
           const responseData = await this.sendProjectRequest(formData);
           console.log("Project added successfully!");
-           this.$router.push(`/projects/${responseData.id}`);
+          this.$router.push(`/projects/${responseData.id}`);
         } catch (error) {
           console.error("Error adding project:", error);
         }
@@ -162,6 +185,9 @@ export default {
       for (let i = 0; i < this.images.length; i++) {
         form.append("photos", this.images[i]);
       }
+      for(let i=0;i<this.selectedTags.length;i++){
+        form.append("tages",this.selectedTags[i]);
+      }
       return { form, token };
     },
 
@@ -184,7 +210,7 @@ export default {
         const file = selectedImages[i];
         this.images.push(file);
       }
-    },
+    }
   },
 
   created() {
@@ -197,6 +223,18 @@ export default {
       })
       .then((categories) => {
         this.categories = categories;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    fetch("http://127.0.0.1:8000/tags/")
+    .then((response)=>{
+      if (!response.ok) {
+          throw new Error("Failed to fetch tags");
+        }
+        return response.json();
+    }).then((tags) => {
+        this.tags = tags;
       })
       .catch((error) => {
         console.error(error);

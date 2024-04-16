@@ -88,6 +88,7 @@ class Project(models.Model):
     rates = models.ManyToManyField(User, through="Rate")
     tages = models.ManyToManyField(Tag, related_name="tagProject")
 
+
 class ImportantProject(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
 

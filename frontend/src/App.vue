@@ -1,6 +1,6 @@
 <template>
   <div class="container map">
-    <navbar v-show="showNavbar" />
+    <navbar v-show="showNav" />
     <div class="row">
       <router-view></router-view>
     </div>
@@ -12,7 +12,11 @@
 import navbar from "./components/navbar.vue";
 import pageFooter from "./components/footer.vue";
 export default {
-  data: () => ({}),
+
+  data: () => ({
+    showNav: true
+  }),
+ ,
   components: {
     navbar,
     pageFooter,
@@ -27,8 +31,9 @@ export default {
         "profile",
         "updateUserProfile",
         "congs",
+        "dashboard"
       ];
-      const currentPath = this.$route.path.split("/").pop(); 
+      const currentPath = this.$route.path.split("/").pop();
       return paths.includes(currentPath);
 
     },

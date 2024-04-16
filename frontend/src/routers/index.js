@@ -1,9 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
-import worngpaht from "../components/worngpaht";
-import intro from "../components/home/intro.vue";
+import notfound from "../components/notfound";
 import registration from "../components/registration.vue";
 import about from "../components/about.vue";
-import investors from "../components/investors.vue";
 import projects from "../components/projects.vue";
 import projectDetails from "@/components/project/project-details.vue";
 import login from "../components/login.vue";
@@ -19,6 +17,7 @@ import befroreactivation from "@/components/befroreactivation.vue";
 // test
 import AllData from "@/components/project/piniaData.vue";
 
+import Dashboard from "@/components/dashboard.vue";
 
 const routes = [
   {
@@ -27,7 +26,7 @@ const routes = [
   },
   {
     path: "/login",
-    component:login ,
+    component: login,
   },
   {
     path: "/befroreactivation",
@@ -81,7 +80,11 @@ const routes = [
   },
   {
     path: "/:catchAll(.*)",
-    component: worngpaht,
+    component: notfound,
+  },
+  {
+    path: "/dashboard",
+    component: Dashboard,
   },
 ];
 const router = createRouter({

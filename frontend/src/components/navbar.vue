@@ -1,77 +1,41 @@
 <template>
   <nav class="navbar navbar-expand-lg position-sticky sticky-top top-0 z-3">
     <div class="container-fluid">
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarTogglerDemo01"
-        aria-controls="navbarTogglerDemo01"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
+        aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-        <a class="navbar-brand" href="#">Arise</a>
+        <a class="navbar-brand" href="#" @click="checkstate">Arise</a>
         <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <router-link to="/" class="text-decoration-none"
-              ><button
-                class="nav-link"
-                :class="{ active: $route.path === '/' }"
-              >
+            <router-link to="/" class="text-decoration-none"><button class="nav-link"
+                :class="{ active: $route.path === '/' }">
                 Home
-              </button></router-link
-            >
+              </button></router-link>
           </li>
           <li class="nav-item">
-            <router-link to="projects" class="text-decoration-none"
-              ><button
-                class="nav-link"
-                :class="{ active: $route.path === '/projects' }"
-              >
-                Projects
-              </button></router-link
-            >
+            <router-link to="projects" class="text-decoration-none"><button class="nav-link "
+                :class="{ active: $route.path.startsWith('/projects') }">Projects</button></router-link>
           </li>
           <li class="nav-item">
-            <router-link to="profile" class="text-decoration-none"
-              ><button
-                class="nav-link"
-                :class="{ active: $route.path === '/profile' }"
-              >
-                Profile
-              </button></router-link
-            >
+            <router-link to="profile" class="text-decoration-none"><button class="nav-link "
+                :class="{ active: $route.path.startsWith('/profile') }">Profile</button></router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/about" class="text-decoration-none"
-              ><button
-                class="nav-link"
-                :class="{ active: $route.path === '/about' }"
-              >
-                About
-              </button></router-link
-            >
+            <router-link to="/about" class="text-decoration-none"><button class="nav-link "
+                :class="{ active: $route.path.startsWith('/about') }">About</button></router-link>
           </li>
-          <!-- <li class="nav-item">
-            <button class="nav-link" @click="navigate('registration')">registration
-            </button>
-          </li> -->
+          <li class="nav-item">
+
+            <router-link v-show="isAdmin" class=" text-light text-decoration-none" to="dashboard"><button
+                class="nav-link " :class="{ active: $route.path.startsWith('/dashboard') }">
+                <i class="fa-solid fa-screwdriver-wrench"></i> Dashboard</button></router-link>
+          </li>
         </ul>
-        <div
-          v-show="isAuthenticated"
-          class="avatar-container dropdown"
-          data-bs-theme="dark"
-        >
-          <a
-            class="dropdown-toggle-split text-decoration-none d-flex align-items-center"
-            href="#"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
+        <div v-if="isAuthenticated" class="avatar-container dropdown" data-bs-theme="dark">
+          <a class="dropdown-toggle-split text-decoration-none d-flex align-items-center" href="#" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
             <div class="name">John Doe</div>
             <div class="avatar">
               <img :src="avatarSrc" alt="Avatar" />
@@ -79,9 +43,8 @@
           </a>
           <ul class="dropdown-menu">
             <li>
-              <router-link to="profile" class="dropdown-item text-center"
-                >Profile &nbsp;<i class="fa-solid fa-right-from-bracket"></i
-              ></router-link>
+              <router-link to="profile" class="dropdown-item text-center">Profile &nbsp;<i
+                  class="fa-solid fa-right-from-bracket"></i></router-link>
             </li>
             <li>
               <router-link to="/" class="dropdown-item text-center" @click="logOut">
@@ -90,29 +53,24 @@
             </li>
           </ul>
         </div>
-        <router-link
-          v-show="!isAuthenticated"
-          class="text-light text-decoration-none m-2"
-          to="registration"
-          ><button class="nav-link">sign up</button></router-link
-        >
-        <router-link
-          v-show="!isAuthenticated"
-          class="text-light text-decoration-none"
-          to="login"
-          ><button class="nav-link">login</button></router-link
-        >
+        <div v-else class="d-flex align-items-center">
+          <router-link class="text-light text-decoration-none m-2" to="registration"><button class="nav-link">sign
+              up</button></router-link>
+          <router-link class="text-light text-decoration-none" to="login"><button
+              class="nav-link">login</button></router-link>
+        </div>
       </div>
     </div>
   </nav>
 </template>
 
 <script>
+import { datastore } from '@/stors/crowdfundingStore';
 export default {
   name: "navbar",
   data() {
     return {
-      isAuthenticated: true,
+      datastore: datastore(),
       avatarSrc: require("@/assets/images/avatar.png"),
     };
   },
@@ -123,6 +81,12 @@ export default {
     logOut() {
       localStorage.clear();
       sessionStorage.clear();
+      this.datastore.setAuthentication(false);
+    },
+  },
+  computed: {
+    isAuthenticated() {
+      return this.datastore.isAuthenticated;
     },
   },
 };
