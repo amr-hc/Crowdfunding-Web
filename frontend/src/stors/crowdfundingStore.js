@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 export const datastore = defineStore("crowdfunding", {
   state: () => ({
+    isAuthenticated: true,
     user: {},
   }),
   actions: {
@@ -14,13 +15,15 @@ export const datastore = defineStore("crowdfunding", {
           },
         });
         const user = await response.json();
-        console.log(user)
+        console.log(user);
         return user;
       } catch (error) {
         console.error("Error fetching country codes:", error);
       }
     },
+    setAuthentication(value) {
+      this.isAuthenticated = value;
+    },
   },
-
   getters: {},
 });

@@ -13,7 +13,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-        <a class="navbar-brand" href="#">Arise</a>
+        <a class="navbar-brand" href="#" @click="checkstate">Arise</a>
         <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <router-link to="/" class="text-decoration-none"
@@ -35,7 +35,7 @@
               </button></router-link
             >
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-show="isAuthenticated">
             <router-link to="profile" class="text-decoration-none"
               ><button
                 class="nav-link"
@@ -55,13 +55,9 @@
               </button></router-link
             >
           </li>
-          <!-- <li class="nav-item">
-            <button class="nav-link" @click="navigate('registration')">registration
-            </button>
-          </li> -->
         </ul>
         <div
-          v-show="isAuthenticated"
+          v-if="isAuthenticated"
           class="avatar-container dropdown"
           data-bs-theme="dark"
         >
@@ -84,35 +80,38 @@
               ></router-link>
             </li>
             <li>
-              <router-link to="/" class="dropdown-item text-center" @click="logOut">
+              <router-link
+                to="/"
+                class="dropdown-item text-center"
+                @click="logOut"
+              >
                 Log out &nbsp;<i class="fa-solid fa-right-from-bracket"></i>
               </router-link>
             </li>
           </ul>
         </div>
-        <router-link
-          v-show="!isAuthenticated"
-          class="text-light text-decoration-none m-2"
-          to="registration"
-          ><button class="nav-link">sign up</button></router-link
-        >
-        <router-link
-          v-show="!isAuthenticated"
-          class="text-light text-decoration-none"
-          to="login"
-          ><button class="nav-link">login</button></router-link
-        >
+        <div v-else class="d-flex align-items-center">
+          <router-link
+            class="text-light text-decoration-none m-2"
+            to="registration"
+            ><button class="nav-link">sign up</button></router-link
+          >
+          <router-link class="text-light text-decoration-none" to="login"
+            ><button class="nav-link">login</button></router-link
+          >
+        </div>
       </div>
     </div>
   </nav>
 </template>
 
 <script>
+import { datastore } from '@/stors/crowdfundingStore';
 export default {
   name: "navbar",
   data() {
     return {
-      isAuthenticated: true,
+      datastore:datastore(),
       avatarSrc: require("@/assets/images/avatar.png"),
     };
   },
@@ -123,6 +122,12 @@ export default {
     logOut() {
       localStorage.clear();
       sessionStorage.clear();
+      this.datastore.setAuthentication(false);
+    },
+  },
+  computed: {
+    isAuthenticated() {
+      return this.datastore.isAuthenticated;
     },
   },
 };
