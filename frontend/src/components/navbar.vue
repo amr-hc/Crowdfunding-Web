@@ -14,21 +14,22 @@
           </li>
           <li class="nav-item">
             <router-link to="projects" class="text-decoration-none"><button class="nav-link "
-                :class="{ active: $route.path === '/projects' }">Projects</button></router-link>
+                :class="{ active: $route.path.startsWith('/projects') }">Projects</button></router-link>
           </li>
           <li class="nav-item">
             <router-link to="profile" class="text-decoration-none"><button class="nav-link "
-                :class="{ active: $route.path === '/profile' }">Profile</button></router-link>
+                :class="{ active: $route.path.startsWith('/profile') }">Profile</button></router-link>
           </li>
           <li class="nav-item">
             <router-link to="/about" class="text-decoration-none"><button class="nav-link "
-                :class="{ active: $route.path === '/about' }">About</button></router-link>
-
+                :class="{ active: $route.path.startsWith('/about') }">About</button></router-link>
           </li>
-          <!-- <li class="nav-item">
-            <button class="nav-link" @click="navigate('registration')">registration
-            </button>
-          </li> -->
+          <li class="nav-item">
+
+            <router-link v-show="isAdmin" class=" text-light text-decoration-none" to="dashboard"><button
+                class="nav-link " :class="{ active: $route.path.startsWith('/dashboard') }">
+                <i class="fa-solid fa-screwdriver-wrench"></i> Dashboard</button></router-link>
+          </li>
         </ul>
         <div v-show="isAuthenticated" class="avatar-container dropdown" data-bs-theme="dark">
           <a class="dropdown-toggle-split text-decoration-none d-flex align-items-center" href="#" role="button"
@@ -63,6 +64,7 @@ export default {
   data() {
     return {
       isAuthenticated: true,
+      isAdmin: true,
       avatarSrc: require('@/assets/images/avatar.png')
     }
   },

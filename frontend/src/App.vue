@@ -1,6 +1,6 @@
 <template>
   <div class="container map">
-    <navbar  v-show="showNav"  />
+    <navbar v-show="showNav" />
     <div class="row">
       <router-view></router-view>
     </div>
@@ -15,28 +15,32 @@ import navbar from './components/navbar.vue'
 import pageFooter from './components/footer.vue';
 export default {
 
-  data:()=>({
-    showNav:true
-   }),
+  data: () => ({
+    showNav: true
+  }),
   created() {
 
     // this.$route.path   Won't work properly
-    const paths=[
-    '',
-    'about',
-    'projects',
-    'add',
-    'profile',
-    'updateUserProfile',
-    'congs',
+    const paths = [
+      '',
+      'about',
+      'projects',
+      'add',
+      'profile',
+      'updateUserProfile',
+      'congs',
+      'login',
+      'registration',
+      'forgetPassword',
+      'dashboard'
     ]
 
-    let path=window.location.href.split('/') 
-    path=path[path.length-1]
-     if(!paths.includes(path)){
-      this.showNav=false;
-     }
-    
+    let path = window.location.href.split('/')
+    path = path[path.length - 1]
+    if (!paths.includes(path)) {
+      this.showNav = false;
+    }
+
   },
   components: {
     navbar, pageFooter

@@ -1,9 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
-import worngpaht from "../components/worngpaht";
-import intro from "../components/home/intro.vue";
+import notfound from "../components/notfound";
 import registration from "../components/registration.vue";
 import about from "../components/about.vue";
-import investors from "../components/investors.vue";
 import projects from "../components/projects.vue";
 import projectDetails from "@/components/project/project-details.vue";
 import login from "../components/login.vue";
@@ -14,6 +12,7 @@ import addProject from "@/components/addProject.vue";
 import congratulations from "@/components/congratulations.vue";
 import forgetPassword from "@/components/forgetPassword.vue";
 import confirmForgetPassword from "@/components/confirmForgetPassword.vue";
+import Dashboard from "@/components/dashboard.vue";
 
 const routes = [
   {
@@ -41,7 +40,7 @@ const routes = [
     path: "/add",
     component: addProject,
   },
-   
+
   {
     path: "/login",
     component: login,
@@ -68,7 +67,11 @@ const routes = [
   },
   {
     path: "/:catchAll(.*)",
-    component: worngpaht,
+    component: notfound,
+  },
+  {
+    path: "/dashboard",
+    component: Dashboard,
   },
 ];
 const router = createRouter({
