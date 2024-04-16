@@ -91,8 +91,8 @@ from Project_Pics.models import ProjectPics
 
 class ProjectModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsOwnerProjectOrReadOnly]
-    # permission_classes = [AllowAny]
+    # permission_classes = [IsOwnerProjectOrReadOnly]
+    permission_classes = [AllowAny]
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
 

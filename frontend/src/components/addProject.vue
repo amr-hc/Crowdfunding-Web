@@ -129,7 +129,8 @@ export default {
   }),
   methods: {
     async addProject($event) {
-      const projectValidationResult = functionsObject.projectValidations($event);
+      const projectValidationResult =
+        functionsObject.projectValidations($event);
       const HTMLValidationResult = functionsObject.HTMLValidations($event);
 
       if (projectValidationResult && HTMLValidationResult) {
@@ -137,7 +138,7 @@ export default {
         try {
           const responseData = await this.sendProjectRequest(formData);
           console.log("Project added successfully!");
-           this.$router.push(`/projects/${responseData.id}`);
+          this.$router.push(`/projects/${responseData.id}`);
         } catch (error) {
           console.error("Error adding project:", error);
         }
@@ -169,7 +170,7 @@ export default {
       const response = await fetch("http://127.0.0.1:8000/api/projects/", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${formData.token}`,
+          Authorization: `token ${formData.token}`,
         },
         body: formData.form,
       });
