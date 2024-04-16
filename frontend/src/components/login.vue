@@ -140,7 +140,7 @@ export default {
           } else {
             sessionStorage.setItem("userInfo", JSON.stringify(data));
           }
-          this.$router.push("/home");
+          this.$router.push("/");
         })
         .catch((err) => console.error(err));
     },

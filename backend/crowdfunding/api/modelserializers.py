@@ -123,6 +123,10 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = "__all__"
+    def validate(self, data):
+        data['user_id'] = self.context['request'].user
+        return data
+
 
 class ReplaySerializer(serializers.ModelSerializer):
     class Meta:

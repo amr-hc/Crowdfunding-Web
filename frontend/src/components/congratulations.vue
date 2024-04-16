@@ -1,5 +1,5 @@
 <template>
-       <div class="congratulation-area text-center mt-5">
+      <div class="congratulation-area text-center mt-5">
         <div class="container">
             <div class="congratulation-wrapper">
                 <div class="congratulation-contents center-text">
@@ -11,7 +11,7 @@
                         </div>
                              <h4 class="congratulation-contents-title"> Congratulations! </h4>
                             <p class="congratulation-contents-para"> 
-                                 You have successfully completed the registration. The only remaining step is to verify the account via email. Please check your email to activate the account. </p>
+                                You have successfully activated your account. You can now use all the features and benefits of our website.</p>
                     <div class="btn-wrapper mt-4">
                         <router-link to="/" class=" m-1 text-decoration-none ">
                              <button><span>Go to Home Page</span></button>
@@ -27,6 +27,36 @@
   <script>
   export default {
   
+    data:()=>({
+
+    }),
+     async created(){
+      
+      try{
+    const urlParams = new URLSearchParams(window.location.search);
+    const reqestData={
+        uid:urlParams.get("uid"),
+        token:urlParams.get("token")
+      }
+      const response= await fetch
+            ('http://localhost:8000/api/activate/',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(reqestData)
+            }
+            );
+            const data = await response.json(); 
+            
+      }
+      catch(err){
+        console.error(err);
+      }
+    },
+    methods:{
+    }
   }
   </script>
   
@@ -110,7 +140,7 @@
   text-align: center;
   font-size: 32px;
   padding: 6px;
-  width: 300px;
+  width: 400px;
   transition: all 0.5s;
   cursor: pointer;
   margin: 36px;
