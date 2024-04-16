@@ -89,22 +89,42 @@
             </div>
 
             <div class="col-12 col-md py-3 rounded-4 text-light">
-                <h4>Harry maquire</h4>
-                <h6 class="text-white-50"> <i class="fa-solid fa-location-crosshairs"></i> tanta, Egypt</h6>
-                <hr>
+                <!--Owner of Project-->
+                <h4 style='text-transform: capitalize;'>{{ownerData.first_name}} {{ownerData.last_name}}</h4>
+                <h6 class="text-white-50" style='text-transform: capitalize;'> <i class="fa-solid fa-location-crosshairs"></i> {{ownerData.country}}</h6>
+                <hr> <!-- end of Owner Details -->
+
+
+                <!--Donation Details-->
                 <p class="text-white-50"> <strong>$999</strong> raised from $1000 / 5 donors </p>
                 <div class="progress">
                     <div class="progress-bar" role="progressbar" :style="{ width: donationProgress + '%' }"
                         aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
                 <h3 class="my-3">${{ totalAmount - currentDonation }} still needed</h3>
-                <p class="text-white-50">3 days left</p>
-
-                <div class="d-flex">
+                <p class="text-white-50">{{ projectDuration }} days left</p> <!--End Of Donation Details-->
+                
+                
+                <!-- Project Details -->
+                <div >
+                <!-- Project Duration -->
+                
+                <div class="d-flex" v-if="projectDuration > 0 ">
                     <input type="number" data-bs-theme="dark" min="0" class="col form-control bg-transparent text-light"
                         placeholder="Enter Amount" aria-describedby="donationBlock">
                     <button class="col btn btn-main btn-outline-dark ms-2">Donate</button>
                 </div>
+                <div v-else-if="projectDuration == 0">
+                    <p class="text-danger" style="background-color: #f8d7da; border-color: #f5c6cb; color: #721c24; padding: 10px; border-radius: 5px;">The project duration has ended.</p>
+                </div>
+                </div><!-- End Of Project -->
+                  
+                <!-- admin of the project -->  
+                <div >
+
+                </div>
+
+                <!-- Last five Donations -->
                 <hr class="my-5">
                 <h5 class="text-white-50 my-4">Last 5 Donations</h5>
                 <div class=" text-end  border-bottom border-dark my-2">
@@ -160,51 +180,65 @@ export default {
             rating: 4,
             showAllProjects: false,
             totalAmount: 1000,
-            currentDonation: 630
+            currentDonation: 630,
+            ownerData:{},
+            projectDuration:0
         };
     },
     async mounted() {
         // Fetch project data when the component is mounted
         await this.fetchProjectData();
-        await this.fetchProjectPicsData();
     },
     methods: {
         async fetchProjectData() {
             try {
-                const projectId = 1; //this.$route.params.id;
-                const response = await fetch(`http://localhost:8000/projects/${projectId}`);
+                const projectId = 20; //this.$route.params.id;
+                const response = await fetch(`http://localhost:8000/api/projects/${projectId}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch project data');
                 }
                 const data = await response.json();
-                this.projectData = data;
-                this.totalAmount = data.target_money;
-                this.rating = data.rates;
+               //project Basic Data
+               this.projectData = {
+                    "title":data['title'],
+                    "description":data['description'],
+                    "tags":data['tags'],
+                    "start_date":new Date(data['start_date']),
+                    "end_date":new Date(data['start_date'])
+
+                }
+                this.projectDuration = (this.projectData.start_date - this.projectData.end_date) / (1000 * 3600 * 24);
+                console.log(this.projectData.start_date , this.projectData.end_date );
+                console.log(this.projectDuration)
+                
+                /***Comment This line */
+                this.projectDuration = 2 ;
+                /**comment this line */
+
+
+                
+                //total amount
+                this.totalAmount = data['target_money'];
+                //rating
+                this.rating = data['average_rate'];
+                // images
+                console.log(data['pics']);
+                 this.images = data['pics'].map(image => ({
+                     url: image.image_path,
+                     active: false
+                 }));
+                 // select the active image
+                 if (this.images.length > 0) {
+                     this.activeImg = this.images[0].url;
+                 }
+
+                 // Project owner
+                this.ownerData=data['owner']
+
             } catch (error) {
                 console.error('Error fetching project data:', error);
             }
         },
-       async fetchProjectPicsData() {
-            try {
-                const projectId = 1;
-                const response = await fetch(`http://localhost:8000/project_pics/get_pics_of_project/?project_id=${projectId}`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch project pics data');
-                }
-                const data = await response.json();
-                this.images = data.map(image => ({
-                    url: image.url,
-                    active: false
-                }));
-                // Set the active image to the first image in the array
-                if (this.images.length > 0) {
-                    this.activeImg = this.images[0].url;
-                }
-            } catch (error) {
-                console.error('Error fetching project pics data:', error);
-            }
-        },
-
         selectActiveImage(index) {
             this.activeImg = this.images[index].url;
             this.images.forEach((img, i) => {
@@ -407,4 +441,32 @@ option {
 //         }
 //     },
 // }
+
+
+
+
+
+ //Old Picture Fetching
+ //    async fetchProjectPicsData() {
+    //         try {
+    //             const projectId = 16;
+    //             const response = await fetch(`http://localhost:8000/api/projects/${projectId}/`);
+    //             if (!response.ok) {
+    //                 throw new Error('Failed to fetch project pics data');
+    //             }
+    //             const data = await response.json();
+    //             this.images = data.map(image => ({
+    //                 url: image.image_path,
+    //                 active: false
+    //             }));
+    //             // Set the active image to the first image in the array
+    //             if (this.images.length > 0) {
+    //                 this.activeImg = this.images[0].url;
+    //             }
+    //         } catch (error) {
+    //             console.error('Error fetching project pics data:', error);
+    //         }
+    //     },
+
 </script> -->
+

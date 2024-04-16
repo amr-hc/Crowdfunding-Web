@@ -15,6 +15,10 @@ import congratulations from "@/components/congratulations.vue";
 import forgetPassword from "@/components/forgetPassword.vue";
 import confirmForgetPassword from "@/components/confirmForgetPassword.vue";
 
+// test
+import AllData from "@/components/project/piniaData.vue";
+
+
 const routes = [
   {
     path: "/",
@@ -64,6 +68,11 @@ const routes = [
   {
     path: "/congs",
     component: congratulations,
+  },
+  //test path
+  {
+    path: "/allData",
+    component: AllData,
   },
   {
     path: "/:catchAll(.*)",
