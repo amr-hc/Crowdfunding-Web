@@ -1,24 +1,30 @@
 <template>
         <div class="row pro " >
-              <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4"
+              <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 "
                        v-for="project in storData.user.owner_projects" :key="project.id">
-                      <div class="card-flyer">
-                          <div class="text-box ">
+                      <div class="card-flyer ">
+                          <div class="text-box pb-5 ">
                               <div class="image-box">
                                   <img :src="project.pics[0].image_path" alt="" />
                               </div>
                               <div class="text-container">
                                   <h6>{{project.title}}</h6>
                                   <p>{{project.description}}</p>
-                              </div>
-                              <div class="bott">
+                                  <div class="bott ">
                                   
-                                    <button class="btn btn-info m-2 "
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#update"
-                                    @click="asginData(project)"
-                                    > Edit</button> 
+                                  <button class="btn btn-info m-2  "
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#update"
+                                  @click="asginData(project)"
+                                  > Edit</button> 
+                                  <button class="btn btn-danger m-2 "
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#deleteModal"
+                                  @click="asginData(project)"
+                                  > Delete</button> 
+                            </div>
                               </div>
+                            
                             </div>
                       </div>
               </div> 
@@ -118,6 +124,27 @@
 
 <!-- Model End-->
 
+
+<!--  delete project model  -->
+
+<div class="modal fade " id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content bg-dark ">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Book</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete This project?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" @click="deleteproject"  data-bs-dismiss="modal" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </template>
 
 <script>
@@ -155,11 +182,11 @@ console.log(this.owner_projects,this.categories)
     },
     handleFormSubmission(e)
 		{ 
-            
-
 			functionsObject.handleProjectFormSubmission(e,this)
         },
-    
+        deleteproject(){
+          functionsObject.deleteProject(this)
+        }
   },
  
  
@@ -172,7 +199,7 @@ console.log(this.owner_projects,this.categories)
 <style scoped>
  .card-flyer {
     border-radius: 5px;
-    height: 50vh;
+    height: 52vh;
   }
    .card-flyer .image-box{
     background: #ffffff;

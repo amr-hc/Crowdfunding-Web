@@ -150,7 +150,6 @@
       }
       createProjectForm(par,id){
         const formData = new FormData();
-        
         formData.append("owner_id", id);
         formData.append("category_id", par.category);
         formData.append("title", par.title);
@@ -313,10 +312,8 @@
             },
           });
             const data = await response.json(); 
-            // if (!response) {
-            //   throw new Error(`HTTP error! Status: ${response.status}`);
-            // }
-            window.location.href='http://localhost:8080/login'
+            
+            par.$router.push('/login');
             console.log(data)
         }
       catch (error) 
@@ -324,6 +321,26 @@
               console.error("Error fetching api:", error);
           }
       }
+
+     async deleteProject(par){
+       const storgData=this.getStorgData();
+       try 
+       { 
+          
+            const response = await fetch(`http://127.0.0.1:8000/api/projects/${par.projectId}`,{
+            method: "DELETE",
+            headers: {
+              'Authorization': `Bearer ${storgData.token} `
+            },
+          });
+          par.$router.go(par.$router.currentRoute)
+            console.log(response)
+        }
+      catch (error) 
+          {
+              console.error("Error fetching api:", error);
+          }
+     }
 }
 
 export default FunctionsClass;
