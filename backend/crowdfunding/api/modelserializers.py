@@ -96,6 +96,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     allrate = RateSerializer(many=True, read_only=True)
     average_rate = serializers.SerializerMethodField()
     tages= serializers.SlugRelatedField(many=True,slug_field='tagName',queryset=Tag.objects.all())
+    donations = DonationSerializer(read_only=True, many=True)
 
     class Meta:
         model = Project
