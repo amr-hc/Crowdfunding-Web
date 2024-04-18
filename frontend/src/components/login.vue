@@ -144,7 +144,7 @@ export default {
             sessionStorage.setItem("userInfo", JSON.stringify(data));
           }
           this.$router.push("/");
-          this.datastore.setAuthentication(true);
+          // this.datastore.setAuthentication(true);
         })
         .catch((err) => console.error(err));
     },

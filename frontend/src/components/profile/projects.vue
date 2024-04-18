@@ -155,7 +155,7 @@ const functionsObject = new FunctionsClass();
     async created(){
   await this.storData.getCategories();
  this.categories=this.storData.categories;
-console.log(this.owner_projects,this.categories)
+ 
   },
   
     data:()=>({
