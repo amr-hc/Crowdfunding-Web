@@ -87,12 +87,12 @@ class CategoryModelViewSet(ModelViewSet):
 
 from Project_Pics.api.serializer import ProjectPicsSerializer
 from Project_Pics.models import ProjectPics
-
+from api.pagination import small
 
 class ProjectModelViewSet(ModelViewSet):
-    authentication_classes = [TokenAuthentication]
     # permission_classes = [IsOwnerProjectOrReadOnly]
     permission_classes = [AllowAny]
+    pagination_class = small
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
 
@@ -105,12 +105,6 @@ class ProjectModelViewSet(ModelViewSet):
             newPhoto.project=project
             newPhoto.save()
 
-    @action(detail=True, methods=['get'])
-    def get_project_photos(self, request, pk=None):
-        project = self.get_object()
-        photos = ProjectPics.objects.filter(project=project)
-        serializer = ProjectPicsSerializer(photos, many=True)
-        return Response(serializer.data)
 
 
 class RateModelViewSet(ModelViewSet):
