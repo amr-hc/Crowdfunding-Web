@@ -1,3 +1,7 @@
+import django_filters
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
+
 from rest_framework.decorators import action
 from djoser.compat import get_user_email, settings
 from djoser import signals
@@ -48,7 +52,6 @@ class login(ObtainAuthToken):
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
-        print(request.data)
         serializer = self.serializer_class(
             data=request.data, context={"request": request}
         )
@@ -65,6 +68,8 @@ class UserModelViewSet(ModelViewSet):
     permission_classes = [AllowAny]
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['email']
 
     def perform_create(self, serializer, *args, **kwargs):
         user = serializer.save(*args, **kwargs)
@@ -90,11 +95,13 @@ from Project_Pics.models import ProjectPics
 from api.pagination import small
 
 class ProjectModelViewSet(ModelViewSet):
-    permission_classes = [IsOwnerProjectOrReadOnly]
-    # permission_classes = [AllowAny]
+    # permission_classes = [IsOwnerProjectOrReadOnly]
+    permission_classes = [AllowAny]
     pagination_class = small
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+    # filter_backends = [filters.SearchFilter]
+    # search_fields = ['title', 'description']
 
     def perform_create(self, serializer):
         project = serializer.save()
@@ -105,10 +112,8 @@ class ProjectModelViewSet(ModelViewSet):
             newPhoto.project=project
             newPhoto.save()
 
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
+
+
 
 class RateModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
@@ -151,3 +156,7 @@ class confirmActivate(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
+class emailIsExist(APIView):
+    def get(self, request):
+        email = request.query_params.get('email')
