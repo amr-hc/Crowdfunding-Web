@@ -318,7 +318,6 @@
     const localStorageData =JSON.parse(localStorage.getItem('userInfo'));
     const sessionStorageData=JSON.parse(sessionStorage.getItem("userInfo"));
     let userData=localStorageData?localStorageData : sessionStorageData 
-    console.log(userData);
         return userData;
   }
 
