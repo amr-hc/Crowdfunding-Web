@@ -78,7 +78,7 @@
           <label for="category" class="text-dark ms-2">Category</label>
           <div class="invalid-feedback">Please select a category.</div>
         </div>
-        <div >
+        <div>
           <select
             v-model="selectedTags"
             class="form-select"
@@ -88,13 +88,12 @@
             required
             size="2"
           >
-            <option selected disabled hidden value="" >
+            <option selected disabled hidden value="">
               Please select tags
             </option>
             <option v-for="tag in tags" :key="tag.id" :value="tag.tagName">
               {{ tag.tagName }}
             </option>
-            
           </select>
           <div class="invalid-feedback">Please select tags .</div>
         </div>
@@ -102,7 +101,7 @@
         <div class="form-floating">
           <input
             type="date"
-            class="form-control"
+            class="form-control "
             name="endDate"
             id="endDate"
             placeholder="endDate"
@@ -110,7 +109,7 @@
             required
           />
           <label for="endDate" class="text-dark ms-2">Project End Date</label>
-          <div class="invalid-feedback">Please provide an end date.</div>
+          <div v-if="invalidEndDate" class="invalid-feedback">please choose End date (must be later.)</div>
         </div>
         <div class="input-style">
           <label class="input-group-text" for="photo"
@@ -140,10 +139,11 @@ export default {
     description: "",
     targetMoney: 0,
     categoryResult: "",
-    endDate: new Date().toISOString().split("T")[0],
+    endDate:"",
+    invalidEndDate: false,
     categories: [],
-    tags:[],
-    selectedTags:[],
+    tags: [],
+    selectedTags: [],
     userInfo:
       JSON.parse(localStorage.getItem("userInfo")) ||
       JSON.parse(sessionStorage.getItem("userInfo")),
@@ -151,19 +151,32 @@ export default {
   }),
   methods: {
     async addProject($event) {
-      
-      const projectValidationResult = functionsObject.projectValidations($event);
+      const formData = {
+        title: this.title,
+        description: this.description,
+        endDate: this.endDate,
+      };
+      const projectValidationResult =
+      functionsObject.projectValidations(formData);
       const HTMLValidationResult = functionsObject.HTMLValidations($event);
+      this.invalidEndDate = !this.isValidEndDate(this.endDate);
 
       if (projectValidationResult && HTMLValidationResult) {
         const formData = this.prepareFormData();
         try {
           const responseData = await this.sendProjectRequest(formData);
           console.log("Project added successfully!");
-           this.$router.push(`/projects/${responseData.id}`);
+          this.$router.push(`/projects/${responseData.id}`);
         } catch (error) {
           console.error("Error adding project:", error);
         }
+      }
+    },
+    isValidEndDate(endDate) {
+      if( new Date(endDate) > new Date()){
+        return true;
+      }else{
+        this.endDate="";
       }
     },
 
@@ -185,8 +198,8 @@ export default {
       for (let i = 0; i < this.images.length; i++) {
         form.append("photos", this.images[i]);
       }
-      for(let i=0;i<this.selectedTags.length;i++){
-        form.append("tages",this.selectedTags[i]);
+      for (let i = 0; i < this.selectedTags.length; i++) {
+        form.append("tages", this.selectedTags[i]);
       }
       return { form, token };
     },
@@ -195,14 +208,11 @@ export default {
       const response = await fetch("http://127.0.0.1:8000/api/projects/", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${formData.token}`,
+          Authorization: `token ${formData.token}`,
         },
         body: formData.form,
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to add project.");
-      }
       return await response.json();
     },
 
@@ -212,7 +222,7 @@ export default {
         const file = selectedImages[i];
         this.images.push(file);
       }
-    }
+    },
   },
 
   created() {
@@ -230,12 +240,13 @@ export default {
         console.error(error);
       });
     fetch("http://127.0.0.1:8000/tags/")
-    .then((response)=>{
-      if (!response.ok) {
+      .then((response) => {
+        if (!response.ok) {
           throw new Error("Failed to fetch tags");
         }
         return response.json();
-    }).then((tags) => {
+      })
+      .then((tags) => {
         this.tags = tags;
       })
       .catch((error) => {
@@ -273,4 +284,5 @@ p {
 .container {
   padding: 2.5rem 3rem !important;
 }
+
 </style>

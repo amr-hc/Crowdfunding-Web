@@ -39,7 +39,7 @@ class CustomUserManager(BaseUserManager):
         return self._create_user(email, password, first_name, last_name, phone, birth_date, **extra_fields)
 
 AUTH_PROVIDERS = {'facebook': 'facebook', 'email': 'email'}
-
+ 
 class User(AbstractBaseUser,PermissionsMixin):
 
     email = models.EmailField(db_index=True, unique=True, max_length=254)
@@ -87,6 +87,7 @@ class Project(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="owner_projects")
     rates = models.ManyToManyField(User, through="Rate")
     tages = models.ManyToManyField(Tag, related_name="tagProject")
+
 
 class ImportantProject(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)

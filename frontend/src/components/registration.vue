@@ -179,7 +179,7 @@ export default {
 	  methods:{
 		handleFormSubmission(e)
 		{ 
-      console.log(this.birthdate);
+
 			functionsObject.handleFormSubmission(e,this)
         },
     confirm(e){

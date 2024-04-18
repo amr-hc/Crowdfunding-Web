@@ -1,11 +1,8 @@
 <template>
-   
-
     <div class="container">
     <div class="main-body">
-
           <div class="row gutters-sm">
-          <div class="row ">
+          <div class="row data ">
             
               <div class="card col-md-3 mb-3 bg-dark">
                 <div class="card-body">
@@ -20,7 +17,7 @@
                   </div>
               </div>
             </div>
-              <div class="card mb-3 col-md-8 mb-3 bg-dark">
+              <div class="card mb-3 col-md-9 mb-3 bg-dark">
                 <div class="card-body">
                   <div class="row">
                     <div class="col-sm-3">
@@ -88,35 +85,12 @@
                   <div class="row">
                     <div class="col-sm-12">
                       <router-link to="/updateUserProfile" class=" m-1 text-decoration-none "><button class="btn btn-info ">Edit</button></router-link>
-
-                      
                     </div>
                   </div>
                 </div>
-            
             </div>
         </div>
-
-            <div class="row pro  ">
-                <div class="card d-flex position-relative flex-column bg-dark">
-            <div class='imgContainer'>
-                <img src='../assets/imges/vecteezy_miniature-travelers-with-bicycles-in-the-park-healthy_2131939.jpg'>
-            </div>
-            <div class="content">
-                <h2>Card One</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eget velit tristique, sollicitudin leo viverra, suscipit neque. Aliquam ut facilisis urna, in pretium nibh.  Morbi in leo in eros commodo volutpat ac sed dolor.</p>
-                
-                <updateproject :project_id="'hi'" class="btn btn-info m-2" />
-                <router-link to="/updateUserProfile" class=" m-1 text-decoration-none ">  <button class="btn btn-danger m-2 "> Delete</button></router-link>
-         
-              </div>
-            
-        </div>
-         
-           
-              
-              
-                </div>
+     <projects :user="user"/> 
 
           </div>
 
@@ -127,24 +101,28 @@
   <script>
  import{datastore}from '@/stors/crowdfundingStore'
  import FunctionsClass from '../assets/js/registerAndUpdate'
- import updateproject from '@/components/updateProject.vue'
+ import projects from "@/components/profile/projects.vue"
   const functionsObject=new FunctionsClass();
   export default {
     
     data:()=>({
       storData:datastore(),
-   user:{}
+   user:{},
+    
    }),
+
+  
   methods: {
    
   },
   components: {
-    updateproject,
+    projects,
   },
   async created(){
   await functionsObject.logedInPagesCreated(this);
  
-
+ 
+ 
   }
   }
    

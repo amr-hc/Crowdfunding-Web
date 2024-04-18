@@ -1,7 +1,12 @@
+import django_filters
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
+
 from rest_framework.decorators import action
 from djoser.compat import get_user_email, settings
 from djoser import signals
 
+from api.Filter import ProjectModelFilter
 from api.models import Category, Project, Rate, User, ImportantProject
 from api.modelserializers import (
     CategorySerializer,
@@ -48,7 +53,6 @@ class login(ObtainAuthToken):
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
-        print(request.data)
         serializer = self.serializer_class(
             data=request.data, context={"request": request}
         )
@@ -65,6 +69,8 @@ class UserModelViewSet(ModelViewSet):
     permission_classes = [AllowAny]
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['email']
 
     def perform_create(self, serializer, *args, **kwargs):
         user = serializer.save(*args, **kwargs)
@@ -87,14 +93,18 @@ class CategoryModelViewSet(ModelViewSet):
 
 from Project_Pics.api.serializer import ProjectPicsSerializer
 from Project_Pics.models import ProjectPics
+from api.pagination import small
+
 
 
 class ProjectModelViewSet(ModelViewSet):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsOwnerProjectOrReadOnly]
-    # permission_classes = [AllowAny]
+    # permission_classes = [IsOwnerProjectOrReadOnly]
+    permission_classes = [AllowAny]
+    pagination_class = small
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = ProjectModelFilter
 
     def perform_create(self, serializer):
         project = serializer.save()
@@ -105,12 +115,7 @@ class ProjectModelViewSet(ModelViewSet):
             newPhoto.project=project
             newPhoto.save()
 
-    @action(detail=True, methods=['get'])
-    def get_project_photos(self, request, pk=None):
-        project = self.get_object()
-        photos = ProjectPics.objects.filter(project=project)
-        serializer = ProjectPicsSerializer(photos, many=True)
-        return Response(serializer.data)
+
 
 
 class RateModelViewSet(ModelViewSet):
@@ -123,8 +128,8 @@ class RateModelViewSet(ModelViewSet):
 
 class ImportantProjectAPIView(ModelViewSet):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAdminOrReadOnly]
-    # permission_classes = [AllowAny]
+    # permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [AllowAny]
     queryset = ImportantProject.objects.all()
     serializer_class = ImportantProjectSerializer
 
@@ -152,5 +157,6 @@ class confirmActivate(APIView):
                 return Response({'message': 'Invalid activation link.'}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 

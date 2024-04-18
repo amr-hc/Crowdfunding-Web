@@ -12,15 +12,12 @@ router.register(r'categories', CategoryModelViewSet)
 router.register(r'rate', RateModelViewSet),
 router.register(r'ImportantProject', ImportantProjectAPIView),
 router.register(r'comment', CommentModelViewSet),
-router.register(r'comment_report', CommentReportModelViewSet),
 router.register(r'replay', ReplayModelViewSet),
 
 urlpatterns = [
     path('', include(router.urls)),
     path('login', login.as_view()),
     path('activate/', confirmActivate.as_view()),
-    path('projects/<int:pk>/get_project_photos/', ProjectModelViewSet.as_view({'get': 'get_project_photos'}), name='get_project_photos'),
-
 ]
 
 

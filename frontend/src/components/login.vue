@@ -105,10 +105,13 @@
 </template>
 
 <script>
+import { datastore } from "@/stors/crowdfundingStore";
 export default {
+  name: "login",
   data: () => ({
     email: "",
     password: "",
+    datastore:datastore(),
   }),
   beforeCreate() {
     localStorage.clear();
@@ -140,7 +143,8 @@ export default {
           } else {
             sessionStorage.setItem("userInfo", JSON.stringify(data));
           }
-          this.$router.push("/");
+          window.location.href='http://localhost:8080/'
+                    // this.datastore.setAuthentication(true);
         })
         .catch((err) => console.error(err));
     },
@@ -173,6 +177,10 @@ export default {
   .loginCard {
     width: 60%;
   }
+}
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  transition: background-color 0s 600000s, color 0s 600000s !important;
 }
 @media (max-width: 768px) {
   .loginCard {

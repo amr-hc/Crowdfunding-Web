@@ -57,7 +57,8 @@ INSTALLED_APPS = [
     "Reset_Password.apps.ResetPasswordConfig",
     "corsheaders",
     'rest_framework.authtoken',
-    "djoser"
+    "djoser",
+    "django_filters"
 
 ]
 
@@ -206,8 +207,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
+        'rest_framework.permissions.AllowAny',
+    ]
+
 }
 
 
