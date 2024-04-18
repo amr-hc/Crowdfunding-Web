@@ -6,6 +6,7 @@ from rest_framework.decorators import action
 from djoser.compat import get_user_email, settings
 from djoser import signals
 
+from api.Filter import ProjectModelFilter
 from api.models import Category, Project, Rate, User, ImportantProject
 from api.modelserializers import (
     CategorySerializer,
@@ -94,14 +95,16 @@ from Project_Pics.api.serializer import ProjectPicsSerializer
 from Project_Pics.models import ProjectPics
 from api.pagination import small
 
+
+
 class ProjectModelViewSet(ModelViewSet):
     # permission_classes = [IsOwnerProjectOrReadOnly]
     permission_classes = [AllowAny]
     pagination_class = small
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
-    # filter_backends = [filters.SearchFilter]
-    # search_fields = ['title', 'description']
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = ProjectModelFilter
 
     def perform_create(self, serializer):
         project = serializer.save()
@@ -157,6 +160,3 @@ class confirmActivate(APIView):
 
 
 
-class emailIsExist(APIView):
-    def get(self, request):
-        email = request.query_params.get('email')

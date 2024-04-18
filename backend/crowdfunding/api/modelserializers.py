@@ -80,8 +80,6 @@ class confirmActivation(serializers.Serializer):
     uid = serializers.CharField()
     token = serializers.CharField()
 
-class emailIsExist(serializers.Serializer):
-    email = serializers.CharField()
 
 class userImportantData(UserSerializer):
     class Meta:
