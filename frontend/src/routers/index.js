@@ -13,7 +13,7 @@ import congratulations from "@/components/congratulations.vue";
 import forgetPassword from "@/components/forgetPassword.vue";
 import confirmForgetPassword from "@/components/confirmForgetPassword.vue";
 import befroreactivation from "@/components/befroreactivation.vue";
-import select from "@/components/select.vue";
+
 
 // test
 import AllData from "@/components/project/piniaData.vue";
@@ -33,10 +33,7 @@ const routes = [
     path: "/befroreactivation",
     component: befroreactivation,
   },
-  {
-    path: "/select",
-    component: select,
-  },
+ 
   {
     path: "/registration",
     component: registration,

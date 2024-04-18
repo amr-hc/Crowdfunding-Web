@@ -1,4 +1,6 @@
-  class FunctionsClass {
+
+import 'select2';  
+class FunctionsClass {
     constructor() {
   
     }
@@ -133,6 +135,9 @@
         formData.append("description", par.description);
         formData.append("end_date", par.endDate);
         formData.append("target_money", par.targetMoney);
+        for(let i=0;i<par.selectedTags.length;i++){
+          formData.append("tages",par.selectedTags[i]);
+        }
         return formData;
       }
       async insertUserRequest(par)
@@ -336,7 +341,30 @@
       }
     }
 
+tagSelection(par){
+  const tags=par.tags.map((obj)=>{
+    return obj.tagName;
+  })
+  $('.select2').select2({
+    data: tags,
+    tags: true,
+    maximumSelectionLength: 10,
+    tokenSeparators: [',', ' '],
+    placeholder: "Select or type keywords",
+  }
+  
+  );
+  $('.select2').on('change', function() {
+const selectedData = $(this).select2('data').map((obj)=>{
+  return obj.text;
+});  
+par.selectedTags=selectedData;
+});
+ 
 
+
+
+}
 
 
 }
