@@ -90,8 +90,8 @@ from Project_Pics.models import ProjectPics
 from api.pagination import small
 
 class ProjectModelViewSet(ModelViewSet):
-    # permission_classes = [IsOwnerProjectOrReadOnly]
-    permission_classes = [AllowAny]
+    permission_classes = [IsOwnerProjectOrReadOnly]
+    # permission_classes = [AllowAny]
     pagination_class = small
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
@@ -105,7 +105,10 @@ class ProjectModelViewSet(ModelViewSet):
             newPhoto.project=project
             newPhoto.save()
 
-
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 class RateModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
