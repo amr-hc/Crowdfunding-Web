@@ -1,24 +1,32 @@
 <template>
         <div class="row pro " >
-              <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4"
+              <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 "
                        v-for="project in storData.user.owner_projects" :key="project.id">
-                      <div class="card-flyer">
-                          <div class="text-box ">
+                      <div class="card-flyer ">
+                          <div class="text-box pb-5 ">
                               <div class="image-box">
                                   <img :src="project.pics[0].image_path" alt="" />
                               </div>
                               <div class="text-container">
                                   <h6>{{project.title}}</h6>
                                   <p>{{project.description}}</p>
-                              </div>
-                              <div class="bott">
+                                  <div class="bott ">
                                   
-                                    <button class="btn btn-info m-2 "
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#update"
-                                    @click="asginData(project)"
-                                    > Edit</button> 
+                          <router-link class="text-light text-decoration-none" :to="'projects/'+project.id"><button
+                                class="btn btn-success ">Show</button></router-link>
+                                  <button class="btn btn-info m-2  "
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#update"
+                                  @click="asginData(project)"
+                                  > Edit</button> 
+                                  <button class="btn btn-danger m-2 "
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#deleteModal"
+                                  @click="asginData(project)"
+                                  > Delete</button> 
+                            </div>
                               </div>
+                            
                             </div>
                       </div>
               </div> 
@@ -103,6 +111,23 @@
                     Please provide a valid Date.
                   </div>
                 </div>
+
+                <div class="col-md-12">
+                    <label for="validationCustom05" class=" form-label">Tags</label> <br>
+                    <label for="validationCustom05" class=" form-label"> Project Tags : {{projectTags}}</label>
+
+                    <select @change="addSelection" style="width: 100%; z-index: 100;" ref="select" class=" form-control select2" multiple id="validationCustom05" 
+                    pattern="^[a-zA-Z ,.'\-]+$" v-model="projectTags">
+                    <!-- <option selected disabled value="">Choose...</option> -->
+                    <!-- <option v-for="tag in tags" :key="tag.id" :value="tag.tagName">
+                         {{ tag.tagName }}
+                         </option> -->
+                    
+                    </select>
+                    <div class="invalid-feedback">
+                    Please select a valid category.
+                    </div> 
+                    </div> 
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                   <button  class="btn btn-primary" type="submit" >Submit form</button>
@@ -118,61 +143,103 @@
 
 <!-- Model End-->
 
+
+<!--  delete project model  -->
+
+<div class="modal fade " id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content bg-dark ">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Book</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete This project?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" @click="deleteproject"  data-bs-dismiss="modal" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </template>
 
 <script>
- import{datastore}from '@/stors/crowdfundingStore'
- import FunctionsClass from "../../assets/js/registerAndUpdate";
+import 'select2';  
+import { datastore } from '@/stors/crowdfundingStore';
+import FunctionsClass from "../../assets/js/registerAndUpdate";
 const functionsObject = new FunctionsClass();
-  export default {
-    async created(){
-  await this.storData.getCategories();
- this.categories=this.storData.categories;
-console.log(this.owner_projects,this.categories)
+
+export default {
+  async created() {
+    await this.storData.getCategories();
+    await this.storData.getTags();
+    this.categories = this.storData.categories;
+    this.tags = this.storData.tags;
+    functionsObject.tagSelection(this);
   },
-  
-    data:()=>({
-      storData:datastore(),
-   owner_projects:[],
-   projectId:'',
-    title: "",
-    description: "",
-    targetMoney: 0,
-    category: "",
-    endDate: '',
-    categories: [],
-    storgData:''
-    
-   }),
+
+  data() {
+    return {
+      storData: datastore(),
+      owner_projects: [],
+      projectId: '',
+      title: "",
+      description: "",
+      targetMoney: 0,
+      category: "",
+      endDate: '',
+      categories: [],
+      storgData: '',
+      tags: [],
+      projectTags:'',
+      selectedTags:''
+    }
+  },
+
   methods: {
-    asginData(project){
-        this.title=project.title;
-        this.description=project.description;   
-        this.targetMoney=project.target_money;
-     this.category=project.category.id;
-        this.endDate=project.end_date;
-        this.projectId=project.id;
+    asginData(project) {
+  this.title = project.title;
+  this.description = project.description;
+  this.targetMoney = project.target_money;
+  this.category = project.category.id;
+  this.endDate = project.end_date;
+  this.projectId = project.id;
+
+  this.projectTags = project.tages.map(tagId => {
+    const correspondingTag = this.tags.find(tag => tag.id === tagId);
+    return correspondingTag ? correspondingTag.tagName : null;
+  }).toString();
+}
+,
+
+    handleFormSubmission(e) {
+      functionsObject.handleProjectFormSubmission(e, this);
     },
-    handleFormSubmission(e)
-		{ 
-            
 
-			functionsObject.handleProjectFormSubmission(e,this)
-        },
-    
-  },
- 
- 
-
-  }
+    deleteproject() {
+      functionsObject.deleteProject(this);
+    },
    
-  </script>
+  },
+  unmounted(){
+    const selectElement = document.querySelector('.select2');
+      if (selectElement) {
+        $(selectElement).select2('destroy');
+      }
+  }
+}
+</script>
+
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+ 
  .card-flyer {
     border-radius: 5px;
-    height: 50vh;
+    height: 52vh;
   }
    .card-flyer .image-box{
     background: #ffffff;
