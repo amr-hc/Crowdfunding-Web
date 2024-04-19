@@ -2,8 +2,11 @@ import { defineStore } from "pinia";
 export const datastore = defineStore("crowdfunding", {
   state: () => ({
     user: {},
-    categories:[],
-    tags:[]
+    categories: [],
+    tags: [],
+    userInfo:
+      JSON.parse(localStorage.getItem("userInfo")) ||
+      JSON.parse(sessionStorage.getItem("userInfo")),
   }),
   actions: {
     async getUserData(id, token) {
@@ -16,8 +19,8 @@ export const datastore = defineStore("crowdfunding", {
           },
         });
         const user = await response.json();
-      
-        this.user=user;
+
+        this.user = user;
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -31,7 +34,8 @@ export const datastore = defineStore("crowdfunding", {
           },
         });
         const categories = await response.json();
-        this.categories= categories;
+        this.categories = categories;
+        return categories;
       } catch (error) {
         console.error("Error fetching categories data:", error);
       }
@@ -40,14 +44,33 @@ export const datastore = defineStore("crowdfunding", {
       try {
         const response = await fetch(`http://127.0.0.1:8000/tags/`);
         const tags = await response.json();
-        this.tags= tags;
+        this.tags = tags;
       } catch (error) {
         console.error("Error fetching tags data:", error);
       }
     },
-
-    
-    
+    async getAllProjects() {
+      try {
+        const res = await fetch("http://127.0.0.1:8000/api/projects/", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${this.userInfo.token} `,
+          },
+        });
+        if (!res.ok) {
+          throw new Error("can't fetch data from server");
+        }
+        const projectData = await res.json();
+        return projectData;
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+        throw error;
+      }
+    },
+    setAuthentication(value) {
+      this.isAuthenticated = value;
+    },
   },
 
   getters: {},

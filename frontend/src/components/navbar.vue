@@ -19,7 +19,7 @@
             <router-link to="projects" class="text-decoration-none"><button class="nav-link "
                 :class="{ active: $route.path.startsWith('/projects') }">Projects</button></router-link>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="this.isAuthenticated">
             <router-link to="profile" class="text-decoration-none"><button class="nav-link "
                 :class="{ active: $route.path.startsWith('/profile') }">Profile</button></router-link>
           </li>
