@@ -61,7 +61,9 @@
 									<h6 class="mb-0">Email</h6>
 								</div>
 								<div class="col-sm-9 text-secondary">
-									<input type="email" class="form-control" v-model="email"  pattern="[^@\s]+@[^@\s]+\.[^@\s]+" value="john@example.com">
+									<input type="email" class="form-control" :value="email"
+									style="background-color: gray;"
+									pattern="[^@\s]+@[^@\s]+\.[^@\s]+" disabled>
 								
 									<div class="invalid-feedback">
 										Please enter a valid email!.

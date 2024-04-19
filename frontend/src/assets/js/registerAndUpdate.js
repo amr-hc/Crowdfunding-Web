@@ -161,7 +161,8 @@ class FunctionsClass {
                 formData.delete(key);
             }
         }
-        formData.append('address', 'dssddsdsd');
+        if(formData.email){
+        formData.delete(email);}
 
          // sending Request
           try 
@@ -194,6 +195,7 @@ class FunctionsClass {
                 formData.delete(key);
             }
         }
+        formData.delete(key)
         // Get user Id and token
         const token=par.storgData.token;
         
