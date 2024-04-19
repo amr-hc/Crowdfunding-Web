@@ -81,7 +81,6 @@ class confirmActivation(serializers.Serializer):
     token = serializers.CharField()
 
 
-
 class userImportantData(UserSerializer):
     class Meta:
         model = User
@@ -97,19 +96,11 @@ class ProjectSerializer(serializers.ModelSerializer):
     average_rate = serializers.SerializerMethodField()
     tages= serializers.SlugRelatedField(many=True,slug_field='tagName',queryset=Tag.objects.all())
     donations = DonationSerializer(read_only=True, many=True)
+    total_donations = serializers.SerializerMethodField()
 
     class Meta:
         model = Project
         fields = "__all__"
-
-    # def get_allrate(self, obj):
-    #     list_rates = list(obj.allrate.values_list('rate', flat=True))
-    #     if len(list_rates)>0:
-    #         avg = sum(list_rates) / len(list_rates)
-    #     else:
-    #         avg = 5
-    #     print(avg)
-    #     return list(obj.allrate.values_list('rate', flat=True))
 
     def get_average_rate(self, obj):
         list_rates = list(obj.allrate.values_list('rate', flat=True))
@@ -118,6 +109,10 @@ class ProjectSerializer(serializers.ModelSerializer):
         else:
             avg = 5
         return avg
+
+    def get_total_donations(self, obj):
+        return sum(obj.donations.values_list('donation_amount', flat=True))
+
 
 
 class CommentSerializer(serializers.ModelSerializer):

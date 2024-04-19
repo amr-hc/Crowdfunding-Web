@@ -1,4 +1,5 @@
-<template>
+<template >
+ 
   <nav class="navbar navbar-expand-lg position-sticky sticky-top top-0 z-3">
     <div class="container-fluid">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
@@ -6,7 +7,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-        <a class="navbar-brand" href="#" @click="checkstate">Arise</a>
+        <a class="navbar-brand" href="#" >Arise</a>
         <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <router-link to="/" class="text-decoration-none"><button class="nav-link"
@@ -36,9 +37,9 @@
         <div v-if="isAuthenticated" class="avatar-container dropdown" data-bs-theme="dark">
           <a class="dropdown-toggle-split text-decoration-none d-flex align-items-center" href="#" role="button"
             data-bs-toggle="dropdown" aria-expanded="false">
-            <div class="name">John Doe</div>
+            <div class="name">{{user.first_name}}{{ user.last_name }}</div>
             <div class="avatar">
-              <img :src="avatarSrc" alt="Avatar" />
+              <img :src="user.photo" alt="Avatar" />
             </div>
           </a>
           <ul class="dropdown-menu">
@@ -66,30 +67,44 @@
 
 <script>
 import { datastore } from '@/stors/crowdfundingStore';
+import FunctionsClass from "@/assets/js/registerAndUpdate";
+const functionsObject = new FunctionsClass();
+
 export default {
   name: "navbar",
+  async created(){
+  await functionsObject.logedInPagesCreated(this);
+this.isAuthenticated=functionsObject.getStorgData() == null ? false : true;
+},
   data() {
     return {
-      datastore: datastore(),
-      avatarSrc: require("@/assets/images/avatar.png"),
+      storData: datastore(),
+      user:{},
+      isAdmin: false,
+      isAuthenticated:false
     };
   },
   methods: {
+    checkstate() {
+      this.isAuthenticated=functionsObject.getStorgData() == null ? false : true;
+
+    },
     navigate(selcted) {
       this.$emit("clickEvent", selcted);
     },
     logOut() {
       localStorage.clear();
       sessionStorage.clear();
-      this.datastore.setAuthentication(false);
+      this.isAuthenticated=false;
+      this.$router.push( "/login");
     },
+    
   },
-  computed: {
-    isAuthenticated() {
-      return this.datastore.isAuthenticated;
-    },
-  },
+  
+   
+    
 };
+
 </script>
 
 <style scoped>

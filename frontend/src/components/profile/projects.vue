@@ -12,6 +12,8 @@
                                   <p>{{project.description}}</p>
                                   <div class="bott ">
                                   
+                          <router-link class="text-light text-decoration-none" :to="'projects/'+project.id"><button
+                                class="btn btn-success ">Show</button></router-link>
                                   <button class="btn btn-info m-2  "
                                   data-bs-toggle="modal"
                                   data-bs-target="#update"
@@ -109,6 +111,21 @@
                     Please provide a valid Date.
                   </div>
                 </div>
+
+                <div class="col-md-6">
+                    <label for="validationCustom05" class=" form-label">Tags</label>
+                    <select class="selectpicker" multiple id="validationCustom05" 
+                    pattern="^[a-zA-Z ,.'\-]+$" v-model="tags">
+                    <option selected disabled value="">Choose...</option>
+                    <option v-for="tag in tags" :key="tag.id" :value="tag.tagName">
+                         {{ tag.tagName }}
+                         </option>
+                    
+                    </select>
+                    <div class="invalid-feedback">
+                    Please select a valid category.
+                    </div> 
+                    </div> 
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                   <button  class="btn btn-primary" type="submit" >Submit form</button>
@@ -154,8 +171,11 @@ const functionsObject = new FunctionsClass();
   export default {
     async created(){
   await this.storData.getCategories();
+  await this.storData.getTags();
  this.categories=this.storData.categories;
-console.log(this.owner_projects,this.categories)
+ this.tags=this.storData.tags;
+
+ 
   },
   
     data:()=>({
@@ -168,7 +188,8 @@ console.log(this.owner_projects,this.categories)
     category: "",
     endDate: '',
     categories: [],
-    storgData:''
+    storgData:'',
+    tags:[]
     
    }),
   methods: {
@@ -179,6 +200,7 @@ console.log(this.owner_projects,this.categories)
      this.category=project.category.id;
         this.endDate=project.end_date;
         this.projectId=project.id;
+        console.log( this.tags);
     },
     handleFormSubmission(e)
 		{ 

@@ -167,7 +167,7 @@
 
           <!--Donation Details-->
           <p class="text-white-50">
-            <strong>$999</strong> raised from $1000 / 5 donors
+            <strong>$999</strong> raised from $1000 / 5 donorsj
           </p>
           <div class="progress">
             <div
@@ -180,7 +180,7 @@
             ></div>
           </div>
           <h3 class="my-3">
-            ${{ totalAmount - currentDonation }} still needed
+            ${{ Math.round((totalAmount - currentDonation)*100)/100 }} still needed
           </h3>
           <p class="text-white-50">
             {{ days }} days {{ hours }} hours {{ minutes }} minutes
@@ -412,6 +412,7 @@ export default {
         this.allProjectData = data;
         //project Basic Data
         this.projectData = {
+          id:data['id'],
           title: data["title"],
           description: data["description"],
           tags: data["tags"],
@@ -426,6 +427,9 @@ export default {
 
         //total amount
         this.totalAmount = data["target_money"];
+        //current donation
+        const totalDonationsFloat = parseFloat(data["total_donations"]);
+        this.currentDonation = totalDonationsFloat.toFixed(2);
         //rating
         this.rating = data["average_rate"];
         // images
@@ -483,8 +487,10 @@ export default {
     },
 
     async Donate() {
-        this.donationAmount= parseInt(this.donationAmount);
-      if (this.donationAmount > this.totalAmount) {
+        this.donationAmount= parseFloat(this.donationAmount);
+        this.donationAmount = Math.round(this.donationAmount * 100)/100;
+        const remainingDonation = this.totalAmount - this.currentDonation;
+      if (this.donationAmount >= remainingDonation) {
         this.logger.hasError = true;
         this.logger.errorLogger =
           "Amount Of Donation Is Bigger Than the Target Amount";
@@ -501,10 +507,11 @@ export default {
         //successfully Donation
         //happy senario case
         const donationData = {
-          user: this.allUserData,
-          project: this.allProjectData,
-          donation_amount: this.targetAmount,
+          user: this.userData['user_id'],
+          project: this.projectData['id'],
+          donation_amount: this.donationAmount,
         };
+        console.log(donationData);
         try {
           const response = await fetch("http://localhost:8000/donation/", {
             method: "POST",
@@ -516,17 +523,21 @@ export default {
           if (!response.ok) {
             console.log(response);
             this.logger.hasError = true;
-            this.logger.errorLogger = "Fail To Donate Due To Response Issue";
+            this.logger.errorLogger = "Fail To Donate Due To Techincal ,Network Issue";
           }
           
           //Success Process
           this.logger.success = true;
           this.logger.successMessage = "Donated Successfully";
-          this.currentDonation+=this.donationAmount;
+          let donationProcessInFloat = parseFloat(this.currentDonation) + parseFloat(this.donationAmount);
+          this.currentDonation = Math.round(donationProcessInFloat * 100)/100;
+          console.log("dataaa");
+          console.log(this.currentDonation);
+          console.log(typeof(this.currentDonation)); 
 
         } catch (error) {
             this.logger.hasError=true;
-            this.logger.errorLogger=error
+            this.logger.errorLogger=`Donation Failed Due To ${error}`;
         }
       }
     },

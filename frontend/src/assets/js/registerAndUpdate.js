@@ -27,7 +27,7 @@
         }
     }
 
-    jsValidations(par,modul)
+    jsValidations(par,e,modul)
     {
         const namePattern = /^[a-zA-Z ,.'-]+$/;
         const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
@@ -36,36 +36,39 @@
         const countryPattern = /^[a-zA-Z ,.'-]+$/;
         const birthdatePattern = /^([0-9]{4}[-/]?((0[13-9]|1[012])[-/]?(0[1-9]|[12][0-9]|30)|(0[13578]|1[02])[-/]?31|02[-/]?(0[1-9]|1[0-9]|2[0-8]))|([0-9]{2}(([2468][048]|[02468][48])|[13579][26])|([13579][26]|[02468][048]|0[0-9]|1[0-6])00)[-/]?02[-/]?29)$/;
         const facebookPattern = /^(?:https?:\/\/)?(?:www\.)?(mbasic.facebook|m\.facebook|facebook|fb)\.(com|me)\/(?:(?:\w\.)*#!\/)?(?:pages\/)?(?:[\w\-\.]*\/)*([\w\-\.]*)/;
+
         if(par.country!="")
         {
-          if(countryPattern.test(par.country))
+          if(!countryPattern.test(par.country))
               {
-                return true;
-              }
-          else
-              {
+
                 return false;
               }
         }
-        if(par.birthdate!="")
+
+        if(par.birthdate)
+
         {
           if(birthdatePattern.test(par.birthdate))
             {
-              return true;
-            }
+          const berthdateInput=document.getElementById('validationCustom7');
+                if(par.birthdate===new Date().toISOString().split('T')[0]+''){
+
+                  berthdateInput.setCustomValidity("Date cant be today");
+                  setTimeout(() => {
+                    berthdateInput.setCustomValidity("");
+                }, 2000);
+                return false;
+                }}
           else
             {
-              console.log(par.birthdate)
               return false;
             }
         }
-        if(par.facebook!=null)
+        if(par.facebook)
         {
-          if(facebookPattern.test(par.facebook))
-              {
-                return true;
-              }
-          else
+          if(! facebookPattern.test(par.facebook))
+            
               {
                 console.log(par.facebook)
 
@@ -73,25 +76,17 @@
               }
         }
         if (!modul){
-          if(passwordPattern.test(par.password))
-              {
-                return true;
-              }
-          else
+          if(!passwordPattern.test(par.password))
               {
                 return false;
               }
         }
         if(
-        namePattern.test(par.fname)
+        !(namePattern.test(par.fname)
         &&namePattern.test(par.lname)
         &&emailPattern.test(par.email)
-        &&mobilePattern.test(par.mobile)    
+        &&mobilePattern.test(par.mobile))    
           )
-        {
-          return true;
-        }
-        else
         {  
       
           return false;
@@ -118,24 +113,6 @@
       }
   }
   
-
-
-    confirm(e,par){
-         
-        if(par.cpassword!=par.password)
-        {
-          e.target.setCustomValidity("Passwords don't match");
-        }
-        else
-        {
-          e.target.setCustomValidity('');
-        }
-      }
-
-      handleFileChange(event,par)
-      {
-        par.file = event.target.files[0];
-      }
       createUserForm(par){
         const formData = new FormData();
         formData.append('first_name', par.fname);
@@ -256,49 +233,7 @@
 
       }
 
-    handleFormSubmission(e,par,modul) {
-        if (this.HTMLValidations(e) && this.jsValidations(par,modul)) {
-          if(modul){
-            
-            this.updateUserRequest(par);
-          }else{
-            this.insertUserRequest(par);
-          }
-           
-        }
-    }
-    handleProjectFormSubmission(e,par) {
-       
-        if (this.HTMLValidations(e) && this.projectValidations(par)) {
-         
-
-            this.updateProjectRequest(par);
-          }
-           
-        
-    }
-
-    getStorgData(){
-      const localStorageData =JSON.parse(localStorage.getItem('userInfo'));
-      const sessionStorageData=JSON.parse(sessionStorage.getItem("userInfo"));
-      let userData=localStorageData?localStorageData : sessionStorageData 
-          return userData;
-    }
-
-    async logedInPagesCreated(par){
-      const localStorageData =JSON.parse(localStorage.getItem('userInfo'));
-      const sessionStorageData=JSON.parse(sessionStorage.getItem("userInfo"));
-        if(!sessionStorageData&&!localStorageData){
-          par.$router.push('/login');
-        }
-        else if(localStorageData||sessionStorageData){
-          let userData=localStorageData?localStorageData : sessionStorageData 
-          par.storgData=userData;
-          await par.storData.getUserData(userData.user_id,userData.token)
-          par.user=par.storData.user
-          
-        }
-      }
+   
 
       async deleteUser(par){
         const storgData=par.storgData;
@@ -341,6 +276,69 @@
               console.error("Error fetching api:", error);
           }
      }
+     confirm(e,par){
+         
+      if(par.cpassword!=par.password)
+      {
+        e.target.setCustomValidity("Passwords don't match");
+      }
+      else
+      {
+        e.target.setCustomValidity('');
+      }
+    }
+
+    handleFileChange(event,par)
+    {
+      par.file = event.target.files[0];
+    }
+     handleFormSubmission(e,par,modul) {
+      if (this.HTMLValidations(e) && this.jsValidations(par,e,modul)!=false) {
+        if(modul){
+          
+          this.updateUserRequest(par);
+        }else{
+          this.insertUserRequest(par);
+        }
+         
+      }
+  }
+  handleProjectFormSubmission(e,par) {
+     
+      if (this.HTMLValidations(e) && this.projectValidations(par)) {
+       
+
+          this.updateProjectRequest(par);
+        }
+         
+      
+  }
+
+  getStorgData(){
+    const localStorageData =JSON.parse(localStorage.getItem('userInfo'));
+    const sessionStorageData=JSON.parse(sessionStorage.getItem("userInfo"));
+    let userData=localStorageData?localStorageData : sessionStorageData 
+        return userData;
+  }
+
+  async logedInPagesCreated(par){
+    const localStorageData =JSON.parse(localStorage.getItem('userInfo'));
+    const sessionStorageData=JSON.parse(sessionStorage.getItem("userInfo"));
+      if(!sessionStorageData&&!localStorageData){
+        par.$router.push('/login');
+      }
+      else if(localStorageData||sessionStorageData){
+        let userData=localStorageData?localStorageData : sessionStorageData 
+        par.storgData=userData;
+        await par.storData.getUserData(userData.user_id,userData.token)
+        par.user=par.storData.user
+        
+      }
+    }
+
+
+
+
 }
 
 export default FunctionsClass;

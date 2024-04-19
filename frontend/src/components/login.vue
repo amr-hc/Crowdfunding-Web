@@ -143,8 +143,8 @@ export default {
           } else {
             sessionStorage.setItem("userInfo", JSON.stringify(data));
           }
-          this.$router.push("/");
-          this.datastore.setAuthentication(true);
+          window.location.href='http://localhost:8080/'
+                    // this.datastore.setAuthentication(true);
         })
         .catch((err) => console.error(err));
     },
