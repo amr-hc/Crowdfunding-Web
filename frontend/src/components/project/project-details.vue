@@ -167,7 +167,7 @@
 
           <!--Donation Details-->
           <p class="text-white-50">
-            <strong>$999</strong> raised from $1000 / 5 donorsj
+            <strong>${{currentDonation}}</strong> raised from {{totalAmount}} / {{projectData.numOfDonors}} donors
           </p>
           <div class="progress">
             <div
@@ -189,9 +189,9 @@
           <!--End Of Donation Details-->
 
           <!-- Project Details -->
-          <div v-if="isOwner === false">
+          <div v-if="isOwner === false ">
             <!-- Project Duration -->
-            <div class="d-flex" v-if="projectDuration > 0">
+            <div class="d-flex" v-if="canDonate === true ">
               <input
                 type="number"
                 data-bs-theme="dark"
@@ -211,7 +211,7 @@
                 Donate
               </button>
             </div>
-            <div v-else-if="projectDuration <= 0">
+            <div v-else="">
               <p
                 class="text-danger"
                 style="
@@ -222,7 +222,7 @@
                   border-radius: 5px;
                 "
               >
-                The project duration has ended.
+                {{donationPreventionLogger}}
               </p>
             </div>
           </div>
@@ -231,11 +231,11 @@
           <!-- admin -->
           <!-- || userData.user.is_superuser === true -->
           <div
-            v-else-if="isOwner === true || userData['is_super']"
+            v-else-if="(isOwner === true || userData['is_super']) && !projectData.isCanceled"
             class="admin-for-project mt-3"
           >
             <div v-if="isOwner === true && days < 4 && donationProgress < 30">
-              <button class="btn btn-secondary me-2">Cancel</button>
+              <button class="btn btn-secondary me-2" @click="CancelProject">Cancel</button>
             </div>
 
             <button class="btn btn-warning">Edit</button>
@@ -340,11 +340,13 @@ export default {
       currentDonation: 0,
       ownerData: {},
       projectDuration: 0,
+      stopProjectTime:false,
       days: 0,
       hours: 0,
       minutes: 0,
       seconds: 0,
       donationAmount: 0,
+      remainingDonation:0,
       userData: {},
       isOwner: false,
       allProjectData:0,
@@ -355,6 +357,9 @@ export default {
         success: false,
         successMessage:"",
       },
+      canDonate:true,
+      donationPreventionLogger:"",
+      
     };
   },
   async mounted() {
@@ -366,6 +371,9 @@ export default {
 
     //determine if is owner
     await this.isProjectOwner();
+     
+    //project donation permission
+    this.donationPrevent();
 
     // Fetch User Data From The Local Storage
     // this.logedInUserData = localStorage.getItem('userInfo');
@@ -418,7 +426,10 @@ export default {
           tags: data["tags"],
           current_date: new Date(),
           end_date: new Date(data["end_date"]),
+          isCanceled:data['hidden'],
+          numOfDonors:data['donations'].length
         };
+        console.log(this.projectData.numOfDonors);
         this.projectDuration =
           this.projectData.end_date - this.projectData.current_date;
         // /***Comment This line */
@@ -430,6 +441,7 @@ export default {
         //current donation
         const totalDonationsFloat = parseFloat(data["total_donations"]);
         this.currentDonation = totalDonationsFloat.toFixed(2);
+
         //rating
         this.rating = data["average_rate"];
         // images
@@ -473,7 +485,7 @@ export default {
         this.projectData.end_date - this.projectData.current_date;
       // this.projectDuration=0
       // Handle case when project duration ends
-      if (this.projectDuration <= 0) {
+      if (this.projectDuration <= 0|| this.stopProjectTime) {
         this.projectDuration = 0;
         clearInterval(this.updateTimeDifference); // Stop updating
       }
@@ -540,6 +552,54 @@ export default {
             this.logger.errorLogger=`Donation Failed Due To ${error}`;
         }
       }
+    },
+    async CancelProject(){
+      const cancelingData={
+        hidden:true
+      }
+      console.log(JSON.stringify(cancelingData));
+      if(!this.isOwner){
+        this.logger.hasError = true;
+        this.logger.errorLogger = "you are not the owner of the project";
+      }
+      else{  
+      const response = await fetch(`http://localhost:8000/api/projects/${this.projectData['id']}/`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(cancelingData),
+          });
+          console.log(response);
+          if(! response.ok){
+            console.log(response);
+            this.logger.hasError=true;
+            this.logger.errorLogger="Error While canceling The Project";
+          }
+            //successfully cancel project
+            this.success=true;
+            this.successMessage="project Was Canceled";
+            //update is canceled
+            this.isCanceled=true;
+
+      }
+
+    },
+     donationPrevent(){
+       console.log(this.totalAmount == this.currentDonation);
+       if(this.projectDuration <=0){
+        this.canDonate =false;
+        this.donationPreventionLogger="Project Duration Has Been Ended.";
+       }else if(this.totalAmount == this.currentDonation){
+        this.canDonate = false;
+        this.donationPreventionLogger="Project was completed Successfully";
+        this.stopProjectTime=true;
+       }
+       else if(this.projectData.isCanceled == true){
+        this.canDonate = false;
+        this.donationPreventionLogger="Project was canceled";
+        this.stopProjectTime=true;
+       }
     },
     selectActiveImage(index) {
       this.activeImg = this.images[index].url;

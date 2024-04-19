@@ -1,4 +1,6 @@
-  class FunctionsClass {
+
+import 'select2';  
+class FunctionsClass {
     constructor() {
   
     }
@@ -93,25 +95,31 @@
         }
     }
     projectValidations(par) {
-      const titlePattern = /^[a-zA-Z0-9\s]{1,50}$/; 
+      const titlePattern = /^[a-zA-Z0-9\s]{1,50}$/;
       const descriptionPattern = /^.{1,400}$/;
-      
-      if (titlePattern.test(par.title)
-          && descriptionPattern.test(par.description))
-           {
-          return true;
-      } else {
-          console.log(
-              titlePattern.test(par.title),
-              descriptionPattern.test(par.description),
-          );
-          console.log(
-              par.title,
-              par.description,
-          );
-          return false;
+      const currentDate = new Date();
+  
+      if (!(par.endDate && new Date(par.endDate) > currentDate)) {
+        console.log("End date must be later.");
+        return false;
       }
-  }
+  
+      if (
+        titlePattern.test(par.title) &&
+        descriptionPattern.test(par.description) && 
+        par.endDate && new Date(par.endDate) >= new Date()
+      ) {
+        return true;
+      } else {
+        console.log(
+          titlePattern.test(par.title),
+          descriptionPattern.test(par.description),
+          par.endDate && new Date(par.endDate) >= new Date()
+        );
+        console.log(par.title, par.description,par.endDate);
+        return false;
+      }
+    }
   
       createUserForm(par){
         const formData = new FormData();
@@ -133,6 +141,9 @@
         formData.append("description", par.description);
         formData.append("end_date", par.endDate);
         formData.append("target_money", par.targetMoney);
+        for(let i=0;i<par.selectedTags.length;i++){
+          formData.append("tages",par.selectedTags[i]);
+        }
         return formData;
       }
       async insertUserRequest(par)
@@ -336,7 +347,30 @@
       }
     }
 
+tagSelection(par){
+  const tags=par.tags.map((obj)=>{
+    return obj.tagName;
+  })
+  $('.select2').select2({
+    data: tags,
+    tags: true,
+    maximumSelectionLength: 10,
+    tokenSeparators: [',', ' '],
+    placeholder: "Select or type keywords",
+  }
+  
+  );
+  $('.select2').on('change', function() {
+const selectedData = $(this).select2('data').map((obj)=>{
+  return obj.text;
+});  
+par.selectedTags=selectedData;
+});
+ 
 
+
+
+}
 
 
 }

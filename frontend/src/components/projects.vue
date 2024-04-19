@@ -1,24 +1,42 @@
 <template>
   <section style="background-color: rgb(91 91 91 / 20%) !important">
-    <div class="jumbotron h-50  mb-4 row align-items-center">
+    <div class="jumbotron h-50 mb-4 row align-items-center">
       <router-link
-        class="btn btn-success  col-2 ms-3 "
+        class="btn btn-success col-2 ms-3"
         to="/add"
         v-show="showAddBtn"
         >Add Project</router-link
       >
-      <div class="headline text-end pb-4 ">
+      <div class="headline text-end pb-4">
         <h1 class="display-4 font-weight-bold">Browse Our Projects</h1>
         <h2 class="font-italic mb-0">Try To Be A Part Of The Solution.</h2>
       </div>
     </div>
-    <div class="text-center  py-3">
+    <div class="containerSearch">
+      <div>
+        <input type="text" class="searchInput" placeholder="Search..." />
+        <div class="search"></div>
+      </div>
+      <div class="form-floating selectCategory">
+        <select class="form-select" id="floatingSelect">
+          <option
+            v-for="category in this.categories"
+            :key="category.id"
+            :value="category.name"
+          >
+            {{ category.name }}
+          </option>
+        </select>
+        <span class="label">Category</span>
+      </div>
+    </div>
+    <div class="text-center py-3">
       <div class="container">
-        <div class="row wall row-gap-5   ">
+        <div class="row wall row-gap-5">
           <div
             class="col-md-4 col-sm-6"
-            v-for="project in this.projectsData"
-            :key="project['id']"
+            v-for="project in this.projectsData.results"
+            :key="project.id"
           >
             <div class="box">
               <img :src="project.pics[0]['image_path']" alt="" />
@@ -29,7 +47,9 @@
                   <span class="post">{{ project.category["name"] }}</span>
                   <ul class="icon">
                     <li>
-                      <router-link :to="'projects/' + project.id" title="project details"
+                      <router-link
+                        :to="'projects/' + project.id"
+                        title="project details"
                         ><i class="fa-solid fa-diamond-turn-right"></i
                       ></router-link>
                     </li>
@@ -50,11 +70,14 @@ export default {
   data: () => ({
     datastore: datastore(),
     projectsData: [],
+    categories: [],
   }),
   methods: {},
   async created() {
     this.projectsData = await this.datastore.getAllProjects();
-    console.log(this.projectsData);
+    this.categories = await this.datastore.getCategories();
+    console.log(this.projectsData.results);
+    console.log(this.categories);
   },
   computed: {
     showAddBtn() {
@@ -192,15 +215,155 @@ export default {
   background-image: url("@/assets/images/wallpaperflare.com_wallpaper.jpg");
   background-position: center;
   background-size: cover;
-  /* height: 40%; */
 }
 .jumbotron * {
   color: #442b10 !important;
   font-weight: 600 !important;
 }
-.headline{
+.headline {
   position: relative;
   bottom: 25%;
   right: 5%;
+}
+
+@import url("https://fonts.googleapis.com/css?family=Inconsolata:700");
+
+.containerSearch {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  left: 60%;
+  right: 0;
+  bottom: 0;
+}
+
+.containerSearch .search {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 60px;
+  background: #442b10;
+  border-radius: 50%;
+  transition: all 1s;
+  z-index: 4;
+  box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.4);
+}
+
+.containerSearch .search:hover {
+  cursor: pointer;
+}
+
+.containerSearch .search::before {
+  content: "";
+  position: absolute;
+  margin: auto;
+  top: 15px;
+  right: 0;
+  bottom: 0;
+  left: 15px;
+  width: 10px;
+  height: 2px;
+  background: white;
+  transform: rotate(45deg);
+  transition: all 0.5s;
+}
+
+.containerSearch .search::after {
+  content: "";
+  position: absolute;
+  margin: auto;
+  top: -5px;
+  right: 0;
+  bottom: 0;
+  left: -5px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid white;
+  transition: all 0.5s;
+}
+
+.containerSearch .searchInput {
+  font-family: "Inconsolata", monospace;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 50px;
+  outline: none;
+  border: none;
+  background: #442b10;
+  color: white;
+  text-shadow: 0 0 10px #442b10;
+  padding: 0 80px 0 20px;
+  border-radius: 30px;
+  box-shadow: 0 0 25px 0 #442b10, 0 20px 25px 0 rgba(0, 0, 0, 0.2);
+  transition: all 1s;
+  opacity: 0;
+  z-index: 5;
+  font-weight: bolder;
+  letter-spacing: 0.1em;
+}
+
+.containerSearch .searchInput:hover {
+  cursor: pointer;
+}
+
+.containerSearch .searchInput:focus {
+  width: 300px;
+  opacity: 1;
+  cursor: text;
+}
+
+.containerSearch .searchInput:focus ~ .search {
+  right: -250px;
+  background: #151515;
+  z-index: 6;
+}
+
+.containerSearch .searchInput:focus ~ .search::before {
+  top: 0;
+  left: 0;
+  width: 20px;
+}
+
+.containerSearch .searchInput:focus ~ .search::after {
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 2px;
+  border: none;
+  background: white;
+  border-radius: 0%;
+  transform: rotate(-45deg);
+}
+
+.containerSearch .searchInput::placeholder {
+  color: white;
+  opacity: 0.5;
+  font-weight: bolder;
+}
+.selectCategory > * {
+  background-color: transparent;
+  color: #442b10;
+}
+.selectCategory {
+  width: 30% !important;
+  position: relative;
+  top: 45%;
+  left: -50px;
+  /* background-color: #442b10; */
+}
+div.containerSearch > div.form-floating.selectCategory > span {
+  position: absolute;
+  top: 2px;
+  left: 5px;
 }
 </style>

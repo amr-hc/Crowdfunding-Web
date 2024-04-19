@@ -112,14 +112,16 @@
                   </div>
                 </div>
 
-                <div class="col-md-6">
-                    <label for="validationCustom05" class=" form-label">Tags</label>
-                    <select class="selectpicker" multiple id="validationCustom05" 
-                    pattern="^[a-zA-Z ,.'\-]+$" v-model="tags">
-                    <option selected disabled value="">Choose...</option>
-                    <option v-for="tag in tags" :key="tag.id" :value="tag.tagName">
+                <div class="col-md-12">
+                    <label for="validationCustom05" class=" form-label">Tags</label> <br>
+                    <label for="validationCustom05" class=" form-label"> Project Tags : {{projectTags}}</label>
+
+                    <select @change="addSelection" style="width: 100%; z-index: 100;" ref="select" class=" form-control select2" multiple id="validationCustom05" 
+                    pattern="^[a-zA-Z ,.'\-]+$" v-model="projectTags">
+                    <!-- <option selected disabled value="">Choose...</option> -->
+                    <!-- <option v-for="tag in tags" :key="tag.id" :value="tag.tagName">
                          {{ tag.tagName }}
-                         </option>
+                         </option> -->
                     
                     </select>
                     <div class="invalid-feedback">
@@ -165,60 +167,76 @@
 </template>
 
 <script>
- import{datastore}from '@/stors/crowdfundingStore'
- import FunctionsClass from "../../assets/js/registerAndUpdate";
+import 'select2';  
+import { datastore } from '@/stors/crowdfundingStore';
+import FunctionsClass from "../../assets/js/registerAndUpdate";
 const functionsObject = new FunctionsClass();
-  export default {
-    async created(){
-  await this.storData.getCategories();
-  await this.storData.getTags();
- this.categories=this.storData.categories;
- this.tags=this.storData.tags;
 
- 
+export default {
+  async created() {
+    await this.storData.getCategories();
+    await this.storData.getTags();
+    this.categories = this.storData.categories;
+    this.tags = this.storData.tags;
+    functionsObject.tagSelection(this);
   },
-  
-    data:()=>({
-      storData:datastore(),
-   owner_projects:[],
-   projectId:'',
-    title: "",
-    description: "",
-    targetMoney: 0,
-    category: "",
-    endDate: '',
-    categories: [],
-    storgData:'',
-    tags:[]
-    
-   }),
+
+  data() {
+    return {
+      storData: datastore(),
+      owner_projects: [],
+      projectId: '',
+      title: "",
+      description: "",
+      targetMoney: 0,
+      category: "",
+      endDate: '',
+      categories: [],
+      storgData: '',
+      tags: [],
+      projectTags:'',
+      selectedTags:''
+    }
+  },
+
   methods: {
-    asginData(project){
-        this.title=project.title;
-        this.description=project.description;   
-        this.targetMoney=project.target_money;
-     this.category=project.category.id;
-        this.endDate=project.end_date;
-        this.projectId=project.id;
-        console.log( this.tags);
-    },
-    handleFormSubmission(e)
-		{ 
-			functionsObject.handleProjectFormSubmission(e,this)
-        },
-        deleteproject(){
-          functionsObject.deleteProject(this)
-        }
-  },
- 
- 
+    asginData(project) {
+  this.title = project.title;
+  this.description = project.description;
+  this.targetMoney = project.target_money;
+  this.category = project.category.id;
+  this.endDate = project.end_date;
+  this.projectId = project.id;
 
-  }
+  this.projectTags = project.tages.map(tagId => {
+    const correspondingTag = this.tags.find(tag => tag.id === tagId);
+    return correspondingTag ? correspondingTag.tagName : null;
+  }).toString();
+}
+,
+
+    handleFormSubmission(e) {
+      functionsObject.handleProjectFormSubmission(e, this);
+    },
+
+    deleteproject() {
+      functionsObject.deleteProject(this);
+    },
    
-  </script>
+  },
+  unmounted(){
+    const selectElement = document.querySelector('.select2');
+      if (selectElement) {
+        $(selectElement).select2('destroy');
+      }
+  }
+}
+</script>
+
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+ 
  .card-flyer {
     border-radius: 5px;
     height: 52vh;
