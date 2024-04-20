@@ -11,13 +11,13 @@ from rest_framework.permissions import (
 )
 
 class ReportListCreateAPIView(ListCreateAPIView):
-    permission_classes = [IsAdminOrpost]
+    # permission_classes = [IsAdminOrpost]
     queryset = Report.objects.all()
     serializer_class = ReportSerializer
 
 
 class ReportRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsOwnerOrAdmin]
+    # permission_classes = [IsOwnerOrAdmin]
     queryset = Report.objects.all()
     serializer_class = ReportSerializer
     lookup_url_kwarg = 'id'

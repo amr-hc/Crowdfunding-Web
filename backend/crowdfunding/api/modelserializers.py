@@ -145,9 +145,25 @@ class ReplaySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class ReportCommentSerializer(serializers.ModelSerializer):
+    full_name=serializers.SerializerMethodField()
+    comment=serializers.SerializerMethodField()
+    project_id=serializers.SerializerMethodField()
+    project_title=serializers.SerializerMethodField()
     class Meta:
         model = Report_comment
         fields = "__all__"
+
+    def get_full_name(self,obj):
+        return obj.user_id.first_name + " " +obj.user_id.last_name
+
+    def get_comment(self,obj):
+        return obj.comment_id.comment
+
+    def get_project_id(self,obj):
+        return obj.comment_id.project_id.id
+
+    def get_project_title(self,obj):
+        return obj.comment_id.project_id.title
 
 
 class ImportantProjectSerializer(serializers.ModelSerializer):
