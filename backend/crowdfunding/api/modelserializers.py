@@ -3,6 +3,7 @@ from django.contrib.auth.hashers import make_password
 
 from api.models import User, Category, Project, Rate, ImportantProject
 from comment.models import Comment
+from comment.serializer import CommentSerializer
 from replay.models import Replay
 from comment_report.models import Report_comment
 from Project_Pics.api.serializer import ProjectPicsSerializer
@@ -97,7 +98,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     tages= serializers.SlugRelatedField(many=True,slug_field='tagName',queryset=Tag.objects.all())
     donations = DonationSerializer(read_only=True, many=True)
     total_donations = serializers.SerializerMethodField()
-
+    comments = CommentSerializer(read_only=True, many=True)
     class Meta:
         model = Project
         fields = "__all__"
@@ -114,15 +115,29 @@ class ProjectSerializer(serializers.ModelSerializer):
         return sum(obj.donations.values_list('donation_amount', flat=True))
 
 
-
-class CommentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Comment
-        fields = "__all__"
-    def validate(self, data):
-        data['user_id'] = self.context['request'].user
-        return data
-
+#
+# class CommentSerializer(serializers.ModelSerializer):
+#     user_data = serializers.SerializerMethodField(read_only=True)
+#
+#     class Meta:
+#         model = Comment
+#         fields = "__all__"
+#
+#     def validate(self, data):
+#         data['user_id'] = self.context['request'].user
+#         return data
+#
+#     def get_user_data(self, obj):
+#         user = obj.user_id
+#         return {
+#             'id': user.id,
+#             'first_name': user.first_name,
+#             'last_name': user.last_name,
+#             'image': user.photo.url if user.photo else None,  # Assuming photo is a FileField or ImageField
+#             'country': user.country,
+#             'is_active': user.is_active,
+#             'is_superuser': user.is_superuser,
+#         }
 
 class ReplaySerializer(serializers.ModelSerializer):
     class Meta:

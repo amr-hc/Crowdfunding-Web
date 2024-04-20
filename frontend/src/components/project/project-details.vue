@@ -502,7 +502,7 @@ export default {
         this.donationAmount= parseFloat(this.donationAmount);
         this.donationAmount = Math.round(this.donationAmount * 100)/100;
         const remainingDonation = this.totalAmount - this.currentDonation;
-      if (this.donationAmount >= remainingDonation) {
+      if (this.donationAmount > remainingDonation) {
         this.logger.hasError = true;
         this.logger.errorLogger =
           "Amount Of Donation Is Bigger Than the Target Amount";
@@ -515,7 +515,11 @@ export default {
       } else if (this.projectDuration <= 0 && !this.isOwner) {
         this.logger.hasError = true;
         this.logger.errorLogger = "cannot donate after the time of duration";
-      } else {
+      }else if(this.isCanceled==true){
+        this.logger.hasError=true;
+        this.logger.errorLogger="Can't Donate The Project Was Canceled";
+      }
+       else {
         //successfully Donation
         //happy senario case
         const donationData = {
@@ -537,7 +541,7 @@ export default {
             this.logger.hasError = true;
             this.logger.errorLogger = "Fail To Donate Due To Techincal ,Network Issue";
           }
-          
+          else{
           //Success Process
           this.logger.success = true;
           this.logger.successMessage = "Donated Successfully";
@@ -546,7 +550,7 @@ export default {
           console.log("dataaa");
           console.log(this.currentDonation);
           console.log(typeof(this.currentDonation)); 
-
+          }
         } catch (error) {
             this.logger.hasError=true;
             this.logger.errorLogger=`Donation Failed Due To ${error}`;
@@ -558,11 +562,6 @@ export default {
         hidden:true
       }
       console.log(JSON.stringify(cancelingData));
-      if(!this.isOwner){
-        this.logger.hasError = true;
-        this.logger.errorLogger = "you are not the owner of the project";
-      }
-      else{  
       const response = await fetch(`http://localhost:8000/api/projects/${this.projectData['id']}/`, {
             method: "PATCH",
             headers: {
@@ -582,8 +581,6 @@ export default {
             //update is canceled
             this.isCanceled=true;
 
-      }
-
     },
      donationPrevent(){
        console.log(this.totalAmount == this.currentDonation);
@@ -594,6 +591,7 @@ export default {
         this.canDonate = false;
         this.donationPreventionLogger="Project was completed Successfully";
         this.stopProjectTime=true;
+        this.CancelProject();
        }
        else if(this.projectData.isCanceled == true){
         this.canDonate = false;
