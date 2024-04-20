@@ -53,9 +53,7 @@ class login(ObtainAuthToken):
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(
-            data=request.data, context={"request": request}
-        )
+        serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"]
         token, created = Token.objects.get_or_create(user=user)
@@ -65,8 +63,8 @@ class login(ObtainAuthToken):
 
 class UserModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsSameUserOrReadOnly]
-    permission_classes = [AllowAny]
+    permission_classes = [IsSameUserOrReadOnly]
+    # permission_classes = [AllowAny]
     queryset = User.objects.all()
     serializer_class = UserSerializer
     filter_backends = [DjangoFilterBackend]
@@ -82,6 +80,15 @@ class UserModelViewSet(ModelViewSet):
         from_email = "amr.abdullah.elrefaey@gmail.com"
         to_email = user.email
         send_mail(subject, message, from_email, [to_email])
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        user=authenticate(username=request.user.email, password=request.data['password'])
+        if user is not None:
+            self.perform_destroy(instance)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class CategoryModelViewSet(ModelViewSet):
