@@ -11,11 +11,7 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def validate(self, data):
-        # Get the user_id from the request data
-        user_id = self.context['request'].data.get('user_id')
-        # Get the user object using the user_id
-        user = User.objects.get(pk=user_id)
-        data['user_id'] = user
+        data['user_id'] = self.context['request'].user
         return data
 
 
@@ -29,5 +25,4 @@ class CommentSerializer(serializers.ModelSerializer):
             'country': user.country,
             'is_active': user.is_active,
             'is_superuser': user.is_superuser,
-            'rates': user.rates
         }

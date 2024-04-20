@@ -61,8 +61,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = "__all__"
-        # fields = ["id", "email", "password", "first_name", "last_name", "is_superuser", "is_active", "birth_date", "photo","country","facebook","phone"]
+        # fields = "__all__"
+        fields = ["id", "email", "password", "first_name", "last_name", "is_superuser", "is_active", "birth_date", "photo","country","facebook","phone","owner_projects","donations"]
         extra_kwargs = {'password': {'write_only': True}}
     def validate(self, data):
         if 'password' in data:
@@ -145,9 +145,25 @@ class ReplaySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class ReportCommentSerializer(serializers.ModelSerializer):
+    full_name=serializers.SerializerMethodField()
+    comment=serializers.SerializerMethodField()
+    project_id=serializers.SerializerMethodField()
+    project_title=serializers.SerializerMethodField()
     class Meta:
         model = Report_comment
         fields = "__all__"
+
+    def get_full_name(self,obj):
+        return obj.user_id.first_name + " " +obj.user_id.last_name
+
+    def get_comment(self,obj):
+        return obj.comment_id.comment
+
+    def get_project_id(self,obj):
+        return obj.comment_id.project_id.id
+
+    def get_project_title(self,obj):
+        return obj.comment_id.project_id.title
 
 
 class ImportantProjectSerializer(serializers.ModelSerializer):

@@ -13,8 +13,8 @@ import congratulations from "@/components/congratulations.vue";
 import forgetPassword from "@/components/forgetPassword.vue";
 import confirmForgetPassword from "@/components/confirmForgetPassword.vue";
 import befroreactivation from "@/components/befroreactivation.vue";
-
-
+import reportComment from "@/components/dashboard/reportComment.vue";
+import reportProject from "@/components/dashboard/reportProject.vue";
 // test
 import AllData from "@/components/project/piniaData.vue";
 
@@ -88,6 +88,14 @@ const routes = [
     path: "/dashboard",
     component: Dashboard,
   },
+  {
+    path:"/dashboard/reportComment",
+    component:reportComment
+  },
+  {
+    path:"/dashboard/reportProject",
+    component:reportProject
+  }
 ];
 const router = createRouter({
   routes,
