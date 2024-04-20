@@ -20,9 +20,12 @@ class IsSameUserOrReadOnly(permissions.BasePermission):
         return True
 
     def has_object_permission(self, request, view, obj):
-        if request.method == "GET" or obj == request.user or request.user.is_superuser:
+        if request.method == "GET" or request.user.is_superuser:
             return True
-        return False
+        elif "email" in request.data or obj != request.user:
+            return False
+        return True
+
 
 
 
