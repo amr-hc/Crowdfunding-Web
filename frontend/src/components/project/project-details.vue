@@ -117,13 +117,14 @@
               </button>
             </div>
             <hr />
+          <div style="overflow:scroll" v-for="comment in projectData.comments" :key="comment.id"> <!-- Start Of Comments Section -->
             <div class="reviewer text-end border-bottom border-dark my-2">
               <div class="d-flex justify-content-between align-items-baseline">
                 <div class="d-flex align-items-center gap-2">
                   <div class="avatar">
-                    <img src="https://placehold.co/400" alt="Avatar" />
+                    <img :src="comment.user.image" alt="Avatar" />
                   </div>
-                  <div class="text-light">John Doe</div>
+                  <div class="text-light">{{comment.user.first_name}} {{comment.user.last_name}}</div>
                 </div>
                 <div class="rating">
                   <i
@@ -137,10 +138,9 @@
                 </div>
               </div>
               <p class="text-white-50 text-start">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto,
-                quod.
+                {{comment.comment}}
               </p>
-              <p class="m-0">10-10-2022 - 10:10 AM</p>
+              <p class="m-0">From - {{comment.user.country}}</p>
               <button
                 class="btn btn-outline-danger p-0 mb-2 border-0 px-2"
                 data-bs-toggle="modal"
@@ -149,6 +149,7 @@
                 report <i class="fa-solid fa-reply"></i>
               </button>
             </div>
+          </div> <!-- End Of Comments Section -->
           </div>
         </div>
 
@@ -167,7 +168,8 @@
 
           <!--Donation Details-->
           <p class="text-white-50">
-            <strong>${{currentDonation}}</strong> raised from {{totalAmount}} / {{projectData.numOfDonors}} donors
+            <strong>${{ currentDonation }}</strong> raised from
+            {{ totalAmount }} / {{ projectData.numOfDonors }} donors
           </p>
           <div class="progress">
             <div
@@ -180,7 +182,8 @@
             ></div>
           </div>
           <h3 class="my-3">
-            ${{ Math.round((totalAmount - currentDonation)*100)/100 }} still needed
+            ${{ Math.round((totalAmount - currentDonation) * 100) / 100 }} still
+            needed
           </h3>
           <p class="text-white-50">
             {{ days }} days {{ hours }} hours {{ minutes }} minutes
@@ -189,9 +192,9 @@
           <!--End Of Donation Details-->
 
           <!-- Project Details -->
-          <div v-if="isOwner === false ">
+          <div v-if="isOwner === false">
             <!-- Project Duration -->
-            <div class="d-flex" v-if="canDonate === true ">
+            <div class="d-flex" v-if="canDonate === true">
               <input
                 type="number"
                 data-bs-theme="dark"
@@ -222,7 +225,7 @@
                   border-radius: 5px;
                 "
               >
-                {{donationPreventionLogger}}
+                {{ donationPreventionLogger }}
               </p>
             </div>
           </div>
@@ -231,11 +234,16 @@
           <!-- admin -->
           <!-- || userData.user.is_superuser === true -->
           <div
-            v-else-if="(isOwner === true || userData['is_super']) && !projectData.isCanceled"
+            v-else-if="
+              (isOwner === true || userData['is_super']) &&
+              !projectData.isCanceled
+            "
             class="admin-for-project mt-3"
           >
             <div v-if="isOwner === true && days < 4 && donationProgress < 30">
-              <button class="btn btn-secondary me-2" @click="CancelProject">Cancel</button>
+              <button class="btn btn-secondary me-2" @click="CancelProject">
+                Cancel
+              </button>
             </div>
 
             <button class="btn btn-warning">Edit</button>
@@ -340,26 +348,25 @@ export default {
       currentDonation: 0,
       ownerData: {},
       projectDuration: 0,
-      stopProjectTime:false,
+      stopProjectTime: false,
       days: 0,
       hours: 0,
       minutes: 0,
       seconds: 0,
       donationAmount: 0,
-      remainingDonation:0,
+      remainingDonation: 0,
       userData: {},
       isOwner: false,
-      allProjectData:0,
-      allUserData:0,
+      allProjectData: 0,
+      allUserData: 0,
       logger: {
         hasError: false,
         errorLogger: "",
         success: false,
-        successMessage:"",
+        successMessage: "",
       },
-      canDonate:true,
-      donationPreventionLogger:"",
-      
+      canDonate: true,
+      donationPreventionLogger: "",
     };
   },
   async mounted() {
@@ -371,7 +378,7 @@ export default {
 
     //determine if is owner
     await this.isProjectOwner();
-     
+
     //project donation permission
     this.donationPrevent();
 
@@ -393,12 +400,14 @@ export default {
           this.userData = localStorageData
             ? JSON.parse(localStorageData)
             : JSON.parse(sessionStorageData);
-            console.log(this.userData['user_id'])
-          const response=await fetch(`http://localhost:8000/api/users/${this.userData['user_id']}`);
-          this.allUserData = await response.json();  
+          console.log(this.userData["user_id"]);
+          const response = await fetch(
+            `http://localhost:8000/api/users/${this.userData["user_id"]}`
+          );
+          this.allUserData = await response.json();
           console.log(this.allUserData);
         } catch (error) {
-          throw new Error( error);
+          throw new Error(error);
 
           this.userData = {};
         }
@@ -420,15 +429,34 @@ export default {
         this.allProjectData = data;
         //project Basic Data
         this.projectData = {
-          id:data['id'],
+          id: data["id"],
           title: data["title"],
           description: data["description"],
           tags: data["tags"],
           current_date: new Date(),
           end_date: new Date(data["end_date"]),
-          isCanceled:data['hidden'],
-          numOfDonors:data['donations'].length
+          isCanceled: data["hidden"],
+          numOfDonors: data["donations"].length,
+          comments: data["comments"],
         };
+
+        ///Fetching Comment Data
+        console.log("comments section");
+        this.projectData.comments = this.projectData.comments.map((comment) => {
+          return {
+            id:comment.id,
+            comment: comment.comment,
+            user: {
+              first_name: comment.user_data.first_name,
+              last_name: comment.user_data.last_name,
+              country: comment.user_data.country,
+              image: `http://localhost:8000/${comment.user_data.image}`,
+              is_active: comment.user_data.is_active,
+              is_admin: comment.user_data.is_superuser,
+            },
+          };
+        });
+
         console.log(this.projectData.numOfDonors);
         this.projectDuration =
           this.projectData.end_date - this.projectData.current_date;
@@ -485,7 +513,7 @@ export default {
         this.projectData.end_date - this.projectData.current_date;
       // this.projectDuration=0
       // Handle case when project duration ends
-      if (this.projectDuration <= 0|| this.stopProjectTime) {
+      if (this.projectDuration <= 0 || this.stopProjectTime) {
         this.projectDuration = 0;
         clearInterval(this.updateTimeDifference); // Stop updating
       }
@@ -499,9 +527,9 @@ export default {
     },
 
     async Donate() {
-        this.donationAmount= parseFloat(this.donationAmount);
-        this.donationAmount = Math.round(this.donationAmount * 100)/100;
-        const remainingDonation = this.totalAmount - this.currentDonation;
+      this.donationAmount = parseFloat(this.donationAmount);
+      this.donationAmount = Math.round(this.donationAmount * 100) / 100;
+      const remainingDonation = this.totalAmount - this.currentDonation;
       if (this.donationAmount > remainingDonation) {
         this.logger.hasError = true;
         this.logger.errorLogger =
@@ -515,16 +543,15 @@ export default {
       } else if (this.projectDuration <= 0 && !this.isOwner) {
         this.logger.hasError = true;
         this.logger.errorLogger = "cannot donate after the time of duration";
-      }else if(this.isCanceled==true){
-        this.logger.hasError=true;
-        this.logger.errorLogger="Can't Donate The Project Was Canceled";
-      }
-       else {
+      } else if (this.isCanceled == true) {
+        this.logger.hasError = true;
+        this.logger.errorLogger = "Can't Donate The Project Was Canceled";
+      } else {
         //successfully Donation
         //happy senario case
         const donationData = {
-          user: this.userData['user_id'],
-          project: this.projectData['id'],
+          user: this.userData["user_id"],
+          project: this.projectData["id"],
           donation_amount: this.donationAmount,
         };
         console.log(donationData);
@@ -539,65 +566,69 @@ export default {
           if (!response.ok) {
             console.log(response);
             this.logger.hasError = true;
-            this.logger.errorLogger = "Fail To Donate Due To Techincal ,Network Issue";
-          }
-          else{
-          //Success Process
-          this.logger.success = true;
-          this.logger.successMessage = "Donated Successfully";
-          let donationProcessInFloat = parseFloat(this.currentDonation) + parseFloat(this.donationAmount);
-          this.currentDonation = Math.round(donationProcessInFloat * 100)/100;
-          console.log("dataaa");
-          console.log(this.currentDonation);
-          console.log(typeof(this.currentDonation)); 
+            this.logger.errorLogger =
+              "Fail To Donate Due To Techincal ,Network Issue";
+          } else {
+            //Success Process
+            this.logger.success = true;
+            this.logger.successMessage = "Donated Successfully";
+            let donationProcessInFloat =
+              parseFloat(this.currentDonation) +
+              parseFloat(this.donationAmount);
+            this.currentDonation =
+              Math.round(donationProcessInFloat * 100) / 100;
+            console.log("dataaa");
+            console.log(this.currentDonation);
+            console.log(typeof this.currentDonation);
           }
         } catch (error) {
-            this.logger.hasError=true;
-            this.logger.errorLogger=`Donation Failed Due To ${error}`;
+          this.logger.hasError = true;
+          this.logger.errorLogger = `Donation Failed Due To ${error}`;
         }
       }
     },
-    async CancelProject(){
-      const cancelingData={
-        hidden:true
-      }
+    async CancelProject() {
+      const cancelingData = {
+        hidden: true,
+      };
       console.log(JSON.stringify(cancelingData));
-      const response = await fetch(`http://localhost:8000/api/projects/${this.projectData['id']}/`, {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(cancelingData),
-          });
-          console.log(response);
-          if(! response.ok){
-            console.log(response);
-            this.logger.hasError=true;
-            this.logger.errorLogger="Error While canceling The Project";
-          }
-            //successfully cancel project
-            this.success=true;
-            this.successMessage="project Was Canceled";
-            //update is canceled
-            this.isCanceled=true;
-
+      const response = await fetch(
+        `http://localhost:8000/api/projects/${this.projectData["id"]}/`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(cancelingData),
+        }
+      );
+      console.log(response);
+      if (!response.ok) {
+        console.log(response);
+        this.logger.hasError = true;
+        this.logger.errorLogger = "Error While canceling The Project";
+      }
+      //successfully cancel project
+      this.success = true;
+      this.successMessage = "project Was Canceled";
+      //update is canceled
+      this.isCanceled = true;
     },
-     donationPrevent(){
-       console.log(this.totalAmount == this.currentDonation);
-       if(this.projectDuration <=0){
-        this.canDonate =false;
-        this.donationPreventionLogger="Project Duration Has Been Ended.";
-       }else if(this.totalAmount == this.currentDonation){
+    donationPrevent() {
+      console.log(this.totalAmount == this.currentDonation);
+      if (this.projectDuration <= 0) {
         this.canDonate = false;
-        this.donationPreventionLogger="Project was completed Successfully";
-        this.stopProjectTime=true;
+        this.donationPreventionLogger = "Project Duration Has Been Ended.";
+      } else if (this.totalAmount == this.currentDonation) {
+        this.canDonate = false;
+        this.donationPreventionLogger = "Project was completed Successfully";
+        this.stopProjectTime = true;
         this.CancelProject();
-       }
-       else if(this.projectData.isCanceled == true){
+      } else if (this.projectData.isCanceled == true) {
         this.canDonate = false;
-        this.donationPreventionLogger="Project was canceled";
-        this.stopProjectTime=true;
-       }
+        this.donationPreventionLogger = "Project was canceled";
+        this.stopProjectTime = true;
+      }
     },
     selectActiveImage(index) {
       this.activeImg = this.images[index].url;
