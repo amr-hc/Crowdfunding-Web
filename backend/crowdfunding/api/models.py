@@ -40,7 +40,7 @@ class CustomUserManager(BaseUserManager):
 
 AUTH_PROVIDERS = {'facebook': 'facebook', 'email': 'email'}
  
-class User(AbstractBaseUser,PermissionsMixin):
+class User(AbstractBaseUser):
 
     email = models.EmailField(db_index=True, unique=True, max_length=254)
     first_name = models.CharField(max_length=240)
