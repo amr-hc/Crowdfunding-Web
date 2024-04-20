@@ -103,7 +103,7 @@
               <div data-bs-theme="dark">
                 <select
                   id="newRating"
-                  v-bind="newRate"
+                  v-model="newRate"
                   class="col form-select bg-body-secondary"
                 >
                   <option selected disabled>Your Rating</option>
@@ -114,44 +114,61 @@
                   <option value="5">5 stars</option>
                 </select>
               </div>
-              <button class="col text-center btn btn-main btn-outline-dark" @click="submitComment">
+              <button
+                class="col text-center btn btn-main btn-outline-dark"
+                @click="submitComment(newRate, newComment)"
+              >
                 Comment
               </button>
             </div>
             <hr />
-          <div style="overflow:scroll" v-for="comment in projectData.comments" :key="comment.id"> <!-- Start Of Comments Section -->
-            <div class="reviewer text-end border-bottom border-dark my-2">
-              <div class="d-flex justify-content-between align-items-baseline">
-                <div class="d-flex align-items-center gap-2">
-                  <div class="avatar">
-                    <img :src="comment.user.image" alt="Avatar" />
+          <div v-if="projectData.comments">
+            <div
+              style="overflow: scroll;"
+              v-for="comment in projectData.comments"
+              :key="comment.id"
+            >
+              <!-- Start Of Comments Section -->
+              <div class="reviewer text-end border-bottom border-dark my-2">
+                <div
+                  class="d-flex justify-content-between align-items-baseline"
+                >
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="avatar">
+                      <img :src="comment.user.image" alt="Avatar" />
+                    </div>
+                    <div class="text-light" style="text-transform: capitalize;">
+                      {{ comment.user.first_name }} {{ comment.user.last_name }}
+                      <span v-if="isOwner === true">- Owner</span>
+                      <span v-if="comment.user.is_admin === true">(Admin)</span>
+                    </div>
                   </div>
-                  <div class="text-light" style="text-transform:capitalize">{{comment.user.first_name}} {{comment.user.last_name}} <span v-if="isOwner===true">- Owner</span> <span v-if="comment.user.is_admin === true">(Admin)</span> </div>
+                  <div class="rating">
+                    <i
+                      v-for="n in comment.user.rate"
+                      :key="n"
+                      :class="{
+                        'plus fa-solid fa-star': n <= rating,
+                        'minus fa-regular fa-star': n > rating,
+                      }"
+                    ></i>
+                  </div>
                 </div>
-                <div class="rating">
-                  <i
-                    v-for="n in 5"
-                    :key="n"
-                    :class="{
-                      'plus fa-solid fa-star': n <= rating,
-                      'minus fa-regular fa-star': n > rating,
-                    }"
-                  ></i>
-                </div>
+                <p class="text-white-50 text-start">
+                  {{ comment.comment }}
+                </p>
+                <p class="m-0">From - {{ comment.user.country }}</p>
+                <button
+                  class="btn btn-outline-danger p-0 mb-2 border-0 px-2"
+                  data-bs-toggle="modal"
+                  data-bs-target="#reportModal"
+                >
+                  report <i class="fa-solid fa-reply"></i>
+                </button>
               </div>
-              <p class="text-white-50 text-start">
-                {{comment.comment}}
-              </p>
-              <p class="m-0">From - {{comment.user.country}}</p>
-              <button
-                class="btn btn-outline-danger p-0 mb-2 border-0 px-2"
-                data-bs-toggle="modal"
-                data-bs-target="#reportModal"
-              >
-                report <i class="fa-solid fa-reply"></i>
-              </button>
             </div>
-          </div> <!-- End Of Comments Section -->
+          </div>
+            <!-- End Of Comments Section -->
           </div>
         </div>
 
@@ -369,8 +386,9 @@ export default {
       },
       canDonate: true,
       donationPreventionLogger: "",
-      newComment:"",
-      newRate:null,
+      newComment: "",
+      newRate: null,
+      projectRates: [],
     };
   },
   async mounted() {
@@ -442,13 +460,22 @@ export default {
           isCanceled: data["hidden"],
           numOfDonors: data["donations"].length,
           comments: data["comments"],
+          rating: data["allrate"],
         };
-
         ///Fetching Comment Data
         console.log("comments section");
+
+        this.projectData.rating = this.projectData.rating.map((rate) => {
+          return {
+            id: rate.id,
+            rate: rate.rate,
+            user_id: rate.user,
+          };
+        });
+
         this.projectData.comments = this.projectData.comments.map((comment) => {
           return {
-            id:comment.id,
+            id: comment.id,
             comment: comment.comment,
             user: {
               first_name: comment.user_data.first_name,
@@ -457,6 +484,7 @@ export default {
               image: `http://localhost:8000/${comment.user_data.image}`,
               is_active: comment.user_data.is_active,
               is_admin: comment.user_data.is_superuser,
+              rate: this.projectData.rating[comment.id - 1].rate,
             },
           };
         });
@@ -492,6 +520,14 @@ export default {
       } catch (error) {
         console.error("Error fetching project data:", error);
       }
+
+      // //Project Rates
+      //  response = await fetch(
+      //     `http://localhost:8000/rating/${projectId}/project`
+      //   );
+      //   if (!response.ok) {
+      //     throw new Error("Failed to fetch project data");
+      //   }
     },
     async isProjectOwner() {
       console.log("userData");
@@ -634,9 +670,10 @@ export default {
         this.stopProjectTime = true;
       }
     },
-    submitComment(rating,comment){
-       
-    },
+    // async submitComment(rating,comment){
+    //    await fetch("http://localhost8000/")
+    // },
+
     selectActiveImage(index) {
       this.activeImg = this.images[index].url;
       this.images.forEach((img, i) => {
@@ -646,7 +683,6 @@ export default {
     showAllSimilarProjects() {
       this.showAllProjects = true;
     },
-
   },
   computed: {
     filledStars() {
