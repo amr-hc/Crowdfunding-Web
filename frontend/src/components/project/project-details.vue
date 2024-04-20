@@ -93,6 +93,7 @@
               id="newComment"
               class="col form-control bg-transparent text-light"
               rows="3"
+              v-model="newComment"
               placeholder="Write your comment"
             ></textarea>
 
@@ -102,9 +103,10 @@
               <div data-bs-theme="dark">
                 <select
                   id="newRating"
+                  v-bind="newRate"
                   class="col form-select bg-body-secondary"
                 >
-                  <option selected>Your Rating</option>
+                  <option selected disabled>Your Rating</option>
                   <option value="1">1 star</option>
                   <option value="2">2 stars</option>
                   <option value="3">3 stars</option>
@@ -112,7 +114,7 @@
                   <option value="5">5 stars</option>
                 </select>
               </div>
-              <button class="col text-center btn btn-main btn-outline-dark">
+              <button class="col text-center btn btn-main btn-outline-dark" @click="submitComment">
                 Comment
               </button>
             </div>
@@ -124,7 +126,7 @@
                   <div class="avatar">
                     <img :src="comment.user.image" alt="Avatar" />
                   </div>
-                  <div class="text-light">{{comment.user.first_name}} {{comment.user.last_name}}</div>
+                  <div class="text-light" style="text-transform:capitalize">{{comment.user.first_name}} {{comment.user.last_name}} <span v-if="isOwner===true">- Owner</span> <span v-if="comment.user.is_admin === true">(Admin)</span> </div>
                 </div>
                 <div class="rating">
                   <i
@@ -367,6 +369,8 @@ export default {
       },
       canDonate: true,
       donationPreventionLogger: "",
+      newComment:"",
+      newRate:null,
     };
   },
   async mounted() {
@@ -630,6 +634,9 @@ export default {
         this.stopProjectTime = true;
       }
     },
+    submitComment(rating,comment){
+       
+    },
     selectActiveImage(index) {
       this.activeImg = this.images[index].url;
       this.images.forEach((img, i) => {
@@ -639,6 +646,7 @@ export default {
     showAllSimilarProjects() {
       this.showAllProjects = true;
     },
+
   },
   computed: {
     filledStars() {
