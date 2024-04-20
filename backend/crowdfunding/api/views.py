@@ -62,8 +62,8 @@ class login(ObtainAuthToken):
 
 
 class UserModelViewSet(ModelViewSet):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsSameUserOrReadOnly]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsSameUserOrReadOnly]
     # permission_classes = [AllowAny]
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -83,6 +83,9 @@ class UserModelViewSet(ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
+        if request.user.is_superuser and request.user != instance:
+            self.perform_destroy(instance)
+            return Response(status=status.HTTP_204_NO_CONTENT)
         user=authenticate(username=request.user.email, password=request.data['password'])
         if user is not None:
             self.perform_destroy(instance)
