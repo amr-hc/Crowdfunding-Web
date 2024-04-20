@@ -120,7 +120,34 @@ class FunctionsClass {
         return false;
       }
     }
-  
+ async checkEmail(par,e){
+      // sending Request
+      try 
+      {
+        
+
+        const response = await fetch(`http://127.0.0.1:8000/api/users/?email=${par}`);
+        if (!response.ok) {
+          throw new Error("can't insert data to server");
+        }
+        const data = await response.json(); 
+        if (data.length){
+          e.target.setCustomValidity("email is exsist");
+         }
+          else{ 
+             e.target.setCustomValidity("");
+            }
+          
+        
+       
+         
+      }
+    catch (error) 
+        {
+            console.error("Error fetching api:", error);
+        }
+    
+  }
       createUserForm(par){
         const formData = new FormData();
         formData.append('first_name', par.fname);
@@ -161,8 +188,7 @@ class FunctionsClass {
                 formData.delete(key);
             }
         }
-        if(formData.email){
-        formData.delete(email);}
+       
 
          // sending Request
           try 
@@ -195,7 +221,8 @@ class FunctionsClass {
                 formData.delete(key);
             }
         }
-        formData.delete(key)
+        if(formData.email){
+          formData.delete(email);}
         // Get user Id and token
         const token=par.storgData.token;
         
@@ -209,7 +236,9 @@ class FunctionsClass {
               },
               body: formData,
             });
-            
+            if (!response.ok) {
+              throw new Error("can't update data ");
+            }
                 const data = await response.json(); 
               console.log(data)
           }
@@ -233,7 +262,9 @@ class FunctionsClass {
             },
             body: formData,
           });
-          
+          if (!response.ok) {
+            throw new Error("can't update data ");
+          }
               const data = await response.json(); 
             console.log(data)
         }
@@ -259,6 +290,9 @@ class FunctionsClass {
               'Authorization': `Bearer ${storgData.token} `
             },
           });
+          if (!response.ok) {
+            throw new Error("can't delete data ");
+          }
             const data = await response.json(); 
             
             par.$router.push('/login');
@@ -281,6 +315,9 @@ class FunctionsClass {
               'Authorization': `Bearer ${storgData.token} `
             },
           });
+          if (!response.ok) {
+            throw new Error("can't delete data ");
+          }
           par.$router.go(par.$router.currentRoute)
             console.log(response)
         }

@@ -18,6 +18,9 @@ export const datastore = defineStore("crowdfunding", {
             Authorization: `Bearer ${token} `,
           },
         });
+        if (!response.ok) {
+          throw new Error("can't fetch data from server");
+        }
         const user = await response.json();
 
         this.user = user;
@@ -33,6 +36,9 @@ export const datastore = defineStore("crowdfunding", {
             "Content-Type": "application/json",
           },
         });
+        if (!response.ok) {
+          throw new Error("can't fetch data from server");
+        }
         const categories = await response.json();
         this.categories = categories;
         return categories;

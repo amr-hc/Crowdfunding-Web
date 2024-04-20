@@ -59,10 +59,12 @@
 <div class="name col-md-10 p-0 row  ">
     <div class="col-md-6">
       <label for="useremail" class="form-label">Email</label>
-      <input type="email" class="form-control" id="useremail" pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+      <input type="email" class="form-control" id="useremail" 
+      @blur="checkEmail"
+      pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
         placeholder="example@example.com" v-model="email" required>
         <div class="invalid-feedback">
-          Please enter a valid email!.
+          This email is either invalid or already associated with an existing account!.
         </div>
     </div>
  
@@ -177,6 +179,10 @@ export default {
 		functionsObject.created(this)
 	  },
 	  methods:{
+      checkEmail(e){
+       
+        functionsObject.checkEmail(this.email,e)
+      },
 		handleFormSubmission(e)
 		{ 
 
