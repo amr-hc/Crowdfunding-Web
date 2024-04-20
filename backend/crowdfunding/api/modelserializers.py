@@ -61,8 +61,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = "__all__"
-        # fields = ["id", "email", "password", "first_name", "last_name", "is_superuser", "is_active", "birth_date", "photo","country","facebook","phone"]
+        # fields = "__all__"
+        fields = ["id", "email", "password", "first_name", "last_name", "is_superuser", "is_active", "birth_date", "photo","country","facebook","phone","owner_projects","donations"]
         extra_kwargs = {'password': {'write_only': True}}
     def validate(self, data):
         if 'password' in data:
