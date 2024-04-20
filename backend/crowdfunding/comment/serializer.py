@@ -29,5 +29,4 @@ class CommentSerializer(serializers.ModelSerializer):
             'country': user.country,
             'is_active': user.is_active,
             'is_superuser': user.is_superuser,
-            'rates': user.rates
         }
