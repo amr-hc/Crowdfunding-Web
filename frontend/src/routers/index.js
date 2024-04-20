@@ -13,6 +13,7 @@ import congratulations from "@/components/congratulations.vue";
 import forgetPassword from "@/components/forgetPassword.vue";
 import confirmForgetPassword from "@/components/confirmForgetPassword.vue";
 import befroreactivation from "@/components/befroreactivation.vue";
+import reportComment from "@/components/dashboard/reportComment.vue";
 
 
 // test
@@ -88,6 +89,10 @@ const routes = [
     path: "/dashboard",
     component: Dashboard,
   },
+  {
+    path:"/reportComment",
+    component:reportComment
+  }
 ];
 const router = createRouter({
   routes,

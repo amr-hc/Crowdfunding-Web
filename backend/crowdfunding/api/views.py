@@ -63,8 +63,8 @@ class login(ObtainAuthToken):
 
 class UserModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsSameUserOrReadOnly]
-    # permission_classes = [AllowAny]
+    # permission_classes = [IsSameUserOrReadOnly]
+    permission_classes = [AllowAny]
     queryset = User.objects.all()
     serializer_class = UserSerializer
     filter_backends = [DjangoFilterBackend]
