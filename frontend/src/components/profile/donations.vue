@@ -8,7 +8,7 @@
       <th scope="col">Donation_id</th>
       <th scope="col">Donated_at</th>
       <th scope="col">Donation_amount</th>
-      <th scope="col">Droject</th>
+      <th scope="col">Project</th>
     </tr>
   </thead>
   <tbody>

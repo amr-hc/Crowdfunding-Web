@@ -378,13 +378,19 @@ class FunctionsClass {
         par.$router.push('/login');
       }
       else if(localStorageData||sessionStorageData){
-        let userData=localStorageData?localStorageData : sessionStorageData 
-        par.storgData=userData;
-        await par.storData.getUserData(userData.user_id,userData.token)
-        par.user=par.storData.user
+        this.featchUserData(par);
         
       }
     }
+
+    async featchUserData(par){
+
+      let userData=this.getStorgData(); 
+      if (userData){
+      par.storgData=userData;
+      await par.storData.getUserData(userData.user_id,userData.token)
+      par.user=par.storData.user}
+  }
 
 tagSelection(par){
   const tags=par.tags.map((obj)=>{
