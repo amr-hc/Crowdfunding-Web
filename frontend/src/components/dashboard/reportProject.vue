@@ -18,7 +18,11 @@
           <td>{{ report.full_name }}</td>
 
           <td>
-            <button class="btn btn-danger" @click="deleteReport(report.id)" style="margin-right: 10px;">
+            <button
+              class="btn btn-danger"
+              @click="deleteReport(report.id)"
+              style="margin-right: 10px"
+            >
               Delete report
             </button>
             <button
@@ -61,7 +65,6 @@ export default {
           this.reports = this.reports.filter((rep) => rep.project_id !== id);
         } catch (error) {
           console.error("Failed to delete project:", error);
-          // Handle error
         }
       }
     },
