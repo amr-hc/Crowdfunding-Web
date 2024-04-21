@@ -99,18 +99,7 @@ export default {
       this.$router.push("/login");
     },
   },
-
-  computed: {
-    isAuthenticated() {
-      return this.datastore.isAuthenticated;
-    },
-
-    isAdmin() {
-      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-      return userInfo && userInfo.is_superuser === true;
-    },
-
-  },
+ 
 
 };
 
