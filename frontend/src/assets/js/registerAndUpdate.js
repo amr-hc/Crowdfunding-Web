@@ -120,6 +120,49 @@ class FunctionsClass {
         return false;
       }
     }
+
+editProjectValidations(par){
+  const titlePattern = /^[a-zA-Z0-9\s]{1,50}$/;
+  const descriptionPattern = /^.{1,400}$/;
+  const category = /^[a-zA-Z0-9\s]{1,50}$/;
+  const datePattern = /^([0-9]{4}[-/]?((0[13-9]|1[012])[-/]?(0[1-9]|[12][0-9]|30)|(0[13578]|1[02])[-/]?31|02[-/]?(0[1-9]|1[0-9]|2[0-8]))|([0-9]{2}(([2468][048]|[02468][48])|[13579][26])|([13579][26]|[02468][048]|0[0-9]|1[0-6])00)[-/]?02[-/]?29)$/;
+  
+  if(! titlePattern.test(par.title))  
+  {
+    console.log("3");
+
+    return false;
+  }
+  if(! descriptionPattern.test(par.description))  
+  {
+    console.log("2");
+
+    return false;
+  }
+  if(! category.test(par.category))  
+  {
+    console.log("1");
+    return false;
+  }
+  if(! datePattern.test(par.endDate))  
+  console.log("4");
+
+  {
+    const berthdateInput=document.getElementById('validationCustom06');
+                if(par.endDate <= new Date().toISOString().split('T')[0]+''){
+
+                  berthdateInput.setCustomValidity("Date cant be today");
+                  setTimeout(() => {
+                    berthdateInput.setCustomValidity("");
+                }, 2000);
+              return false;
+            }
+  }
+  
+return true
+
+}
+
  async checkEmail(par,e){
       // sending Request
       try 
@@ -266,6 +309,8 @@ class FunctionsClass {
             throw new Error("can't update data ");
           }
               const data = await response.json(); 
+        let SModal = bootstrap.Modal.getOrCreateInstance(document.getElementById(`update`))
+              SModal.hide();
             console.log(data)
         }
       catch (error) 
@@ -355,7 +400,7 @@ class FunctionsClass {
   }
   handleProjectFormSubmission(e,par) {
      
-      if (this.HTMLValidations(e) && this.projectValidations(par)) {
+      if (this.HTMLValidations(e) && this.editProjectValidations(par)) {
        
 
           this.updateProjectRequest(par);
@@ -372,23 +417,25 @@ class FunctionsClass {
   }
 
   async logedInPagesCreated(par){
-    const localStorageData =JSON.parse(localStorage.getItem('userInfo'));
-    const sessionStorageData=JSON.parse(sessionStorage.getItem("userInfo"));
-      if(!sessionStorageData&&!localStorageData){
+    let userData=this.getStorgData(); 
+      if(!userData){
         par.$router.push('/login');
       }
-      else if(localStorageData||sessionStorageData){
-        this.featchUserData(par);
-        
+      else{
+        par.storgData=userData;
+      await par.storData.getUserData(userData.user_id,userData.token)
+      par.user=par.storData.user
       }
     }
 
     async featchUserData(par){
       let userData=this.getStorgData(); 
       if (userData){
+        // console.log(userData);
       par.storgData=userData;
       await par.storData.getUserData(userData.user_id,userData.token)
       par.user=par.storData.user
+      
     }
 
   }

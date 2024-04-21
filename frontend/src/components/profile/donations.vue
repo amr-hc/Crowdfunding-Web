@@ -33,9 +33,13 @@ import FunctionsClass from "../../assets/js/registerAndUpdate";
 const functionsObject = new FunctionsClass();
 
 export default {
+   
+  
+   
 async created() {
-    await this.storData.getAllProjects();
-  this.allProjects = this.storData.allProjects.results;
+  if(functionsObject.getStorgData()){ 
+  await this.storData.getAllProjects();
+  this.allProjects = this.storData.allProjects.results;}
 },
 
 data() {

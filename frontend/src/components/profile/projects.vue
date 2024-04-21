@@ -92,7 +92,7 @@
                   id="validationCustom01"
                   required
                 />
-                <div class="valid-feedback">Looks good!</div>
+               
               </div>
               <div class="col-md-6">
                 <label for="validationCustom02" class="form-label">
@@ -105,7 +105,7 @@
                   id="validationCustom02"
                   required
                 />
-                <div class="valid-feedback">Looks good!</div>
+               
               </div>
 
               <div class="col-md-6">
@@ -175,7 +175,7 @@
                   id="validationCustom06"
                   required
                 />
-                <div class="invalid-feedback">Please provide a valid Date.</div>
+                <div class="invalid-feedback">Please provide a valid Date Must be in  the future.</div>
               </div>
 
               <div class="col-md-12">

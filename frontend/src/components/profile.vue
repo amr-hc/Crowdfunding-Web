@@ -108,7 +108,7 @@
   export default {
     
     data:()=>({
-      storData:datastore(),
+    storData:datastore(),
    user:{},
     
    }),
@@ -121,10 +121,7 @@
     projects,donations
   },
   async created(){
-  await functionsObject.logedInPagesCreated(this);
- 
- 
- 
+  await functionsObject.logedInPagesCreated(this); 
   }
   }
    
