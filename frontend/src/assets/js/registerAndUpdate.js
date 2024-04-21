@@ -125,7 +125,6 @@ class FunctionsClass {
       try 
       {
         
-
         const response = await fetch(`http://127.0.0.1:8000/api/users/?email=${par}`);
         if (!response.ok) {
           throw new Error("can't insert data to server");
@@ -138,8 +137,6 @@ class FunctionsClass {
              e.target.setCustomValidity("");
             }
           
-        
-       
          
       }
     catch (error) 
@@ -197,6 +194,9 @@ class FunctionsClass {
               method: "POST",
               body: formData,
             });
+            if (!response.ok) {
+              throw new Error("can't insert data to server");
+            }
             const data = await response.json(); 
           sessionStorage.setItem("needactivation", "true");
             par.$router.push('/befroreactivation');

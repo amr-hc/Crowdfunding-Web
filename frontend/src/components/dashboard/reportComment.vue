@@ -19,7 +19,11 @@
           <td>{{ report.comment }}</td>
           <td>{{ report.full_name }}</td>
           <td>
-            <button class="btn btn-danger" @click="deleteReport(report.id)"  style="margin-right: 10px;">
+            <button
+              class="btn btn-danger"
+              @click="deleteReport(report.id)"
+              style="margin-right: 10px"
+            >
               Delete report
             </button>
             <button
@@ -64,7 +68,6 @@ export default {
           this.reports = this.reports.filter((rep) => rep.comment_id !== id);
         } catch (error) {
           console.error("Failed to delete comment:", error);
-          // Handle error
         }
       }
     },

@@ -12,6 +12,7 @@
 
 <script>
 export default {
+  name: 'notfound',
   data() {
     return {
       imgSrc: require('@/assets/images/404.svg')
