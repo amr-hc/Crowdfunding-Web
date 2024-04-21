@@ -137,7 +137,7 @@ export default {
   data: () => ({
     title: "",
     description: "",
-    targetMoney: 0,
+    targetMoney: "",
     categoryResult: "",
     endDate:"",
     invalidEndDate: false,

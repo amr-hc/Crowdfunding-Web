@@ -17,7 +17,14 @@
           v-for="project in this.featuredProject"
           :key="project.id"
         >
-          <img :src="project.project.pics[0].image_path" :alt="project.title" />
+          <img
+            :src="
+              project.pics.length > 0
+                ? project.project.pics[0].image_path
+                : require('@/assets/images/No-Image-Placeholder.svg.png')
+            "
+            :alt="project.title"
+          />
           <div class="content">
             <div class="author">
               {{
