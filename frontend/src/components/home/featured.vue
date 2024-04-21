@@ -4,34 +4,53 @@
       Our <br />
       Featured <br />Projects
     </h1>
-    <div class="col-12 col-lg carousel">
+    <div
+      class="alert alert-danger text-center py-2 my-3"
+      v-if="isThereProjects"
+    >
+      <h1>There is no Projects to Show</h1>
+    </div>
+    <div class="col-12 col-lg carousel" v-else>
       <div class="list">
-        <div class="item" v-for="(project, index) in projects" :key="index">
-          <img :src="project.imageUrl" :alt="project.title" />
+        <div
+          class="item"
+          v-for="project in this.featuredProject"
+          :key="project.id"
+        >
+          <img :src="project.project.pics[0].image_path" :alt="project.title" />
           <div class="content">
-            <div class="author">{{ project.author }}</div>
-            <div class="title">{{ project.title }}</div>
-            <div class="topic">{{ project.topic }}</div>
-            <div class="description">{{ project.description }}</div>
+            <div class="author">
+              {{
+                `${project.project.owner.first_name} ${project.project.owner.last_name} `
+              }}
+            </div>
+            <div class="title">{{ project.project.title }}</div>
+            <div class="description">{{ project.project.description }}</div>
             <div class="rating">
               <i
                 v-for="n in 5"
                 :key="n"
                 :class="{
-                  'plus fa-solid fa-star': n <= project.rating,
-                  'minus fa-regular fa-star': n > project.rating,
+                  'plus fa-solid fa-star': n <= project.project.average_rate,
+                  'minus fa-regular fa-star': n > project.project.average_rate,
                 }"
               ></i>
             </div>
-            <button class="btn">SEE MORE</button>
+            <router-link :to="'projects/' + project.id" class="button btn"
+              >SEE MORE</router-link
+            >
           </div>
         </div>
       </div>
       <div class="thumbnail">
-        <div class="item" v-for="(project, index) in projects" :key="index">
-          <img :src="project.imageUrl" :alt="project.title" />
+        <div
+          class="item"
+          v-for="project in this.featuredProject"
+          :key="project.id"
+        >
+          <img :src="project.project.pics[0].image_path" :alt="project.title" />
           <div class="content">
-            <div class="title">{{ project.title }}</div>
+            <div class="title">{{ project.project.title }}</div>
           </div>
         </div>
       </div>
@@ -45,60 +64,14 @@
 </template>
 
 <script>
+import { datastore } from "@/stors/crowdfundingStore";
 export default {
   name: "featured",
   data() {
     return {
-      projects: [
-        {
-          imageUrl:
-            "https://s3.amazonaws.com/ooomf-com-files/wdXqHcTwSTmLuKOGz92L_Landscape.jpg",
-          title: "New carousel layout",
-          description: "Responsive thumbnail preview in carousel indicators.",
-          author: "John Doe",
-          rating: 3,
-          topic: "Software",
-        },
-        {
-          imageUrl:
-            "https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg",
-          title: "One more for good measure.",
-          description: "Nullam id dolor id nibh ultricies vehicula ut id elit.",
-          author: "Jane Doe",
-          rating: 4,
-          topic: "Design",
-        },
-        {
-          imageUrl:
-            "https://s3.amazonaws.com/ooomf-com-files/tU3ptNgGSP6U2fE67Gvy_SYDNEY-162.jpg",
-          title: "Another example headline.",
-          description:
-            "Cras justo odio, dapibus ac facilisis in, egestas eget quam.",
-          author: "Alice Smith",
-          rating: 5,
-          topic: "Marketing",
-        },
-        {
-          imageUrl:
-            "https://s3.amazonaws.com/ooomf-com-files/tU3ptNgGSP6U2fE67Gvy_SYDNEY-162.jpg",
-          title: "Another example headline.",
-          description:
-            "Cras justo odio, dapibus ac facilisis in, egestas eget quam.",
-          author: "Bob Johnson",
-          rating: 3,
-          topic: "Development",
-        },
-        {
-          imageUrl:
-            "https://s3.amazonaws.com/ooomf-com-files/tU3ptNgGSP6U2fE67Gvy_SYDNEY-162.jpg",
-          title: "Another example headline.",
-          description:
-            "Cras justo odio, dapibus ac facilisis in, egestas eget quam.",
-          author: "Eve Brown",
-          rating: 4,
-          topic: "Technology",
-        },
-      ],
+      usedatastore: datastore(),
+      featuredProject: [],
+      isThereProjects: true,
     };
   },
   mounted() {
@@ -118,29 +91,51 @@ export default {
       );
     }
   },
+  async created() {
+    const res = await fetch("http://127.0.0.1:8000/api/ImportantProject/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `token ${this.usedatastore.userInfo.token} `,
+      },
+    });
+    if (!res.ok) {
+      throw new Error("cant fetch data from server");
+    }
+    const data = await res.json();
+    this.featuredProject = Object.values(data);
+    this.featuredProject
+      .sort((a, b) => a.project.average_rate - b.project.average_rate)
+      .reverse();
+    if (this.featuredProject.length > 0) {
+      this.isThereProjects = false;
+    }
+    console.log(this.featuredProject.length);
+  },
   methods: {
     showSlider(direction) {
       const listItems = document.querySelector(".carousel .list");
       const thumbnails = document.querySelector(".carousel .thumbnail");
+      if (this.featuredProject.length > 1) {
+        if (direction === "next") {
+          listItems.appendChild(listItems.children[0].cloneNode(true));
+          listItems.children[0].remove();
 
-      if (direction === "next") {
-        listItems.appendChild(listItems.children[0].cloneNode(true));
-        listItems.children[0].remove();
+          thumbnails.appendChild(thumbnails.children[0].cloneNode(true));
+          thumbnails.children[0].remove();
+        } else {
+          listItems.insertBefore(
+            listItems.children[listItems.children.length - 1].cloneNode(true),
+            listItems.children[0]
+          );
+          listItems.children[listItems.children.length - 1].remove();
 
-        thumbnails.appendChild(thumbnails.children[0].cloneNode(true));
-        thumbnails.children[0].remove();
-      } else {
-        listItems.insertBefore(
-          listItems.children[listItems.children.length - 1].cloneNode(true),
-          listItems.children[0]
-        );
-        listItems.children[listItems.children.length - 1].remove();
-
-        thumbnails.insertBefore(
-          thumbnails.children[thumbnails.children.length - 1].cloneNode(true),
-          thumbnails.children[0]
-        );
-        thumbnails.children[thumbnails.children.length - 1].remove();
+          thumbnails.insertBefore(
+            thumbnails.children[thumbnails.children.length - 1].cloneNode(true),
+            thumbnails.children[0]
+          );
+          thumbnails.children[thumbnails.children.length - 1].remove();
+        }
       }
     },
   },
@@ -195,7 +190,7 @@ export default {
   color: #f1683a;
 }
 
-.carousel .list .item .content button {
+.carousel .list .item .content .button {
   background-color: var(--secondary-color-3);
   letter-spacing: 3px;
   font-weight: 500;

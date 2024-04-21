@@ -10,20 +10,23 @@ from rest_framework.permissions import (
 )
 # Create your views here.
 class CommentReportModelViewSet(ModelViewSet):
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [AllowAny]
+    # permission_classes = [IsOwnerOrReadOnly]
     queryset = Report_comment.objects.all()
     serializer_class = ReportCommentSerializer
 
 
 
 class ReportListCreateAPIView(ListCreateAPIView):
-    permission_classes = [IsAdminOrpost]
+    permission_classes = [AllowAny]
+    # permission_classes = [IsAdminOrpost]
     queryset = Report_comment.objects.all()
     serializer_class = ReportCommentSerializer
 
 
 class ReportRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsOwnerOrAdmin]
+    permission_classes = [AllowAny]
+    # permission_classes = [IsOwnerOrAdmin]
     queryset = Report_comment.objects.all()
     serializer_class = ReportCommentSerializer
     lookup_url_kwarg = 'id'

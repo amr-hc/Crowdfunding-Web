@@ -18,8 +18,6 @@ urlpatterns = [
     path('', include(router.urls)),
     path('login', login.as_view()),
     path('activate/', confirmActivate.as_view()),
-    path('projects/<int:pk>/get_project_photos/', ProjectModelViewSet.as_view({'get': 'get_project_photos'}), name='get_project_photos'),
-
 ]
 
 
