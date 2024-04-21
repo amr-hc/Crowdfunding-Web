@@ -124,7 +124,7 @@ class ProjectModelViewSet(ModelViewSet):
     # permission_classes = [IsOwnerProjectOrReadOnly]
     permission_classes = [AllowAny]
     pagination_class = small
-    queryset = Project.objects.all()
+    queryset = Project.objects.all().filter(hidden=False).order_by('-id')
     serializer_class = ProjectSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = ProjectModelFilter
@@ -138,11 +138,17 @@ class ProjectModelViewSet(ModelViewSet):
             newPhoto.project = project
             newPhoto.save()
 
-    @action(detail=True, methods=["get"])
-    def get_project_photos(self, request, pk=None):
-        project = self.get_object()
-        photos = ProjectPics.objects.filter(project=project)
-        serializer = ProjectPicsSerializer(photos, many=True)
+    def list(self, request, *args, **kwargs):
+        if request.user.is_superuser:
+            self.queryset = Project.objects.all()
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
 

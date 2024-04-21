@@ -4,6 +4,7 @@ export const datastore = defineStore("crowdfunding", {
     user: {},
     categories: [],
     tags: [],
+    allProjects:[],
     userInfo:
       JSON.parse(localStorage.getItem("userInfo")) ||
       JSON.parse(sessionStorage.getItem("userInfo")),
@@ -22,7 +23,7 @@ export const datastore = defineStore("crowdfunding", {
           throw new Error("can't fetch data from server");
         }
         const user = await response.json();
-
+        
         this.user = user;
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -69,6 +70,7 @@ export const datastore = defineStore("crowdfunding", {
           throw new Error("can't fetch data from server");
         }
         const projectData = await res.json();
+        this.allProjects = projectData;
         return projectData;
       } catch (error) {
         console.error("Error fetching projects:", error);
