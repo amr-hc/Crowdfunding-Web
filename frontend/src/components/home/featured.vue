@@ -55,7 +55,14 @@
           v-for="project in this.featuredProject"
           :key="project.id"
         >
-          <img :src="project.project.pics[0].image_path" :alt="project.title" />
+          <img
+            :src="
+              project.pics.length > 0
+                ? project.project.pics[0].image_path
+                : require('@/assets/images/No-Image-Placeholder.svg.png')
+            "
+            :alt="project.title"
+          />
           <div class="content">
             <div class="title">{{ project.project.title }}</div>
           </div>
@@ -99,13 +106,7 @@ export default {
     }
   },
   async created() {
-    const res = await fetch("http://127.0.0.1:8000/api/ImportantProject/", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `token ${this.usedatastore.userInfo.token} `,
-      },
-    });
+    const res = await fetch("http://127.0.0.1:8000/api/ImportantProject/");
     if (!res.ok) {
       throw new Error("cant fetch data from server");
     }

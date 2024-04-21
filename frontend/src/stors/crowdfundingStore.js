@@ -31,12 +31,7 @@ export const datastore = defineStore("crowdfunding", {
     },
     async getCategories() {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/categories/`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(`http://127.0.0.1:8000/api/categories/`);
         if (!response.ok) {
           throw new Error("can't fetch data from server");
         }
@@ -63,7 +58,7 @@ export const datastore = defineStore("crowdfunding", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${this.userInfo.token} `,
+            Authorization: `Bearer ${this.userInfo.token}`,
           },
         });
         if (!res.ok) {

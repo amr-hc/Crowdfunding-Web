@@ -12,20 +12,24 @@
       </div>
     </div>
     <section class="container">
-      <div class="row justify-content-end">
-        <div class="dropdown col-2">
+      <div class="d-flex justify-content-end  gap-3 ">
+        <div class="dropdown col-2 d-flex justify-content-center ">
           <button
-            class="btn btn-dark dropdown-toggle btn-lg"
+            class="btn btn-light dropdown-toggle btn-lg"
             type="button"
             data-bs-toggle="dropdown"
-            aria-expanded="false"
+            data-bs-auto-close="outside"
           >
             Select tags
           </button>
           <ul class="dropdown-menu text-center">
             <li v-for="tag in this.tags" :key="tag.id">
-              <label :for="tag.tagName + tag.id"
-                ><input type="checkbox" :id="tag.tagName + tag.id" />
+              <label class="dropdown-item" :for="tag.tagName + tag.id"
+                ><input
+                  type="checkbox"
+                  :id="tag.tagName + tag.id"
+                  :value="tag.id"
+                />
                 {{ tag.tagName }}</label
               >
             </li>
@@ -33,19 +37,16 @@
         </div>
 
         <div class="form-floating col-2">
-          <select class="form-select" id="floatingSelect">
-            <option v-for="tag in this.tags" :key="tag.id" :value="tag.tagName">
-              {{ tag.tagName }}
-            </option>
-          </select>
-          <label for="floatingSelect" class="ms-2 mb-1">Tag</label>
-        </div>
-        <div class="form-floating col-2">
-          <select class="form-select" id="floatingSelect">
+          <select
+            class="form-select"
+            id="floatingSelect"
+            v-model="this.filteredCategory"
+          >
+            <option value="">Show All</option>
             <option
               v-for="category in this.categories"
               :key="category.id"
-              :value="category.name"
+              :value="category.id"
             >
               {{ category.name }}
             </option>
@@ -59,11 +60,13 @@
               class="form-control"
               type="search"
               placeholder="Search"
+              v-model="this.searchValue"
             />
             <label for="searchBar" class="text-dark">Search for Project</label>
           </div>
           <span
             class="searchIcon input-group-text col-2 pe-auto bg-dark text-light"
+            @click="filterProject"
             ><i class="fa-solid fa-magnifying-glass"></i
           ></span>
         </div>
@@ -125,24 +128,50 @@ export default {
     categories: [],
     tags: [],
     isThereProjects: true,
-    noImagePath: "@/assets/images/No-Image-Placeholder.svg.png",
+    filteredCategory: "",
+    searchValue: "",
+    filteredTags: "",
   }),
-  methods: {},
+  methods: {
+    prepareTags() {
+      const allTags = [...document.querySelectorAll("input[type=checkbox]")];
+      this.filteredTags = allTags;
+      this.filteredTags = this.filteredTags
+        .filter((tag) => tag.checked === true)
+        .map((tag) => tag.value)
+        .map((tag) => `tages=${tag}`)
+        .join("&");
+      allTags.map((tag) => (tag.checked = false));
+    },
+    filterProject() {
+      const fetchURL = `http://127.0.0.1:8000/api/projects/?title=${this.searchValue}&category=${this.filteredCategory}&${this.filteredTags}`;
+      console.log(fetchURL);
+      fetch(fetchURL)
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("there is no project to fetch");
+          }
+          return res.json();
+        })
+        .then((data) => {
+          this.projectsData = data.results;
+          if (this.projectsData.count > 0) {
+            this.isThereProjects = false;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  },
   async created() {
     this.projectsData = await this.datastore.getAllProjects();
     if (this.projectsData.count > 0) {
       this.isThereProjects = false;
     }
     this.projectsData = this.projectsData.results;
-    // this.projectsData = this.projectsData.results.filter((product) => {
-    //   return product.hidden === false;
-    // });
-
     this.categories = await this.datastore.getCategories();
     this.tags = await this.datastore.getTags();
-    console.log(this.projectsData);
-    console.log(this.categories);
-    console.log(this.tags);
   },
   computed: {
     showAddBtn() {
