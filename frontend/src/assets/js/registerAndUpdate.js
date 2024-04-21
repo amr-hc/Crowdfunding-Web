@@ -372,23 +372,25 @@ class FunctionsClass {
   }
 
   async logedInPagesCreated(par){
-    const localStorageData =JSON.parse(localStorage.getItem('userInfo'));
-    const sessionStorageData=JSON.parse(sessionStorage.getItem("userInfo"));
-      if(!sessionStorageData&&!localStorageData){
+    let userData=this.getStorgData(); 
+      if(!userData){
         par.$router.push('/login');
       }
-      else if(localStorageData||sessionStorageData){
-        this.featchUserData(par);
-        
+      else{
+        par.storgData=userData;
+      await par.storData.getUserData(userData.user_id,userData.token)
+      par.user=par.storData.user
       }
     }
 
     async featchUserData(par){
       let userData=this.getStorgData(); 
       if (userData){
+        // console.log(userData);
       par.storgData=userData;
       await par.storData.getUserData(userData.user_id,userData.token)
       par.user=par.storData.user
+      
     }
 
   }
