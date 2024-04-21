@@ -478,8 +478,8 @@ export default {
           };
         });
         // Filter User Rates
-        this.userRate = this.userData['user_id'];
-        const previousRate =this.projectData.rates.find((rate)=>rate.user_id == this.userRate.user_id);
+        this.userRate.user_id = this.userData['user_id'];
+        const previousRate =this.projectData.rates.find((rate)=>rate.user_id == this.userData['user_id']);
         //test here
         if(previousRate){
            this.userRate.rate=previousRate.rate;
@@ -504,8 +504,8 @@ export default {
             },
           };
         });
-        console.log("comments are")
-        this.projectData.comments.forEach((comment)=>console.log(comment.user.rate));   
+        console.log("Comments fulll Data")
+        this.projectData.comments.forEach((comment)=>console.log(comment));   
 
 
         if (this.projectData.comments.length>0)
