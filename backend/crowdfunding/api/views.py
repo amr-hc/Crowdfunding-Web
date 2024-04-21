@@ -138,7 +138,6 @@ class ProjectModelViewSet(ModelViewSet):
             newPhoto.project = project
             newPhoto.save()
 
-<<<<<<< HEAD
     def list(self, request, *args, **kwargs):
         if request.user.is_superuser:
             self.queryset = Project.objects.all()
@@ -150,13 +149,6 @@ class ProjectModelViewSet(ModelViewSet):
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
-=======
-    @action(detail=True, methods=["get"])
-    def get_project_photos(self, request, pk=None):
-        project = self.get_object()
-        photos = ProjectPics.objects.filter(project=project)
-        serializer = ProjectPicsSerializer(photos, many=True)
->>>>>>> 20dc147fbf373697fce17d38f631479fccb04c7e
         return Response(serializer.data)
 
 
