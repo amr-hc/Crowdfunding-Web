@@ -78,8 +78,8 @@
           <label for="category" class="text-dark ms-2">Category</label>
           <div class="invalid-feedback">Please select a category.</div>
         </div>
-        <div>
-          <select
+        <div class="form-floating">
+          <!-- <select
             v-model="selectedTags"
             class="form-select"
             name="tags"
@@ -94,7 +94,11 @@
             <option v-for="tag in tags" :key="tag.id" :value="tag.tagName">
               {{ tag.tagName }}
             </option>
-          </select>
+          </select> -->
+
+          <select @change="addSelection" style="width: 100%; z-index: 100;" ref="select" class=" form-control select2" multiple id="validationCustom05" 
+                    pattern="^[a-zA-Z ,.'\-]+$" v-model="projectTags">
+                  </select>
           <div class="invalid-feedback">Please select tags .</div>
         </div>
 
@@ -130,11 +134,13 @@
   </section>
 </template>
 <script>
+import { datastore } from '@/stors/crowdfundingStore';
 import FunctionsClass from "../assets/js/registerAndUpdate";
 const functionsObject = new FunctionsClass();
 
 export default {
   data: () => ({
+    storData: datastore(),
     title: "",
     description: "",
     targetMoney: 0,
@@ -225,33 +231,12 @@ export default {
     },
   },
 
-  created() {
-    fetch("http://127.0.0.1:8000/api/categories/")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch categories");
-        }
-        return response.json();
-      })
-      .then((categories) => {
-        this.categories = categories;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-    fetch("http://127.0.0.1:8000/tags/")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch tags");
-        }
-        return response.json();
-      })
-      .then((tags) => {
-        this.tags = tags;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+async created() {
+    await this.storData.getCategories();
+    await this.storData.getTags();
+    this.categories = this.storData.categories;
+    this.tags = this.storData.tags;
+    functionsObject.tagSelection(this);
   },
 };
 </script>
