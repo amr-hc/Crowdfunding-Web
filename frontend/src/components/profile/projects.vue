@@ -1,5 +1,6 @@
 <template>
         <div class="row pro " >
+          <div class="fs-4 m-1">Your Projects</div>
               <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 "
                        v-for="project in storData.user.owner_projects" :key="project.id">
                       <div class="card-flyer ">
@@ -118,11 +119,6 @@
 
                     <select @change="addSelection" style="width: 100%; z-index: 100;" ref="select" class=" form-control select2" multiple id="validationCustom05" 
                     pattern="^[a-zA-Z ,.'\-]+$" v-model="projectTags">
-                    <!-- <option selected disabled value="">Choose...</option> -->
-                    <!-- <option v-for="tag in tags" :key="tag.id" :value="tag.tagName">
-                         {{ tag.tagName }}
-                         </option> -->
-                    
                     </select>
                     <div class="invalid-feedback">
                     Please select a valid category.

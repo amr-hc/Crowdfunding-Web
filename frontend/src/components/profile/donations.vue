@@ -1,36 +1,27 @@
 <template>
     <div class="donations mt-5">
-    <div class="fs-4">Your Donations</div>
-    <table class="table table-dark">
+    <div class="fs-4 m-3">Your Donations</div>
+    <div class="tbl-container bdr">
+    <table class="table table-dark ">
   <thead>
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
+      <th scope="col">Donation_id</th>
+      <th scope="col">Donated_at</th>
+      <th scope="col">Donation_amount</th>
+      <th scope="col">Droject</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
+    <tr  v-for="donation in storData.user.donations" :key="donation.id">
+      <th scope="row">{{donation.id}}</th>
+      <td>{{dateFormat(donation.created_at)}}</td>
+      <td>{{donation.donation_amount}}</td>
+      <td>{{projectName(donation.project)}}</td>
     </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
+    
   </tbody>
 </table>
+</div>
 </div>
 
 </template>
@@ -43,32 +34,47 @@ const functionsObject = new FunctionsClass();
 
 export default {
 async created() {
-// await this.storData.getCategories();
-// await this.storData.getTags();
-// this.categories = this.storData.categories;
-// this.tags = this.storData.tags;
-// functionsObject.tagSelection(this);
+    await this.storData.getAllProjects();
+  this.allProjects = this.storData.allProjects.results;
 },
 
 data() {
 return {
-  
+    storData: datastore(),
+    allProjects:[] 
 }
 },
 
 methods: {
- 
+ dateFormat(par){
+   return par.split("T")[0]
+ },
+ projectName(par){
+    if (this.allProjects.length!=0){
+return this.allProjects.find((obj)=>{
+    return obj.id == par;
+}).title
+ }}
 
-},
-unmounted(){
  
-  
-}
+},
+ 
 }
 </script>
 
-
+ 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
- 
+ .tbl-container {
+  margin-top: 10px;
+  margin-left: 10px;
+}
+th,td{
+    padding: 15px
+}
+
+.bdr {
+  border-radius: 10px;
+  overflow: hidden;
+}
 </style>
