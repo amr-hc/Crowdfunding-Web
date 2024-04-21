@@ -15,9 +15,15 @@ from api.modelserializers import (
     ProjectSerializer,
     RateSerializer,
     ReplaySerializer,
-    UserSerializer, ImportantProjectSerializer, confirmActivation
+    UserSerializer,
+    ImportantProjectSerializer,
+    confirmActivation,
 )
-from api.permissions import IsAdminOrReadOnly, IsOwnerProjectOrReadOnly, IsSameUserOrReadOnly
+from api.permissions import (
+    IsAdminOrReadOnly,
+    IsOwnerProjectOrReadOnly,
+    IsSameUserOrReadOnly,
+)
 from comment.models import Comment
 from comment_report.models import Report_comment
 from django.contrib.auth import authenticate
@@ -57,8 +63,14 @@ class login(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"]
         token, created = Token.objects.get_or_create(user=user)
-        return Response({"token": token.key, "user_id": user.pk, "is_superuser": user.is_superuser, 
-                        "userName": user.first_name + " " + user.last_name })
+        return Response(
+            {
+                "token": token.key,
+                "user_id": user.pk,
+                "is_superuser": user.is_superuser,
+                "userName": user.first_name + " " + user.last_name,
+            }
+        )
 
 
 class UserModelViewSet(ModelViewSet):
@@ -68,7 +80,7 @@ class UserModelViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['email']
+    filterset_fields = ["email"]
 
     def perform_create(self, serializer, *args, **kwargs):
         user = serializer.save(*args, **kwargs)
@@ -76,7 +88,7 @@ class UserModelViewSet(ModelViewSet):
         token = default_token_generator.make_token(user)
         subject = "Confirm account Crowdfunding"
         reset_link = f"http://localhost:8080/congs?uid={uid}&token={token}"
-        message = f"welcome to Crowdfunding, to confirm your new account please click on <a href=\"{reset_link}\">Click here</a>"
+        message = f'welcome to Crowdfunding, to confirm your new account please click on <a href="{reset_link}">Click here</a>'
         from_email = "amr.abdullah.elrefaey@gmail.com"
         to_email = user.email
         send_mail(subject, message, from_email, [to_email])
@@ -86,25 +98,26 @@ class UserModelViewSet(ModelViewSet):
         if request.user.is_superuser and request.user != instance:
             self.perform_destroy(instance)
             return Response(status=status.HTTP_204_NO_CONTENT)
-        user=authenticate(username=request.user.email, password=request.data['password'])
+        user = authenticate(
+            username=request.user.email, password=request.data["password"]
+        )
         if user is not None:
             self.perform_destroy(instance)
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-
 class CategoryModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAdminOrReadOnly]
+    # permission_classes = [IsAdminOrReadOnly]
     # permission_classes = [AllowAny]
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
+
 from Project_Pics.api.serializer import ProjectPicsSerializer
 from Project_Pics.models import ProjectPics
 from api.pagination import small
-
 
 
 class ProjectModelViewSet(ModelViewSet):
@@ -118,13 +131,14 @@ class ProjectModelViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         project = serializer.save()
-        allPhotos = self.request.FILES.getlist('photos')
+        allPhotos = self.request.FILES.getlist("photos")
         for photo in allPhotos:
             newPhoto = ProjectPics()
-            newPhoto.image_path=photo
-            newPhoto.project=project
+            newPhoto.image_path = photo
+            newPhoto.project = project
             newPhoto.save()
 
+<<<<<<< HEAD
     def list(self, request, *args, **kwargs):
         if request.user.is_superuser:
             self.queryset = Project.objects.all()
@@ -136,6 +150,13 @@ class ProjectModelViewSet(ModelViewSet):
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
+=======
+    @action(detail=True, methods=["get"])
+    def get_project_photos(self, request, pk=None):
+        project = self.get_object()
+        photos = ProjectPics.objects.filter(project=project)
+        serializer = ProjectPicsSerializer(photos, many=True)
+>>>>>>> 20dc147fbf373697fce17d38f631479fccb04c7e
         return Response(serializer.data)
 
 
@@ -162,22 +183,29 @@ class confirmActivate(APIView):
     def post(self, request):
         serializer = confirmActivation(data=request.data)
         if serializer.is_valid():
-            uid = serializer.validated_data.get('uid')
-            token = serializer.validated_data.get('token')
+            uid = serializer.validated_data.get("uid")
+            token = serializer.validated_data.get("token")
             try:
-                uid = str(urlsafe_base64_decode(uid), 'utf-8')
+                uid = str(urlsafe_base64_decode(uid), "utf-8")
                 user = User.objects.get(pk=uid)
             except (TypeError, ValueError, OverflowError, User.DoesNotExist):
                 user = None
 
-            if user and not user.is_active and default_token_generator.check_token(user, token):
+            if (
+                user
+                and not user.is_active
+                and default_token_generator.check_token(user, token)
+            ):
                 user.is_active = True
                 user.save()
-                return Response({'message': 'Account activated successfully.'}, status=status.HTTP_200_OK)
+                return Response(
+                    {"message": "Account activated successfully."},
+                    status=status.HTTP_200_OK,
+                )
             else:
-                return Response({'message': 'Invalid activation link.'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    {"message": "Invalid activation link."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
