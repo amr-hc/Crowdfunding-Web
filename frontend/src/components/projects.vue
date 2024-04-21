@@ -1,16 +1,37 @@
 <template>
   <section style="background-color: rgb(91 91 91 / 20%) !important">
-    <div class="jumbotron p-3 mb-4 d-flex justify-content-between align-items-start ">
-      <router-link class="btn btn-success " to="/add" v-show="showAddBtn"
+    <div
+      class="jumbotron p-3 mb-4 d-flex justify-content-between align-items-start"
+    >
+      <router-link class="btn btn-success" to="/add" v-show="showAddBtn"
         >Add Project</router-link
       >
-      <div class="headline ">
+      <div class="headline">
         <h1 class="display-4 font-weight-bold">Browse Our Projects</h1>
-        <h2 class="font-italic ">Try To Be A Part Of The Solution.</h2>
+        <h2 class="font-italic">Try To Be A Part Of The Solution.</h2>
       </div>
     </div>
     <section class="container">
       <div class="row justify-content-end">
+        <div class="dropdown col-2">
+          <button
+            class="btn btn-dark dropdown-toggle btn-lg"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Select tags
+          </button>
+          <ul class="dropdown-menu text-center">
+            <li v-for="tag in this.tags" :key="tag.id">
+              <label :for="tag.tagName + tag.id"
+                ><input type="checkbox" :id="tag.tagName + tag.id" />
+                {{ tag.tagName }}</label
+              >
+            </li>
+          </ul>
+        </div>
+
         <div class="form-floating col-2">
           <select class="form-select" id="floatingSelect">
             <option v-for="tag in this.tags" :key="tag.id" :value="tag.tagName">
@@ -41,7 +62,8 @@
             />
             <label for="searchBar" class="text-dark">Search for Project</label>
           </div>
-          <span class="input-group-text col-2 pe-auto bg-dark text-light"
+          <span
+            class="searchIcon input-group-text col-2 pe-auto bg-dark text-light"
             ><i class="fa-solid fa-magnifying-glass"></i
           ></span>
         </div>
@@ -61,7 +83,14 @@
               :key="project.id"
             >
               <div class="box">
-                <img :src="project.pics[0]['image_path']" alt="" />
+                <img
+                  :src="
+                    project.pics.length > 0
+                      ? project.pics[0]['image_path']
+                      : require('@/assets/images/No-Image-Placeholder.svg.png')
+                  "
+                  :alt="project.title"
+                />
                 <div class="box-overlay"></div>
                 <div class="box-content">
                   <div class="inner-content">
@@ -96,6 +125,7 @@ export default {
     categories: [],
     tags: [],
     isThereProjects: true,
+    noImagePath: "@/assets/images/No-Image-Placeholder.svg.png",
   }),
   methods: {},
   async created() {
@@ -103,9 +133,10 @@ export default {
     if (this.projectsData.count > 0) {
       this.isThereProjects = false;
     }
-    this.projectsData = this.projectsData.results.filter((product) => {
-      return product.hidden === false;
-    });
+    this.projectsData = this.projectsData.results;
+    // this.projectsData = this.projectsData.results.filter((product) => {
+    //   return product.hidden === false;
+    // });
 
     this.categories = await this.datastore.getCategories();
     this.tags = await this.datastore.getTags();
@@ -257,5 +288,7 @@ export default {
   color: #442b10 !important;
   font-weight: 600 !important;
 }
-
+.searchIcon {
+  cursor: pointer;
+}
 </style>

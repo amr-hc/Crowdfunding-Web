@@ -56,7 +56,6 @@ from rest_framework.views import APIView
 
 
 class login(ObtainAuthToken):
-    permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
@@ -71,6 +70,10 @@ class login(ObtainAuthToken):
                 "userName": user.first_name + " " + user.last_name,
             }
         )
+    def delete(self, request, *args, **kwargs):
+        Token.objects.filter(user=request.user).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 
 class UserModelViewSet(ModelViewSet):
