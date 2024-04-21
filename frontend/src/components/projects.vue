@@ -12,12 +12,16 @@
         <h2 class="font-italic mb-0">Try To Be A Part Of The Solution.</h2>
       </div>
     </div>
-    <div class="containerSearch">
-      <div>
-        <input type="text" class="searchInput" placeholder="Search..." />
-        <div class="search"></div>
+    <div class="row justify-content-end ">
+      <div class="form-floating col-2">
+        <select class="form-select " id="floatingSelect">
+          <option v-for="tag in this.tags" :key="tag.id" :value="tag.tagName">
+            {{ tag.tagName }}
+          </option>
+        </select>
+        <label for="floatingSelect" class="ms-2 mb-1">Tag</label>
       </div>
-      <div class="form-floating selectCategory">
+      <div class="form-floating col-2">
         <select class="form-select" id="floatingSelect">
           <option
             v-for="category in this.categories"
@@ -27,7 +31,11 @@
             {{ category.name }}
           </option>
         </select>
-        <span class="label">Category</span>
+        <label for="floatingSelect" class="ms-2">Category</label>
+      </div>
+      <div class="col-4 row ">
+        <input class="form-control" type="search" placeholder="Search" />
+        <span class="input-group-text col-2"><i class="fa-solid fa-magnifying-glass"></i></span>
       </div>
     </div>
     <div class="text-center py-3">
@@ -71,13 +79,16 @@ export default {
     datastore: datastore(),
     projectsData: [],
     categories: [],
+    tags: [],
   }),
   methods: {},
   async created() {
     this.projectsData = await this.datastore.getAllProjects();
     this.categories = await this.datastore.getCategories();
+    this.tags = await this.datastore.getTags();
     console.log(this.projectsData.results);
     console.log(this.categories);
+    console.log(this.tags);
   },
   computed: {
     showAddBtn() {
@@ -224,146 +235,5 @@ export default {
   position: relative;
   bottom: 25%;
   right: 5%;
-}
-
-@import url("https://fonts.googleapis.com/css?family=Inconsolata:700");
-
-.containerSearch {
-  position: absolute;
-  margin: auto;
-  top: 0;
-  left: 60%;
-  right: 0;
-  bottom: 0;
-}
-
-.containerSearch .search {
-  position: absolute;
-  margin: auto;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  width: 60px;
-  height: 60px;
-  background: #442b10;
-  border-radius: 50%;
-  transition: all 1s;
-  z-index: 4;
-  box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.4);
-}
-
-.containerSearch .search:hover {
-  cursor: pointer;
-}
-
-.containerSearch .search::before {
-  content: "";
-  position: absolute;
-  margin: auto;
-  top: 15px;
-  right: 0;
-  bottom: 0;
-  left: 15px;
-  width: 10px;
-  height: 2px;
-  background: white;
-  transform: rotate(45deg);
-  transition: all 0.5s;
-}
-
-.containerSearch .search::after {
-  content: "";
-  position: absolute;
-  margin: auto;
-  top: -5px;
-  right: 0;
-  bottom: 0;
-  left: -5px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  border: 2px solid white;
-  transition: all 0.5s;
-}
-
-.containerSearch .searchInput {
-  font-family: "Inconsolata", monospace;
-  position: absolute;
-  margin: auto;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  width: 50px;
-  height: 50px;
-  outline: none;
-  border: none;
-  background: #442b10;
-  color: white;
-  text-shadow: 0 0 10px #442b10;
-  padding: 0 80px 0 20px;
-  border-radius: 30px;
-  box-shadow: 0 0 25px 0 #442b10, 0 20px 25px 0 rgba(0, 0, 0, 0.2);
-  transition: all 1s;
-  opacity: 0;
-  z-index: 5;
-  font-weight: bolder;
-  letter-spacing: 0.1em;
-}
-
-.containerSearch .searchInput:hover {
-  cursor: pointer;
-}
-
-.containerSearch .searchInput:focus {
-  width: 300px;
-  opacity: 1;
-  cursor: text;
-}
-
-.containerSearch .searchInput:focus ~ .search {
-  right: -250px;
-  background: #151515;
-  z-index: 6;
-}
-
-.containerSearch .searchInput:focus ~ .search::before {
-  top: 0;
-  left: 0;
-  width: 20px;
-}
-
-.containerSearch .searchInput:focus ~ .search::after {
-  top: 0;
-  left: 0;
-  width: 20px;
-  height: 2px;
-  border: none;
-  background: white;
-  border-radius: 0%;
-  transform: rotate(-45deg);
-}
-
-.containerSearch .searchInput::placeholder {
-  color: white;
-  opacity: 0.5;
-  font-weight: bolder;
-}
-.selectCategory > * {
-  background-color: transparent;
-  color: #442b10;
-}
-.selectCategory {
-  width: 30% !important;
-  position: relative;
-  top: 45%;
-  left: -50px;
-  /* background-color: #442b10; */
-}
-div.containerSearch > div.form-floating.selectCategory > span {
-  position: absolute;
-  top: 2px;
-  left: 5px;
 }
 </style>

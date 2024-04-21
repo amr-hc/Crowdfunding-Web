@@ -7,4 +7,4 @@ class ProjectModelFilter(filters.FilterSet):
     title = filters.CharFilter(field_name='title', lookup_expr='icontains')
     class Meta:
         model = Project
-        fields = ['title','tages']
+        fields = ['title','tages','category']

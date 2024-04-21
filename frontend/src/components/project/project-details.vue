@@ -122,9 +122,8 @@
               </button>
             </div>
             <hr />
-          <div v-if="projectData.comments">
+          <div v-if="haveComments===true" style="overflow:scroll">
             <div
-              style="overflow: scroll;"
               v-for="comment in projectData.comments"
               :key="comment.id"
             >
@@ -353,6 +352,7 @@
 
 <script>
 import { datastore } from "@/stors/crowdfundingStore";
+import { isEmptyObject, type } from 'jquery';
 export default {
   name: "project-details",
   data() {
@@ -387,7 +387,13 @@ export default {
       canDonate: true,
       donationPreventionLogger: "",
       newComment: "",
-      newRate: null,
+      haveComments:false,
+      newRate:null,
+      userRate:{
+         rate:null,
+         id:0,
+         user_id:0,
+      },
       projectRates: [],
     };
   },
@@ -435,7 +441,7 @@ export default {
         }
       } else {
         console.error("userInfo Is Not Found Please reEnsure data");
-        userData = {};
+        this.userData = {};
       }
     },
     async fetchProjectData() {
@@ -460,19 +466,29 @@ export default {
           isCanceled: data["hidden"],
           numOfDonors: data["donations"].length,
           comments: data["comments"],
-          rating: data["allrate"],
+          rates: data["allrate"],
         };
-        ///Fetching Comment Data
-        console.log("comments section");
 
-        this.projectData.rating = this.projectData.rating.map((rate) => {
+        // Rates Of The Project  
+        this.projectData.rates = this.projectData.rates.map((rate) => {
           return {
             id: rate.id,
             rate: rate.rate,
             user_id: rate.user,
           };
         });
-
+        // Filter User Rates
+        this.userRate = this.userData['user_id'];
+        const previousRate =this.projectData.rates.find((rate)=>rate.user_id == this.userRate.user_id);
+        //test here
+        if(previousRate){
+           this.userRate.rate=previousRate.rate;
+           this.userRate.id=previousRate.id;
+           this.newRate=this.userRate.rate;
+        } 
+        ///Fetching Comment Data
+        console.log("comments section");
+        
         this.projectData.comments = this.projectData.comments.map((comment) => {
           return {
             id: comment.id,
@@ -484,18 +500,20 @@ export default {
               image: `http://localhost:8000/${comment.user_data.image}`,
               is_active: comment.user_data.is_active,
               is_admin: comment.user_data.is_superuser,
-              rate: this.projectData.rating[comment.id - 1].rate,
+              rate: this.projectData.rates.find((rate)=>rate.user_id==comment.user_id).rate,
             },
           };
         });
+        console.log("comments are")
+        this.projectData.comments.forEach((comment)=>console.log(comment.user.rate));   
 
-        console.log(this.projectData.numOfDonors);
+
+        if (this.projectData.comments.length>0)
+           this.haveComments=true;
+
         this.projectDuration =
           this.projectData.end_date - this.projectData.current_date;
-        // /***Comment This line */
-        // this.projectDuration = 2 ;
-        /**comment this line */
-
+              
         //total amount
         this.totalAmount = data["target_money"];
         //current donation
@@ -520,28 +538,12 @@ export default {
       } catch (error) {
         console.error("Error fetching project data:", error);
       }
-
-      // //Project Rates
-      //  response = await fetch(
-      //     `http://localhost:8000/rating/${projectId}/project`
-      //   );
-      //   if (!response.ok) {
-      //     throw new Error("Failed to fetch project data");
-      //   }
     },
     async isProjectOwner() {
-      console.log("userData");
-      // console.log(this.userData);
-      // console.log(this.ownerData.id);
-      // console.log(typeof(this.userData.user.id))
-      // console.log(typeof(this.ownerData.id))
-      console.log(this.userData["user_id"]);
       if (parseInt(this.userData["user_id"]) == parseInt(this.ownerData.id)) {
-        console.log("yess");
         this.isOwner = true;
         return true;
       } else {
-        console.log("nooo");
         this.isOwner = false;
         return false;
       }
@@ -552,6 +554,7 @@ export default {
       this.projectDuration =
         this.projectData.end_date - this.projectData.current_date;
       // this.projectDuration=0
+      
       // Handle case when project duration ends
       if (this.projectDuration <= 0 || this.stopProjectTime) {
         this.projectDuration = 0;
@@ -617,9 +620,6 @@ export default {
               parseFloat(this.donationAmount);
             this.currentDonation =
               Math.round(donationProcessInFloat * 100) / 100;
-            console.log("dataaa");
-            console.log(this.currentDonation);
-            console.log(typeof this.currentDonation);
           }
         } catch (error) {
           this.logger.hasError = true;
@@ -656,7 +656,11 @@ export default {
     },
     donationPrevent() {
       console.log(this.totalAmount == this.currentDonation);
-      if (this.projectDuration <= 0) {
+      if(isEmptyObject(this.userData)){
+        this.canDonate = false;
+        this.donationPreventionLogger = "You Must Register in order to donate"
+      }
+      else if (this.projectDuration <= 0) {
         this.canDonate = false;
         this.donationPreventionLogger = "Project Duration Has Been Ended.";
       } else if (this.totalAmount == this.currentDonation) {
@@ -670,9 +674,79 @@ export default {
         this.stopProjectTime = true;
       }
     },
-    // async submitComment(rating,comment){
-    //    await fetch("http://localhost8000/")
-    // },
+    async submitComment(rating,comment){
+       try{
+        //Rate First
+       //Data Validation
+       if(rating == null){
+          // throw error till now
+          throw new Error("please retry to enter the rate");
+       }
+       if(this.userRate.rate != null){
+       //update rate
+       const updatedRate={rate:this.newRate}
+       const rateResponse=await fetch(`http://localhost:8000/rating/${this.userRate.id}/`,{
+          headers: {
+            "Content-Type": "application/json", 
+            Authorization : `token ${this.userData["token"]}`
+          },
+          method : "PATCH",
+          body: JSON.stringify(updatedRate)
+       });
+       if(!rateResponse.ok){
+        console.log("Error While Update Rate");
+       }
+       else {
+        console.log("new Rate Equals to")
+        console.log(this.newRate);
+       }
+       }else{
+        //new rate
+        const rateData={
+          project:this.projectData["id"],
+          user:this.userData['user_id'],
+          rate:parseInt(rating)          
+        }
+        console.log("rate Data")
+        console.log(JSON.stringify(rateData));
+       const rateResponse= await fetch("http://localhost:8000/rating/",{
+          
+          method:"POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body:JSON.stringify(rateData)
+        })
+        if(!rateResponse.ok){
+          console.log("Error While Inserting Data");
+        }
+       }
+       
+       
+        // Make A Comment
+        const commentMsg=comment       
+         const commentData={
+          comment:commentMsg,
+          user_id:this.userData['user_id'],
+          project_id:this.projectData["id"]
+         }
+         console.log(JSON.stringify(commentData))
+         const commentResponse = await fetch("http://localhost:8000/api/comment/",{
+          headers: {
+            "Content-Type": "application/json", 
+            Authorization : `token ${this.userData["token"]}`
+          },
+          method:"POST",
+          body:JSON.stringify(commentData)
+         })
+         if(!commentResponse.ok){
+          throw new Error("Error While Posting Comment");
+         }  
+
+       }catch(error){
+        console.log(error);
+       }
+    },
 
     selectActiveImage(index) {
       this.activeImg = this.images[index].url;

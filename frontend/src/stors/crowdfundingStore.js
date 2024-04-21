@@ -51,6 +51,7 @@ export const datastore = defineStore("crowdfunding", {
         const response = await fetch(`http://127.0.0.1:8000/tags/`);
         const tags = await response.json();
         this.tags = tags;
+        return tags;
       } catch (error) {
         console.error("Error fetching tags data:", error);
       }

@@ -40,13 +40,12 @@ class CustomUserManager(BaseUserManager):
 
 AUTH_PROVIDERS = {'facebook': 'facebook', 'email': 'email'}
  
-class User(AbstractBaseUser,PermissionsMixin):
+class User(AbstractBaseUser):
 
     email = models.EmailField(db_index=True, unique=True, max_length=254)
     first_name = models.CharField(max_length=240)
     last_name = models.CharField(max_length=255)
     phone = models.CharField(max_length=50, validators=[RegexValidator(r'^01[012]\d{8}$')])
-    address = models.CharField( max_length=250)
     photo = models.ImageField(upload_to='images/user',default='images/user/default.jpg',blank=True)
     birth_date = models.DateField(null=True, blank=True)
     is_superuser = models.BooleanField(default=False)
