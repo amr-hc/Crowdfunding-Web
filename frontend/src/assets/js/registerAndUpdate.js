@@ -54,7 +54,7 @@ class FunctionsClass {
           if(birthdatePattern.test(par.birthdate))
             {
           const berthdateInput=document.getElementById('validationCustom7');
-                if(par.birthdate===new Date().toISOString().split('T')[0]+''){
+                if(par.birthdate >= new Date().toISOString().split('T')[0]+''){
 
                   berthdateInput.setCustomValidity("Date cant be today");
                   setTimeout(() => {
@@ -384,12 +384,13 @@ class FunctionsClass {
     }
 
     async featchUserData(par){
-
       let userData=this.getStorgData(); 
       if (userData){
       par.storgData=userData;
       await par.storData.getUserData(userData.user_id,userData.token)
-      par.user=par.storData.user}
+      par.user=par.storData.user
+    }
+
   }
 
 tagSelection(par){

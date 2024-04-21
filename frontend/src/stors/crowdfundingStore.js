@@ -23,7 +23,6 @@ export const datastore = defineStore("crowdfunding", {
           throw new Error("can't fetch data from server");
         }
         const user = await response.json();
-        
         this.user = user;
       } catch (error) {
         console.error("Error fetching user data:", error);

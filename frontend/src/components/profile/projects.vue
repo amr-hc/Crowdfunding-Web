@@ -114,7 +114,7 @@
                 >
                 <input
                   v-model="targetMoney"
-                  type="text"
+                  type="number"
                   class="form-control"
                   id="validationCustom03"
                   required
