@@ -1,5 +1,5 @@
-<template >
- 
+<template>
+
   <nav class="navbar navbar-expand-lg position-sticky sticky-top top-0 z-3">
     <div class="container-fluid">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
@@ -7,7 +7,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-        <a class="navbar-brand" href="#" >Arise</a>
+        <a class="navbar-brand" href="#">Arise</a>
         <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <router-link to="/" class="text-decoration-none"><button class="nav-link"
@@ -37,7 +37,7 @@
         <div v-if="isAuthenticated" class="avatar-container dropdown" data-bs-theme="dark">
           <a class="dropdown-toggle-split text-decoration-none d-flex align-items-center" href="#" role="button"
             data-bs-toggle="dropdown" aria-expanded="false">
-            <div class="name">{{user.first_name}}{{ user.last_name }}</div>
+            <div class="name">{{ user.first_name }}{{ user.last_name }}</div>
             <div class="avatar">
               <img :src="user.photo" alt="Avatar" />
             </div>
@@ -72,21 +72,21 @@ const functionsObject = new FunctionsClass();
 
 export default {
   name: "navbar",
-  async created(){
-  await functionsObject.logedInPagesCreated(this);
-this.isAuthenticated=functionsObject.getStorgData() == null ? false : true;
-},
+  async created() {
+    await functionsObject.logedInPagesCreated(this);
+    this.isAuthenticated = functionsObject.getStorgData() == null ? false : true;
+  },
   data() {
     return {
       storData: datastore(),
-      user:{},
+      user: {},
       isAdmin: false,
-      isAuthenticated:false
+      isAuthenticated: false
     };
   },
   methods: {
     checkstate() {
-      this.isAuthenticated=functionsObject.getStorgData() == null ? false : true;
+      this.isAuthenticated = functionsObject.getStorgData() == null ? false : true;
 
     },
     navigate(selcted) {
@@ -95,14 +95,12 @@ this.isAuthenticated=functionsObject.getStorgData() == null ? false : true;
     logOut() {
       localStorage.clear();
       sessionStorage.clear();
-      this.isAuthenticated=false;
-      this.$router.push( "/login");
+      this.isAuthenticated = false;
+      this.$router.push("/login");
     },
-    
   },
-  
-   
-    
+ 
+
 };
 
 </script>

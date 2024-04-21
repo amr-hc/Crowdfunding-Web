@@ -4,7 +4,13 @@
       Our <br />
       Featured <br />Projects
     </h1>
-    <div class="col-12 col-lg carousel">
+    <div
+      class="alert alert-danger text-center py-2 my-3"
+      v-if="isThereProjects"
+    >
+      <h1>There is no Projects to Show</h1>
+    </div>
+    <div class="col-12 col-lg carousel" v-else>
       <div class="list">
         <div
           class="item"
@@ -65,6 +71,7 @@ export default {
     return {
       usedatastore: datastore(),
       featuredProject: [],
+      isThereProjects: true,
     };
   },
   mounted() {
@@ -100,31 +107,35 @@ export default {
     this.featuredProject
       .sort((a, b) => a.project.average_rate - b.project.average_rate)
       .reverse();
-    console.log(this.featuredProject);
+    if (this.featuredProject.length > 0) {
+      this.isThereProjects = false;
+    }
+    console.log(this.featuredProject.length);
   },
   methods: {
     showSlider(direction) {
       const listItems = document.querySelector(".carousel .list");
       const thumbnails = document.querySelector(".carousel .thumbnail");
+      if (this.featuredProject.length > 1) {
+        if (direction === "next") {
+          listItems.appendChild(listItems.children[0].cloneNode(true));
+          listItems.children[0].remove();
 
-      if (direction === "next") {
-        listItems.appendChild(listItems.children[0].cloneNode(true));
-        listItems.children[0].remove();
+          thumbnails.appendChild(thumbnails.children[0].cloneNode(true));
+          thumbnails.children[0].remove();
+        } else {
+          listItems.insertBefore(
+            listItems.children[listItems.children.length - 1].cloneNode(true),
+            listItems.children[0]
+          );
+          listItems.children[listItems.children.length - 1].remove();
 
-        thumbnails.appendChild(thumbnails.children[0].cloneNode(true));
-        thumbnails.children[0].remove();
-      } else {
-        listItems.insertBefore(
-          listItems.children[listItems.children.length - 1].cloneNode(true),
-          listItems.children[0]
-        );
-        listItems.children[listItems.children.length - 1].remove();
-
-        thumbnails.insertBefore(
-          thumbnails.children[thumbnails.children.length - 1].cloneNode(true),
-          thumbnails.children[0]
-        );
-        thumbnails.children[thumbnails.children.length - 1].remove();
+          thumbnails.insertBefore(
+            thumbnails.children[thumbnails.children.length - 1].cloneNode(true),
+            thumbnails.children[0]
+          );
+          thumbnails.children[thumbnails.children.length - 1].remove();
+        }
       }
     },
   },
