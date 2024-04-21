@@ -1,7 +1,7 @@
 <template>
   <div class="container map">
     <navbar v-show="showNav" />
-    <div class="row">
+    <div class="">
       <router-view></router-view>
     </div>
     <pageFooter />
