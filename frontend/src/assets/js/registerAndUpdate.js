@@ -54,7 +54,7 @@ class FunctionsClass {
           if(birthdatePattern.test(par.birthdate))
             {
           const berthdateInput=document.getElementById('validationCustom7');
-                if(par.birthdate===new Date().toISOString().split('T')[0]+''){
+                if(par.birthdate >= new Date().toISOString().split('T')[0]+''){
 
                   berthdateInput.setCustomValidity("Date cant be today");
                   setTimeout(() => {
@@ -125,7 +125,6 @@ class FunctionsClass {
       try 
       {
         
-
         const response = await fetch(`http://127.0.0.1:8000/api/users/?email=${par}`);
         if (!response.ok) {
           throw new Error("can't insert data to server");
@@ -138,8 +137,6 @@ class FunctionsClass {
              e.target.setCustomValidity("");
             }
           
-        
-       
          
       }
     catch (error) 
@@ -197,6 +194,9 @@ class FunctionsClass {
               method: "POST",
               body: formData,
             });
+            if (!response.ok) {
+              throw new Error("can't insert data to server");
+            }
             const data = await response.json(); 
           sessionStorage.setItem("needactivation", "true");
             par.$router.push('/befroreactivation');
@@ -378,13 +378,20 @@ class FunctionsClass {
         par.$router.push('/login');
       }
       else if(localStorageData||sessionStorageData){
-        let userData=localStorageData?localStorageData : sessionStorageData 
-        par.storgData=userData;
-        await par.storData.getUserData(userData.user_id,userData.token)
-        par.user=par.storData.user
+        this.featchUserData(par);
         
       }
     }
+
+    async featchUserData(par){
+      let userData=this.getStorgData(); 
+      if (userData){
+      par.storgData=userData;
+      await par.storData.getUserData(userData.user_id,userData.token)
+      par.user=par.storData.user
+    }
+
+  }
 
 tagSelection(par){
   const tags=par.tags.map((obj)=>{

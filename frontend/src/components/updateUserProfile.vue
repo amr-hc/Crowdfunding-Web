@@ -102,7 +102,7 @@
 									<h6 class="mb-0">Birthdate</h6>
 								</div>
 								<div class="col-sm-9 text-secondary">
-									<input type="date" class="form-control "  
+									<input type="date" class="form-control " id='validationCustom7' 
 									v-model="birthdate" 
 									pattern="^(((0[13-9]|1[012])[-/]?(0[1-9]|[12][0-9]|30)|(0[13578]|1[02])[-/]?31|02[-/]?(0[1-9]|1[0-9]|2[0-8]))[-/]?[0-9]{4}|02[-/]?29[-/]?([0-9]{2}(([2468][048]|[02468][48])|[13579][26])|([13579][26]|[02468][048]|0[0-9]|1[0-6])00))$"
 									 >
@@ -171,7 +171,7 @@
    const functionsObject=new FunctionsClass();
   export default {
 	data:()=>({
-		storData:datastore(),
+	storData:datastore(),
 	  user:{},
       fname: '',
       lname: '',
@@ -196,6 +196,7 @@
         this.birthdate=this.user.birth_date;
         this.facebook=this.user.facebook;
         this.id=this.user.id;
+		console.log(this.user);
 	  },
 	  methods:{
 		

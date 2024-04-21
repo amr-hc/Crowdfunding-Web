@@ -90,7 +90,8 @@
                 </div>
             </div>
         </div>
-     <projects :user="user"/> 
+     <projects /> 
+     <donations  /> 
 
           </div>
 
@@ -102,6 +103,7 @@
  import{datastore}from '@/stors/crowdfundingStore'
  import FunctionsClass from '../assets/js/registerAndUpdate'
  import projects from "@/components/profile/projects.vue"
+ import donations from "@/components/profile/donations.vue"
   const functionsObject=new FunctionsClass();
   export default {
     
@@ -116,7 +118,7 @@
    
   },
   components: {
-    projects,
+    projects,donations
   },
   async created(){
   await functionsObject.logedInPagesCreated(this);

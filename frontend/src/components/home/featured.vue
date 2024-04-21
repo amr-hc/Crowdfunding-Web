@@ -4,14 +4,27 @@
       Our <br />
       Featured <br />Projects
     </h1>
-    <div class="col-12 col-lg carousel">
+    <div
+      class="alert alert-danger text-center py-2 my-3"
+      v-if="isThereProjects"
+    >
+      <h1>There is no Projects to Show</h1>
+    </div>
+    <div class="col-12 col-lg carousel" v-else>
       <div class="list">
         <div
           class="item"
           v-for="project in this.featuredProject"
           :key="project.id"
         >
-          <img :src="project.project.pics[0].image_path" :alt="project.title" />
+          <img
+            :src="
+              project.pics.length > 0
+                ? project.project.pics[0].image_path
+                : require('@/assets/images/No-Image-Placeholder.svg.png')
+            "
+            :alt="project.title"
+          />
           <div class="content">
             <div class="author">
               {{
@@ -42,7 +55,14 @@
           v-for="project in this.featuredProject"
           :key="project.id"
         >
-          <img :src="project.project.pics[0].image_path" :alt="project.title" />
+          <img
+            :src="
+              project.pics.length > 0
+                ? project.project.pics[0].image_path
+                : require('@/assets/images/No-Image-Placeholder.svg.png')
+            "
+            :alt="project.title"
+          />
           <div class="content">
             <div class="title">{{ project.project.title }}</div>
           </div>
@@ -65,6 +85,7 @@ export default {
     return {
       usedatastore: datastore(),
       featuredProject: [],
+      isThereProjects: true,
     };
   },
   mounted() {
@@ -85,13 +106,7 @@ export default {
     }
   },
   async created() {
-    const res = await fetch("http://127.0.0.1:8000/api/ImportantProject/", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `token ${this.usedatastore.userInfo.token} `,
-      },
-    });
+    const res = await fetch("http://127.0.0.1:8000/api/ImportantProject/");
     if (!res.ok) {
       throw new Error("cant fetch data from server");
     }
@@ -100,31 +115,35 @@ export default {
     this.featuredProject
       .sort((a, b) => a.project.average_rate - b.project.average_rate)
       .reverse();
-    console.log(this.featuredProject);
+    if (this.featuredProject.length > 0) {
+      this.isThereProjects = false;
+    }
+    console.log(this.featuredProject.length);
   },
   methods: {
     showSlider(direction) {
       const listItems = document.querySelector(".carousel .list");
       const thumbnails = document.querySelector(".carousel .thumbnail");
+      if (this.featuredProject.length > 1) {
+        if (direction === "next") {
+          listItems.appendChild(listItems.children[0].cloneNode(true));
+          listItems.children[0].remove();
 
-      if (direction === "next") {
-        listItems.appendChild(listItems.children[0].cloneNode(true));
-        listItems.children[0].remove();
+          thumbnails.appendChild(thumbnails.children[0].cloneNode(true));
+          thumbnails.children[0].remove();
+        } else {
+          listItems.insertBefore(
+            listItems.children[listItems.children.length - 1].cloneNode(true),
+            listItems.children[0]
+          );
+          listItems.children[listItems.children.length - 1].remove();
 
-        thumbnails.appendChild(thumbnails.children[0].cloneNode(true));
-        thumbnails.children[0].remove();
-      } else {
-        listItems.insertBefore(
-          listItems.children[listItems.children.length - 1].cloneNode(true),
-          listItems.children[0]
-        );
-        listItems.children[listItems.children.length - 1].remove();
-
-        thumbnails.insertBefore(
-          thumbnails.children[thumbnails.children.length - 1].cloneNode(true),
-          thumbnails.children[0]
-        );
-        thumbnails.children[thumbnails.children.length - 1].remove();
+          thumbnails.insertBefore(
+            thumbnails.children[thumbnails.children.length - 1].cloneNode(true),
+            thumbnails.children[0]
+          );
+          thumbnails.children[thumbnails.children.length - 1].remove();
+        }
       }
     },
   },

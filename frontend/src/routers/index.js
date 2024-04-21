@@ -87,6 +87,7 @@ const routes = [
   {
     path: "/dashboard",
     component: Dashboard,
+    meta: { requiresAuth: true, requiresAdmin: true },
   },
   {
     path:"/dashboard/reportComment",
@@ -97,8 +98,31 @@ const routes = [
     component:reportProject
   }
 ];
+
 const router = createRouter({
   routes,
   history: createWebHistory(),
 });
+
+// router.beforeEach((to, from, next) => {
+//   const isAuthenticated = localStorage.getItem("userInfo") !== null;
+//   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+//   const isAdmin = isAuthenticated && userInfo.is_superuser;
+
+//   if (to.matched.some((record) => record.meta.requiresAuth)) {
+//     if (!isAuthenticated) {
+//       next({ path: "/login", query: { redirect: to.fullPath } });
+//     } else {
+//       if (to.matched.some((record) => record.meta.requiresAdmin)) {
+//         if (!isAdmin) {
+//           next();
+//         } else {
+//           next();
+//         }
+//       }
+//     }
+//   } else {
+//     next();
+//   }
+// });
 export default router;
