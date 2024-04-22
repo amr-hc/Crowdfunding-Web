@@ -4,7 +4,7 @@ export const datastore = defineStore("crowdfunding", {
     user: {},
     categories: [],
     tags: [],
-    allProjects:[],
+    allProjects: [],
     userInfo:
       JSON.parse(localStorage.getItem("userInfo")) ||
       JSON.parse(sessionStorage.getItem("userInfo")),
@@ -52,12 +52,15 @@ export const datastore = defineStore("crowdfunding", {
       }
     },
     async getAllProjects() {
+      let autherization = "";
+      if (this.userInfo != null)
+        autherization = `Bearer ${this.userInfo.token}`;
       try {
         const res = await fetch("http://127.0.0.1:8000/api/projects/", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${this.userInfo.token}`,
+            Authorization: autherization,
           },
         });
         if (!res.ok) {

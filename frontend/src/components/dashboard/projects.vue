@@ -1,90 +1,104 @@
 <template>
-    <div class="row  p-0  p-4">
-        <h4 class="border-bottom border-dark">All projects</h4>
-        <div class="row p-0">
-            <div class="project-card p-0" v-for="(project, index) in projects" :key="index">
-                <img :src="project.imageUrl" alt="">
+    <div class="row p-0 p-4">
+        <h4>All projects</h4>
+        <hr class="my-4 ">
+        <!-- Loading Indicator -->
+        <div v-if="loading" class="alert alert-dark bg-dark border-0">
+            <p>Loading projects...</p>
+        </div>
+        <!-- Projects list -->
+        <div v-else-if="projects.length > 0" class="row p-0">
+            <router-link class="project-card p-0" v-for="(project, index) in projects" :key="index"
+                :to="'/dashboard/p/' + project.id">
+                <div v-show="project.hidden" class="is-removed"> <i class="fa-solid fa-ban"></i></div>
+                <img v-if="project.pics && project.pics.length > 0" :src="getImagePath(project)" alt="">
+                <img v-else :src="require('@/assets/images/default.jpg')" alt="">
                 <div class="p-3">
                     <h6 class="text-white-50 overflow overflow-hidden">{{ project.title }}</h6>
-                    <p class="author badge bg-primary text-white-50">{{ project.author }}</p>
+                    <p class="author badge bg-dark p-1">{{ project.owner.first_name }} {{ project.owner.last_name }}
+                    </p>
                     <div class="project-card-rating">
                         <i v-for="n in 5" :key="n"
-                            :class="{ 'plus fa-solid fa-star': n <= project.rating, 'minus fa-regular fa-star': n > project.rating }"></i>
+                            :class="{ 'plus fa-solid fa-star': n <= project.average_rate, 'minus fa-regular fa-star': n > project.average_rate }"></i>
                     </div>
-                    <p>Target: {{ project.target }}</p>
-                    <p>Current Donation: {{ project.currentDonation }}</p>
+                    <p>Target: {{ currency_format(project.target_money) }}</p>
+                    <p>Current Donation: {{ currency_format(project.total_donations) }}</p>
                 </div>
-            </div>
+            </router-link>
+        </div>
+        <!-- No Projects Message -->
+        <div v-else class="alert alert-dark bg-dark border-0">
+            <p>There are no projects available at the moment.</p>
         </div>
     </div>
 </template>
-
 <script>
+import axios from 'axios';
+import { datastore } from "@/stors/crowdfundingStore";
 
 export default {
-
     name: 'projects',
+
     data() {
         return {
-            projects: [
-                {
-                    imageUrl: 'https://via.placeholder.com/300',
-                    title: 'Dynamic Web Application',
-                    description: 'Building a modern web application with dynamic features.',
-                    author: 'Alice Johnson',
-                    rating: 4,
-                    topic: 'Development',
-                    target: 1500,
-                    currentDonation: 800,
-                },
-                {
-                    imageUrl: 'https://via.placeholder.com/300',
-                    title: 'Mobile App Redesign',
-                    description: 'Redesigning a mobile application for better user experience.',
-                    author: 'Bob Smith',
-                    rating: 5,
-                    topic: 'Design',
-                    target: 2000,
-                    currentDonation: 1200,
-                },
-                {
-                    imageUrl: 'https://via.placeholder.com/300',
-                    title: 'Social Media Campaign',
-                    description: 'Launching a social media campaign to increase brand awareness.',
-                    author: 'Eve Brown',
-                    rating: 4,
-                    topic: 'Marketing',
-                    target: 1200,
-                    currentDonation: 600,
-                },
-                {
-                    imageUrl: 'https://via.placeholder.com/300',
-                    title: 'Machine Learning Project',
-                    description: 'Implementing machine learning algorithms for data analysis.',
-                    author: 'Charlie Wilson',
-                    rating: 3,
-                    topic: 'Technology',
-                    target: 1800,
-                    currentDonation: 1000,
-                },
-                {
-                    imageUrl: 'https://via.placeholder.com/300',
-                    title: 'E-commerce Website Upgrade',
-                    description: 'Upgrading an e-commerce website with new features and optimizations.',
-                    author: 'Grace Lee',
-                    rating: 4,
-                    topic: 'Software',
-                    target: 2500,
-                    currentDonation: 1500,
-                }
-
-            ],
+            token: datastore().userInfo.token,
+            loading: true,
+            projects: []
         };
     },
+    async created() {
+        try {
+            const response = await axios.get('http://127.0.0.1:8000/api/projects/', {
+                headers: {
+                    Authorization: `token ${this.token}`
+                }
+            });
+            this.projects = response.data.results;
+
+            if (this.projects.length > 0) {
+                this.isRemoved = this.projects[0].hidden;
+            }
+
+            this.loading = false;
+        } catch (error) {
+            console.error('Error fetching projects:', error);
+        }
+    },
+    methods: {
+        getImagePath(project) {
+            if (project && project.pics && project.pics.length > 0) {
+                return project.pics[0].image_path;
+
+            } else {
+                return require('@/assets/images/default.jpg');
+            }
+        },
+        showProjectDetails(project) {
+            if (project && project.id) {
+                this.$router.push({ name: 'dashboardProject', params: { id: project.id } });
+            } else {
+                console.error('Invalid project object:', project);
+            }
+        },
+        currency_format(price) {
+            return new Intl.NumberFormat("us", {
+                style: "currency",
+                currency: "usd",
+                minimumFractionDigits: 0
+            }).format(price);
+        },
+
+    }
 }
 </script>
 
+
 <style scoped>
+* {
+    padding: 0;
+    margin: 0;
+}
+
 .project-card {
     position: relative;
     width: 250px;
@@ -109,9 +123,42 @@ export default {
     object-fit: cover;
 }
 
-.project-card .text-white-50 {
+.project-card .text-white-50,
+.project-card p {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+.project-card:hover {
+    cursor: pointer;
+    outline: 2px solid var(--secondary-color-2);
+    transition: all 0.05s ease-in-out;
+    background-color: var(--primary-color-1);
+    color: white;
+}
+
+.project-card-rating i {
+    color: yellow;
+    font-size: 12px;
+}
+
+.is-removed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.is-removed i {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 82px;
+    color: rgba(255, 255, 255, 0.5);
 }
 </style>

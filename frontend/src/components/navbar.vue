@@ -89,7 +89,7 @@ export default {
       this.isAuthenticated = functionsObject.getStorgData() == null ? false : true;
 
     },
-  
+
     logOut() {
       localStorage.clear();
       sessionStorage.clear();
@@ -97,8 +97,12 @@ export default {
       this.$router.push("/login");
     },
   },
- 
-
+  computed: {
+    isAdmin() {
+      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      return userInfo && userInfo.is_superuser === true;
+    },
+  }
 };
 
 </script>

@@ -3,9 +3,7 @@
         <div class="title">
             Connecting <span>Projects</span> <br>and Make Your <span>Invest</span> <br> Comes True
         </div>
-        <div class="more btn text-light p-0">
-            learn more <i class="ms-1 fa-solid fa-arrow-right-long"></i>
-        </div>
+        
         <div class="statics row gap-2 ">
             <div class="statics_card d-flex flex-column justify-content-center align-items-center">
                 <h2 class="m-0">100+</h2>
