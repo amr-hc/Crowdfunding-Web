@@ -1,74 +1,77 @@
 <template>
   <section style="background-color: rgb(91 91 91 / 20%) !important">
-    <div
-      class="jumbotron p-3 mb-4 d-flex justify-content-between align-items-start"
-    >
-      <router-link class="btn btn-success" to="/add" v-show="showAddBtn"
-        >Add Project</router-link
-      >
+    <div class="jumbotron p-3 mb-4 d-flex justify-content-end">
       <div class="headline">
         <h1 class="display-4 font-weight-bold">Browse Our Projects</h1>
         <h2 class="font-italic">Try To Be A Part Of The Solution.</h2>
       </div>
     </div>
     <section class="container">
-      <div class="d-flex justify-content-end gap-3">
-        <div class="dropdown col-2 d-flex justify-content-center">
-          <button
-            class="btn btn-light dropdown-toggle btn-lg"
-            type="button"
-            data-bs-toggle="dropdown"
-            data-bs-auto-close="outside"
-          >
-            Select tags
-          </button>
-          <ul class="dropdown-menu text-center">
-            <li v-for="tag in this.tags" :key="tag.id">
-              <label class="dropdown-item" :for="tag.tagName + tag.id"
-                ><input
-                  type="checkbox"
-                  :id="tag.tagName + tag.id"
-                  :value="tag.id"
-                />
-                {{ tag.tagName }}</label
-              >
-            </li>
-          </ul>
-        </div>
+      <div class="d-flex flex-column flex-lg-row justify-content-evenly align-items-center gap-2 gap-lg-0">
+        <router-link class="btn btn-success" to="/add" v-show="showAddBtn"
+          >Add Project</router-link
+        >
+        <div class="row flex-lg-row flex-column  justify-content-end align-items-center gap-2 gap-lg-0">
 
-        <div class="form-floating col-2">
-          <select
-            class="form-select"
-            id="floatingSelect"
-            v-model="this.filteredCategory"
-          >
-            <option value="">Show All</option>
-            <option
-              v-for="category in this.categories"
-              :key="category.id"
-              :value="category.id"
+          <div class="dropdown col-lg-2 col-5 d-flex justify-content-center ">
+            <button
+              class="btn btn-light dropdown-toggle btn-lg"
+              type="button"
+              data-bs-toggle="dropdown"
+              data-bs-auto-close="outside"
             >
-              {{ category.name }}
-            </option>
-          </select>
-          <label for="floatingSelect" class="ms-2">Category</label>
-        </div>
-        <div class="d-flex input-group w-25">
-          <div class="form-floating">
-            <input
-              id="searchBar"
-              class="form-control"
-              type="search"
-              placeholder="Search"
-              v-model="this.searchValue"
-            />
-            <label for="searchBar" class="text-dark">Search for Project</label>
+              Select tags
+            </button>
+            <ul class="dropdown-menu text-center">
+              <li v-for="tag in this.tags" :key="tag.id">
+                <label class="dropdown-item" :for="tag.tagName + tag.id"
+                  ><input
+                    type="checkbox"
+                    :id="tag.tagName + tag.id"
+                    :value="tag.id"
+                  />
+                  {{ tag.tagName }}</label
+                >
+              </li>
+            </ul>
           </div>
-          <span
-            class="searchIcon input-group-text col-2 pe-auto bg-dark text-light"
-            @click="filterProject"
-            ><i class="fa-solid fa-magnifying-glass"></i
-          ></span>
+
+          <div class="form-floating col-lg-3 col-10 accordion  ms-5">
+            <select
+              class="form-select"
+              id="floatingSelect"
+              v-model="this.filteredCategory"
+            >
+              <option value="">Show All</option>
+              <option
+                v-for="category in this.categories"
+                :key="category.id"
+                :value="category.id"
+              >
+                {{ category.name }}
+              </option>
+            </select>
+            <label for="floatingSelect" class="ms-2">Category</label>
+          </div>
+          <div class="d-flex input-group    searchBarInput">
+            <div class="form-floating">
+              <input
+                id="searchBar"
+                class="form-control"
+                type="search"
+                placeholder="Search"
+                v-model="this.searchValue"
+              />
+              <label for="searchBar" class="text-dark"
+                >Search for Project</label
+              >
+            </div>
+            <span
+              class="searchIcon input-group-text col-2 pe-auto bg-dark text-light"
+              @click="filterProject"
+              ><i class="fa-solid fa-magnifying-glass"></i
+            ></span>
+          </div>
         </div>
       </div>
       <div
@@ -320,5 +323,24 @@ export default {
 }
 .searchIcon {
   cursor: pointer;
+}
+.searchBarInput{
+  width: 50%;
+}
+@media (orientation: portrait) {
+  .searchBarInput {
+    width: 100%;
+  }
+}
+@media (max-width: 768px) {
+  .searchBarInput {
+    width: 100%;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .searchBarInput {
+    width: 100%;
+  }
 }
 </style>
