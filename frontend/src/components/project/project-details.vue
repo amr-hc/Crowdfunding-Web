@@ -682,6 +682,7 @@ export default {
           const response = await fetch("http://localhost:8000/donation/", {
             method: "POST",
             headers: {
+              Authorization: `Token ${this.userData["token"]}`,
               "Content-Type": "application/json",
             },
             body: JSON.stringify(donationData),
@@ -717,6 +718,7 @@ export default {
         {
           method: "PATCH",
           headers: {
+            Authorization: `Token ${this.userData["token"]}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(cancelingData),
