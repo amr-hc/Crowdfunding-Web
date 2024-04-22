@@ -43,3 +43,7 @@ body {
 .btn-main {
   background-color: var(--secondary-color-3);
 }
+a {
+  text-decoration: none;
+  color: inherit;
+}

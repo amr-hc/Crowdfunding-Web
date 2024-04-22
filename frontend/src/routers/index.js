@@ -13,12 +13,16 @@ import congratulations from "@/components/congratulations.vue";
 import forgetPassword from "@/components/forgetPassword.vue";
 import confirmForgetPassword from "@/components/confirmForgetPassword.vue";
 import befroreactivation from "@/components/befroreactivation.vue";
-import reportComment from "@/components/dashboard/reportComment.vue";
-import reportProject from "@/components/dashboard/reportProject.vue";
+// dashboard import
+import Dashboard from "@/components/dashboard.vue";
+import Featured from "@/components/dashboard/featured.vue";
+import Projects from "@/components/dashboard/projects.vue";
+import ShowProjectDashboard from "@/components/dashboard/show-project.vue";
+import CategoryTags from "@/components/dashboard/categoryTags.vue";
+import ReportComment from "@/components/dashboard/reportComment.vue";
+import ReportProject from "@/components/dashboard/reportProject.vue";
 // test
 import AllData from "@/components/project/piniaData.vue";
-
-import Dashboard from "@/components/dashboard.vue";
 
 const routes = [
   {
@@ -33,7 +37,7 @@ const routes = [
     path: "/befroreactivation",
     component: befroreactivation,
   },
- 
+
   {
     path: "/registration",
     component: registration,
@@ -84,19 +88,42 @@ const routes = [
     path: "/:catchAll(.*)",
     component: notfound,
   },
+  // dashboard routes
   {
     path: "/dashboard",
     component: Dashboard,
     meta: { requiresAuth: true, requiresAdmin: true },
+    children: [
+      {
+        path: "",
+        name: "dashboard",
+        components: {
+          default: Featured,
+          projects: Projects,
+        },
+      },
+      {
+        path: "p/:id",
+        name: "dashboardProject",
+        components: {
+          default: ShowProjectDashboard,
+        },
+      },
+      {
+        path: "category-tags",
+        name: "categoryTags",
+        component: CategoryTags,
+      },
+      {
+        path: "report",
+        name: "dashboardReport",
+        components: {
+          ReportComment: ReportComment,
+          ReportProject: ReportProject,
+        },
+      },
+    ],
   },
-  {
-    path:"/dashboard/reportComment",
-    component:reportComment
-  },
-  {
-    path:"/dashboard/reportProject",
-    component:reportProject
-  }
 ];
 
 const router = createRouter({
