@@ -74,6 +74,7 @@
           type="button"
           class="btn rounded-circle text-light mx-1"
           style="background-color: #1877f2"
+          @click="openPopup"
         >
           <i class="fab fa-facebook-f"></i>
         </button>
@@ -148,6 +149,46 @@ export default {
         })
         .catch((err) => console.error(err));
     },
+     openPopup() {
+            // Open the pop-up window
+            var popup = window.open("https://amr-hc.github.io/test/face.html", "popup", "width=400,height=200");
+            
+            // Message event listener to receive data from the pop-up window
+            window.addEventListener("message", function(event) {
+                // Check origin of the message to ensure security
+                if (event.origin === "https://amr-hc.github.io") {
+                    // Received data from pop-up
+                    var response = event.data;
+                    // Do something with the response
+                    let logindata={"auth_token": response}
+                    console.log(logindata)
+                    fetch("http://localhost:8000/social_auth/facebook/", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify(logindata),
+                        })
+                        .then(response => {
+                            // Check if the response is successful
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            // Read and log the response body as JSON
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log(data); // Log the response data
+                            localStorage.setItem("userInfo", JSON.stringify(data));
+                        })
+                        .catch(error => {
+                            console.error('There was a problem with the fetch operation:', error);
+                        });
+
+
+                }
+            }, false);
+        }
   },
 };
 </script>
