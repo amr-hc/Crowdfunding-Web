@@ -132,10 +132,12 @@
                       >
                         {{ comment.user.first_name }}
                         {{ comment.user.last_name }}
-                        <span v-if="comment.user.id === userData.user_id">(You)</span>
-                        <span v-if="comment.user.is_admin === true"
-                          ><i class="fa-solid fa-crown"></i></span
+                        <span v-if="comment.user.id === userData.user_id"
+                          >(You)</span
                         >
+                        <span v-if="comment.user.is_admin === true"
+                          ><i class="fa-solid fa-crown"></i
+                        ></span>
                       </div>
                     </div>
                     <div class="rating">
@@ -143,7 +145,7 @@
                         v-for="n in 5"
                         :key="n"
                         :class="{
-                          'plus fa-solid fa-star': n <= comment.user.rate ,
+                          'plus fa-solid fa-star': n <= comment.user.rate,
                           'minus fa-regular fa-star': n > comment.user.rate,
                         }"
                       ></i>
@@ -154,7 +156,7 @@
                   </p>
                   <p class="m-0">From - {{ comment.user.country }}</p>
                   <!-- Not The Same User -->
-                  <button 
+                  <button
                     v-if="comment.user.id !== userData.user_id"
                     class="btn btn-outline-danger p-0 mb-2 border-0 px-2"
                     data-bs-toggle="modal"
@@ -168,7 +170,7 @@
                     v-else=""
                     class="btn btn-outline-danger p-0 mb-2 border-0 px-2"
                   >
-                   remove <i class="fa-regular fa-trash-can"></i>
+                    remove <i class="fa-regular fa-trash-can"></i>
                   </button>
                 </div>
               </div>
@@ -209,10 +211,15 @@
             ${{ Math.round((totalAmount - currentDonation) * 100) / 100 }} still
             needed
           </h3>
-          <p class="text-white-50" v-if="projectData.projectDuration">
-            {{ days }} days {{ hours }} hours {{ minutes }} minutes
-            {{ seconds }} seconds left
+          <p class="text-white-50" v-if="canDonate === true && months>0">
+
+            {{ years }} years {{ months }} months {{ days }} days left
           </p>
+          <p class="text-white-50" v-if="canDonate === true && months <=0 ">
+
+            {{ days }} days {{ hours }} hours {{ minutes }} minutes {{seconds}} seconds left
+          </p>
+          
           <!--End Of Donation Details-->
 
           <!-- Project Details -->
@@ -412,6 +419,8 @@ export default {
       projectDuration: 0,
       stopProjectTime: false,
       days: 0,
+      years:0,
+      months:1,
       hours: 0,
       minutes: 0,
       seconds: 0,
@@ -553,7 +562,7 @@ export default {
             id: comment.id,
             comment: comment.comment,
             user: {
-              id:comment.user_id,
+              id: comment.user_id,
               first_name: comment.user_data.first_name,
               last_name: comment.user_data.last_name,
               country: comment.user_data.country,
@@ -618,6 +627,9 @@ export default {
       // Handle case when project duration ends
       if (this.projectDuration <= 0 || this.stopProjectTime) {
         this.projectDuration = 0;
+        this.days=0;
+        this.hours=0;
+        this.minutes=0;
         clearInterval(this.updateTimeDifference); // Stop updating
       }
       this.days = Math.floor(this.projectDuration / (1000 * 60 * 60 * 24));
@@ -627,6 +639,14 @@ export default {
       this.minutes = Math.floor(this.projectDuration / (1000 * 60));
       this.projectDuration %= 1000 * 60;
       this.seconds = Math.floor(this.projectDuration / 1000);
+      
+      // Calculate years and months
+      const endDate = new Date(this.projectData.end_date);
+      const currentDate = new Date();
+      const years = endDate.getFullYear() - currentDate.getFullYear();
+      const months = endDate.getMonth() - currentDate.getMonth();
+      this.years = years + (months < 0 ? 1 : 0);
+      this.months = months + (months < 0 ? 12 : 0);
     },
 
     async Donate() {
@@ -802,8 +822,8 @@ export default {
         if (!commentResponse.ok) {
           throw new Error("Error While Posting Comment");
         }
-          console.log("goo gooo") 
-          location.reload(); 
+        console.log("goo gooo");
+        location.reload();
       } catch (error) {
         console.log(error);
       }
@@ -822,7 +842,7 @@ export default {
       this.selectedComment = comment;
     },
 
-   async reportAComment() {
+    async reportAComment() {
       // Validate reportBody
       if (!this.commentReportBody.trim()) {
         this.reportError = "Please provide a report before proceeding.";
@@ -838,7 +858,7 @@ export default {
       console.log(JSON.stringify(commentReportBody));
 
       // Submit The Report If Success
-     await fetch("http://localhost:8000/report/comment/", {
+      await fetch("http://localhost:8000/report/comment/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -1059,9 +1079,9 @@ option {
   margin-left: 2.5%;
 }
 
-.report-error{
+.report-error {
   color: #df0218;
-  margin:auto;
+  margin: auto;
 }
 </style>
 
