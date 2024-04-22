@@ -101,9 +101,9 @@ export default {
   },
 
   computed: {
-    isAuthenticated() {
-      return this.datastore.isAuthenticated;
-    },
+    // isAuthenticated() {
+    //   return this.datastore.isAuthenticated;
+    // },
 
     isAdmin() {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));

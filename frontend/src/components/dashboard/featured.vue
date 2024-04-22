@@ -1,12 +1,12 @@
 <template>
     <div class="featured my-4">
-        <div class="container ">
+        <div class="container mx-auto">
             <div class="row">
                 <div class="col-12 col-lg">
                     <h4 class="border-bottom border-dark">Featured Projects <i class="fa-solid fa-crown"></i></h4>
-                    <div class="row  p-0 ">
+                    <div class="row justify-content-center p-0 ">
                         <div class="project-card p-0" v-for="(project, index) in projects" :key="index">
-                            <img :src="project.project.imageUrl ? project.project.imageUrl : require('@/assets/images/2.jpg')"
+                            <img :src="project.project.imageUrl ? project.project.imageUrl : require('@/assets/images/default.jpg')"
                                 alt="">
                             <div class="btn btn-danger delete-project"> <i class="fa-solid fa-remove"></i></div>
                             <div class="p-3">
@@ -116,14 +116,15 @@ export default {
 .project-card,
 .empty-card {
     position: relative;
-    width: 250px;
+    width: 280px;
     height: 400px;
-    border: 1px solid var(--primary-color-3);
+    outline: 1px solid var(--primary-color-3);
     border-radius: 20px;
     box-shadow: 0px 0 31px 0px rgb(0 0 0 / 10%);
     backdrop-filter: blur(15px);
     margin: 10px;
     overflow: hidden;
+
 }
 
 .project-card .author {
@@ -162,13 +163,12 @@ export default {
 .empty-card:hover {
     cursor: pointer;
     border: 2px solid var(--secondary-color-2);
-    transition: all 0.25s ease-in-out;
+    transition: all 0.05s ease-in-out;
     background-color: var(--primary-color-1);
     color: white;
-    transform: scale(1.025);
 }
 
-.project-card .text-white-50 {
+.project-card {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
