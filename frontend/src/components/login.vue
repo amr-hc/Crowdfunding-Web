@@ -99,7 +99,7 @@
       <!-- Register buttons -->
       <div class="text-center">
         <span>Not a member? </span>
-        <router-link to="/registration">Register Now</router-link>
+        <router-link to="/registration" class="text-primary text-decoration-underline ">Register Now</router-link>
       </div>
     </div>
   </div>

@@ -87,6 +87,8 @@
 
 <script>
 import axios from 'axios';
+import { datastore } from "@/stors/crowdfundingStore";
+
 export default {
     name: 'project-details',
     data() {
@@ -95,6 +97,8 @@ export default {
             activeImg: null, // Initialize as null
             isFeatured: false,
             isRemoved: false,
+            token: datastore().userInfo.token,
+
         };
     },
     mounted() {
@@ -109,7 +113,11 @@ export default {
     },
     methods: {
         fetchProjectDetails(projectId) {
-            axios.get(`http://127.0.0.1:8000/api/projects/${projectId}`)
+            axios.get(`http://127.0.0.1:8000/api/projects/${projectId}`, {
+                headers: {
+                    Authorization: `token ${this.token}`
+                }
+            })
                 .then(response => {
                     this.project = response.data;
                     this.isRemoved = this.project.hidden;
