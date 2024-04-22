@@ -12,8 +12,8 @@
       </div>
     </div>
     <section class="container">
-      <div class="d-flex justify-content-end  gap-3 ">
-        <div class="dropdown col-2 d-flex justify-content-center ">
+      <div class="d-flex justify-content-end gap-3">
+        <div class="dropdown col-2 d-flex justify-content-center">
           <button
             class="btn btn-light dropdown-toggle btn-lg"
             type="button"
@@ -144,6 +144,7 @@ export default {
       allTags.map((tag) => (tag.checked = false));
     },
     filterProject() {
+      this.prepareTags();
       const fetchURL = `http://127.0.0.1:8000/api/projects/?title=${this.searchValue}&category=${this.filteredCategory}&${this.filteredTags}`;
       console.log(fetchURL);
       fetch(fetchURL)
