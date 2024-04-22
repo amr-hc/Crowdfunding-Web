@@ -3,7 +3,7 @@ from api.models import User
 import os
 import random
 from rest_framework.exceptions import AuthenticationFailed
-
+from rest_framework.authtoken.models import Token
 
 def generate_username(name):
 
@@ -17,18 +17,24 @@ def generate_username(name):
 
 def register_social_user(provider, user_id, email, name):
     filtered_user_by_email = User.objects.filter(email=email)
+    print("hi")
 
     if filtered_user_by_email.exists():
 
         if provider == filtered_user_by_email[0].auth_provider:
-
+            user = filtered_user_by_email[0]
             registered_user = authenticate(
                 email=email, password=os.environ.get('SOCIAL_SECRET'))
 
+            token, created = Token.objects.get_or_create(user=user)
+
             return {
-                'username': registered_user.username,
-                'email': registered_user.email,
-                'tokens': registered_user.tokens()}
+                    "token": str(token),
+                    'email': user.email,
+                    "user_id": user.id,
+                    "is_superuser": user.is_superuser,
+                    "userName": user.first_name + " " + user.last_name,
+                }
 
         else:
             raise AuthenticationFailed(

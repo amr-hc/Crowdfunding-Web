@@ -61,6 +61,8 @@ class login(ObtainAuthToken):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"]
+        filtered_user_by_email = User.objects.filter(email=user.email)
+        print(type(filtered_user_by_email[0]))
         token, created = Token.objects.get_or_create(user=user)
         return Response(
             {
@@ -152,6 +154,13 @@ class ProjectModelViewSet(ModelViewSet):
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, *args, **kwargs):
+        if request.user.is_superuser:
+            self.queryset = Project.objects.all()
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
 

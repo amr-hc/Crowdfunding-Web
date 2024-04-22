@@ -45,13 +45,6 @@
               ></i>
             </div>
           </h5>
-          <!-- <div class="text-white-50">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis quam iste beatae incidunt vitae
-                    ad.
-                    Iure deserunt recusandae neque aut dolorem, nisi delectus molestiae repudiandae aliquid possimus ab
-                    odio
-                    voluptas?
-                </div> -->
           <div class="text-white-50">
             {{ projectData.description }}
           </div>
@@ -122,51 +115,66 @@
               </button>
             </div>
             <hr />
-          <div v-if="haveComments===true" style="overflow:scroll">
-            <div
-              v-for="comment in projectData.comments"
-              :key="comment.id"
-            >
-              <!-- Start Of Comments Section -->
-              <div class="reviewer text-end border-bottom border-dark my-2">
-                <div
-                  class="d-flex justify-content-between align-items-baseline"
-                >
-                  <div class="d-flex align-items-center gap-2">
-                    <div class="avatar">
-                      <img :src="comment.user.image" alt="Avatar" />
+            <div v-if="haveComments === true" style="overflow: scroll;">
+              <div v-for="comment in projectData.comments" :key="comment.id">
+                <!-- Start Of Comments Section -->
+                <div class="reviewer text-end border-bottom border-dark my-2">
+                  <div
+                    class="d-flex justify-content-between align-items-baseline"
+                  >
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="avatar">
+                        <img :src="comment.user.image" alt="Avatar" />
+                      </div>
+                      <div
+                        class="text-light"
+                        style="text-transform: capitalize;"
+                      >
+                        {{ comment.user.first_name }}
+                        {{ comment.user.last_name }}
+                        <span v-if="comment.user.id === userData.user_id"
+                          >(You)</span
+                        >
+                        <span v-if="comment.user.is_admin === true"
+                          ><i class="fa-solid fa-crown"></i
+                        ></span>
+                      </div>
                     </div>
-                    <div class="text-light" style="text-transform: capitalize;">
-                      {{ comment.user.first_name }} {{ comment.user.last_name }}
-                      <span v-if="isOwner === true">- Owner</span>
-                      <span v-if="comment.user.is_admin === true">(Admin)</span>
+                    <div class="rating">
+                      <i
+                        v-for="n in 5"
+                        :key="n"
+                        :class="{
+                          'plus fa-solid fa-star': n <= comment.user.rate,
+                          'minus fa-regular fa-star': n > comment.user.rate,
+                        }"
+                      ></i>
                     </div>
                   </div>
-                  <div class="rating">
-                    <i
-                      v-for="n in comment.user.rate"
-                      :key="n"
-                      :class="{
-                        'plus fa-solid fa-star': n <= rating,
-                        'minus fa-regular fa-star': n > rating,
-                      }"
-                    ></i>
-                  </div>
+                  <p class="text-white-50 text-start">
+                    {{ comment.comment }}
+                  </p>
+                  <p class="m-0">From - {{ comment.user.country }}</p>
+                  <!-- Not The Same User -->
+                  <button
+                    v-if="comment.user.id !== userData.user_id"
+                    class="btn btn-outline-danger p-0 mb-2 border-0 px-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#reportModal"
+                    @click="openReportForm(comment)"
+                  >
+                    report <i class="fa-solid fa-reply"></i>
+                  </button>
+                  <!-- The Same User -->
+                  <button
+                    v-else=""
+                    class="btn btn-outline-danger p-0 mb-2 border-0 px-2"
+                  >
+                    remove <i class="fa-regular fa-trash-can"></i>
+                  </button>
                 </div>
-                <p class="text-white-50 text-start">
-                  {{ comment.comment }}
-                </p>
-                <p class="m-0">From - {{ comment.user.country }}</p>
-                <button
-                  class="btn btn-outline-danger p-0 mb-2 border-0 px-2"
-                  data-bs-toggle="modal"
-                  data-bs-target="#reportModal"
-                >
-                  report <i class="fa-solid fa-reply"></i>
-                </button>
               </div>
             </div>
-          </div>
             <!-- End Of Comments Section -->
           </div>
         </div>
@@ -203,10 +211,15 @@
             ${{ Math.round((totalAmount - currentDonation) * 100) / 100 }} still
             needed
           </h3>
-          <p class="text-white-50">
-            {{ days }} days {{ hours }} hours {{ minutes }} minutes
-            {{ seconds }} seconds left
+          <p class="text-white-50" v-if="canDonate === true && months>0">
+
+            {{ years }} years {{ months }} months {{ days }} days left
           </p>
+          <p class="text-white-50" v-if="canDonate === true && months <=0 ">
+
+            {{ days }} days {{ hours }} hours {{ minutes }} minutes {{seconds}} seconds left
+          </p>
+          
           <!--End Of Donation Details-->
 
           <!-- Project Details -->
@@ -231,6 +244,11 @@
               >
                 Donate
               </button>
+              <i
+                style="font-size: 2.5rem; margin-left: 5px; color: #dc3545;"
+                class="fas fa-exclamation-triangle"
+                @click="reportProject"
+              ></i>
             </div>
             <div v-else="">
               <p
@@ -332,8 +350,33 @@
             ></button>
           </div>
           <div class="modal-body">
+            <p class="report-error">{{ reportError }}</p>
+            <!-- Display the reportError message -->
             Are you sure you want to report this comment?
+            <!-- Fake Comment Details -->
+            <div class="comment-details">
+              <div class="comment">
+                <div style="margin-right: 10px;" class="avatar">
+                  <img :src="selectedComment.user.image" alt="avatar" />
+                </div>
+                <div class="comment-content">
+                  <div class="user-name">
+                    {{ selectedComment.user.first_name }}
+                    {{ selectedComment.user.last_name }}
+                  </div>
+                  <div class="comment-text">{{ selectedComment.comment }}</div>
+                </div>
+              </div>
+            </div>
+            <!-- Report Body -->
+            <input
+              type="text"
+              id="report"
+              v-model="commentReportBody"
+              placeholder="What's Wrong"
+            />
           </div>
+          <!-- End Of Reported Comment -->
           <div class="modal-footer">
             <button
               type="button"
@@ -342,17 +385,24 @@
             >
               No
             </button>
-            <button type="button" class="btn btn-primary">Go ahead!</button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="reportAComment"
+            >
+              Go ahead!
+            </button>
           </div>
         </div>
       </div>
     </div>
+    <!-- End Of Modal -->
   </section>
 </template>
 
 <script>
 import { datastore } from "@/stors/crowdfundingStore";
-import { isEmptyObject, type } from 'jquery';
+import { isEmptyObject, type } from "jquery";
 export default {
   name: "project-details",
   data() {
@@ -369,6 +419,8 @@ export default {
       projectDuration: 0,
       stopProjectTime: false,
       days: 0,
+      years:0,
+      months:1,
       hours: 0,
       minutes: 0,
       seconds: 0,
@@ -387,14 +439,27 @@ export default {
       canDonate: true,
       donationPreventionLogger: "",
       newComment: "",
-      haveComments:false,
-      newRate:null,
-      userRate:{
-         rate:null,
-         id:0,
-         user_id:0,
+      haveComments: false,
+      newRate: null,
+      userRate: {
+        rate: null,
+        id: 0,
+        user_id: 0,
       },
       projectRates: [],
+
+      ///reporting section
+      selectedComment: {
+        //intial data (To Avoid Error)
+        comment: "",
+        user: {
+          first_name: "",
+          last_name: "",
+          image: "",
+        },
+      },
+      commentReportBody: "",
+      reportError: "",
     };
   },
   async mounted() {
@@ -469,7 +534,7 @@ export default {
           rates: data["allrate"],
         };
 
-        // Rates Of The Project  
+        // Rates Of The Project
         this.projectData.rates = this.projectData.rates.map((rate) => {
           return {
             id: rate.id,
@@ -477,43 +542,47 @@ export default {
             user_id: rate.user,
           };
         });
+
         // Filter User Rates
-        this.userRate.user_id = this.userData['user_id'];
-        const previousRate =this.projectData.rates.find((rate)=>rate.user_id == this.userData['user_id']);
+        this.userRate.user_id = this.userData["user_id"];
+        const previousRate = this.projectData.rates.find(
+          (rate) => rate.user_id == this.userData["user_id"]
+        );
         //test here
-        if(previousRate){
-           this.userRate.rate=previousRate.rate;
-           this.userRate.id=previousRate.id;
-           this.newRate=this.userRate.rate;
-        } 
+        if (previousRate) {
+          this.userRate.rate = previousRate.rate;
+          this.userRate.id = previousRate.id;
+          this.newRate = this.userRate.rate;
+        }
         ///Fetching Comment Data
         console.log("comments section");
-        
+
         this.projectData.comments = this.projectData.comments.map((comment) => {
           return {
             id: comment.id,
             comment: comment.comment,
             user: {
+              id: comment.user_id,
               first_name: comment.user_data.first_name,
               last_name: comment.user_data.last_name,
               country: comment.user_data.country,
               image: `http://localhost:8000/${comment.user_data.image}`,
               is_active: comment.user_data.is_active,
               is_admin: comment.user_data.is_superuser,
-              rate: this.projectData.rates.find((rate)=>rate.user_id==comment.user_id).rate,
+              rate: this.projectData.rates.find(
+                (rate) => rate.user_id == comment.user_id
+              ).rate,
             },
           };
         });
-        console.log("Comments fulll Data")
-        this.projectData.comments.forEach((comment)=>console.log(comment));   
+        console.log("Comments fulll Data");
+        this.projectData.comments.forEach((comment) => console.log(comment));
 
-
-        if (this.projectData.comments.length>0)
-           this.haveComments=true;
+        if (this.projectData.comments.length > 0) this.haveComments = true;
 
         this.projectDuration =
           this.projectData.end_date - this.projectData.current_date;
-              
+
         //total amount
         this.totalAmount = data["target_money"];
         //current donation
@@ -554,10 +623,13 @@ export default {
       this.projectDuration =
         this.projectData.end_date - this.projectData.current_date;
       // this.projectDuration=0
-      
+
       // Handle case when project duration ends
       if (this.projectDuration <= 0 || this.stopProjectTime) {
         this.projectDuration = 0;
+        this.days=0;
+        this.hours=0;
+        this.minutes=0;
         clearInterval(this.updateTimeDifference); // Stop updating
       }
       this.days = Math.floor(this.projectDuration / (1000 * 60 * 60 * 24));
@@ -567,6 +639,14 @@ export default {
       this.minutes = Math.floor(this.projectDuration / (1000 * 60));
       this.projectDuration %= 1000 * 60;
       this.seconds = Math.floor(this.projectDuration / 1000);
+      
+      // Calculate years and months
+      const endDate = new Date(this.projectData.end_date);
+      const currentDate = new Date();
+      const years = endDate.getFullYear() - currentDate.getFullYear();
+      const months = endDate.getMonth() - currentDate.getMonth();
+      this.years = years + (months < 0 ? 1 : 0);
+      this.months = months + (months < 0 ? 12 : 0);
     },
 
     async Donate() {
@@ -652,15 +732,14 @@ export default {
       this.success = true;
       this.successMessage = "project Was Canceled";
       //update is canceled
-      this.isCanceled = true;
+      this.projectData.isCanceled = true;
     },
     donationPrevent() {
       console.log(this.totalAmount == this.currentDonation);
-      if(isEmptyObject(this.userData)){
+      if (isEmptyObject(this.userData)) {
         this.canDonate = false;
-        this.donationPreventionLogger = "You Must Register in order to donate"
-      }
-      else if (this.projectDuration <= 0) {
+        this.donationPreventionLogger = "You Must Register in order to donate";
+      } else if (this.projectDuration <= 0) {
         this.canDonate = false;
         this.donationPreventionLogger = "Project Duration Has Been Ended.";
       } else if (this.totalAmount == this.currentDonation) {
@@ -674,78 +753,80 @@ export default {
         this.stopProjectTime = true;
       }
     },
-    async submitComment(rating,comment){
-       try{
+    async submitComment(rating, comment) {
+      try {
         //Rate First
-       //Data Validation
-       if(rating == null){
+        //Data Validation
+        if (rating == null) {
           // throw error till now
           throw new Error("please retry to enter the rate");
-       }
-       if(this.userRate.rate != null){
-       //update rate
-       const updatedRate={rate:this.newRate}
-       const rateResponse=await fetch(`http://localhost:8000/rating/${this.userRate.id}/`,{
-          headers: {
-            "Content-Type": "application/json", 
-            Authorization : `token ${this.userData["token"]}`
-          },
-          method : "PATCH",
-          body: JSON.stringify(updatedRate)
-       });
-       if(!rateResponse.ok){
-        console.log("Error While Update Rate");
-       }
-       else {
-        console.log("new Rate Equals to")
-        console.log(this.newRate);
-       }
-       }else{
-        //new rate
-        const rateData={
-          project:this.projectData["id"],
-          user:this.userData['user_id'],
-          rate:parseInt(rating)          
         }
-        console.log("rate Data")
-        console.log(JSON.stringify(rateData));
-       const rateResponse= await fetch("http://localhost:8000/rating/",{
-          
-          method:"POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body:JSON.stringify(rateData)
-        })
-        if(!rateResponse.ok){
-          console.log("Error While Inserting Data");
+        console.log(this.userRate.rate);
+        if (this.userRate.rate != null) {
+          //update rate
+          const updatedRate = { rate: this.newRate };
+          const rateResponse = await fetch(
+            `http://localhost:8000/rating/${this.userRate.id}/`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `token ${this.userData["token"]}`,
+              },
+              method: "PATCH",
+              body: JSON.stringify(updatedRate),
+            }
+          );
+          if (!rateResponse.ok) {
+            console.log("Error While Update Rate");
+          }
+        } else {
+          //new rate
+          const rateData = {
+            project: this.projectData["id"],
+            user: this.userData["user_id"],
+            rate: parseInt(rating),
+          };
+          console.log("rate Data");
+          console.log(JSON.stringify(rateData));
+          const rateResponse = await fetch("http://localhost:8000/rating/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(rateData),
+          });
+          if (!rateResponse.ok) {
+            console.log("Error While Inserting Data");
+          }
         }
-       }
-       
-       
-        // Make A Comment
-        const commentMsg=comment       
-         const commentData={
-          comment:commentMsg,
-          user_id:this.userData['user_id'],
-          project_id:this.projectData["id"]
-         }
-         console.log(JSON.stringify(commentData))
-         const commentResponse = await fetch("http://localhost:8000/api/comment/",{
-          headers: {
-            "Content-Type": "application/json", 
-            Authorization : `token ${this.userData["token"]}`
-          },
-          method:"POST",
-          body:JSON.stringify(commentData)
-         })
-         if(!commentResponse.ok){
-          throw new Error("Error While Posting Comment");
-         }  
 
-       }catch(error){
+        // Make A Comment
+        const commentMsg = comment;
+        const commentData = {
+          comment: commentMsg,
+          user_id: this.userData["user_id"],
+          project_id: this.projectData["id"],
+        };
+        console.log(JSON.stringify(commentData));
+        const commentResponse = await fetch(
+          "http://localhost:8000/api/comment/",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `token ${this.userData["token"]}`,
+            },
+            method: "POST",
+            body: JSON.stringify(commentData),
+          }
+        );
+        if (!commentResponse.ok) {
+          throw new Error("Error While Posting Comment");
+        }
+        console.log("goo gooo");
+        location.reload();
+      } catch (error) {
         console.log(error);
-       }
+      }
     },
 
     selectActiveImage(index) {
@@ -756,6 +837,46 @@ export default {
     },
     showAllSimilarProjects() {
       this.showAllProjects = true;
+    },
+    openReportForm(comment) {
+      this.selectedComment = comment;
+    },
+
+    async reportAComment() {
+      // Validate reportBody
+      if (!this.commentReportBody.trim()) {
+        this.reportError = "Please provide a report before proceeding.";
+        return;
+      }
+
+      // Make A Report
+      const commentReportBody = {
+        user_id: this.userData["user_id"],
+        comment_id: this.selectedComment.id,
+        report: this.commentReportBody,
+      };
+      console.log(JSON.stringify(commentReportBody));
+
+      // Submit The Report If Success
+      await fetch("http://localhost:8000/report/comment/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(commentReportBody),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Error while reporting the comment.");
+          }
+          // Clear the error message if report was successful
+          this.reportError = "";
+          $("#reportModal").modal("hide");
+        })
+        .catch((error) => {
+          console.error(error);
+          this.reportError = "Error while reporting the comment.";
+        });
     },
   },
   computed: {
@@ -934,6 +1055,33 @@ export default {
 
 option {
   background-color: transparent;
+}
+
+/* report section */
+.comment-details {
+  margin-top: 20px;
+}
+
+.comment {
+  display: flex;
+  margin-bottom: 15px;
+}
+.comment-content {
+  flex: 1;
+}
+
+.user-name {
+  font-weight: bold;
+}
+
+.comment-text {
+  margin-top: 2px;
+  margin-left: 2.5%;
+}
+
+.report-error {
+  color: #df0218;
+  margin: auto;
 }
 </style>
 
