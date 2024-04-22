@@ -79,9 +79,7 @@ class login(ObtainAuthToken):
 
 
 class UserModelViewSet(ModelViewSet):
-    authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsSameUserOrReadOnly]
-    permission_classes = [AllowAny]
+    permission_classes = [IsSameUserOrReadOnly]
     queryset = User.objects.all()
     serializer_class = UserSerializer
     filter_backends = [DjangoFilterBackend]
@@ -113,9 +111,7 @@ class UserModelViewSet(ModelViewSet):
 
 
 class CategoryModelViewSet(ModelViewSet):
-    authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAdminOrReadOnly]
-    # permission_classes = [AllowAny]
+    permission_classes = [IsAdminOrReadOnly]
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
@@ -126,8 +122,7 @@ from api.pagination import small
 
 
 class ProjectModelViewSet(ModelViewSet):
-    # permission_classes = [IsOwnerProjectOrReadOnly]
-    permission_classes = [AllowAny]
+    permission_classes = [IsOwnerProjectOrReadOnly]
     pagination_class = small
     queryset = Project.objects.all().filter(hidden=False).order_by('-id')
     serializer_class = ProjectSerializer
@@ -165,24 +160,18 @@ class ProjectModelViewSet(ModelViewSet):
 
 
 class RateModelViewSet(ModelViewSet):
-    authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticatedOrReadOnly]
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Rate.objects.all()
     serializer_class = RateSerializer
 
 
 class ImportantProjectAPIView(ModelViewSet):
-    authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAdminOrReadOnly]
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminOrReadOnly]
     queryset = ImportantProject.objects.all()
     serializer_class = ImportantProjectSerializer
 
 
 class confirmActivate(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [AllowAny]
 
     def post(self, request):
         serializer = confirmActivation(data=request.data)

@@ -17,8 +17,7 @@ from Donation.models import Donation
 # SERIALIZER
 from Donation.api.serializer import DonationSerializer
 class DonationViewSet(ModelViewSet):
-    # permission_classes = [donation]
-    permission_classes = [AllowAny]
+    permission_classes = [donation]
     queryset = Donation.objects.all()
     serializer_class = DonationSerializer
 
