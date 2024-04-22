@@ -73,7 +73,7 @@ const functionsObject = new FunctionsClass();
 export default {
   name: "navbar",
   async created() {
-    await functionsObject.logedInPagesCreated(this);
+    await functionsObject.featchUserData(this);
     this.isAuthenticated = functionsObject.getStorgData() == null ? false : true;
   },
   data() {
@@ -89,9 +89,7 @@ export default {
       this.isAuthenticated = functionsObject.getStorgData() == null ? false : true;
 
     },
-    navigate(selcted) {
-      this.$emit("clickEvent", selcted);
-    },
+
     logOut() {
       localStorage.clear();
       sessionStorage.clear();
@@ -101,9 +99,6 @@ export default {
   },
 
   computed: {
-    // isAuthenticated() {
-    //   return this.datastore.isAuthenticated;
-    // },
 
     isAdmin() {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
