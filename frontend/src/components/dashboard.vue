@@ -48,7 +48,7 @@ export default {
     background-color: var(--primary-color-1);
     box-shadow: 0px 0 31px 0px rgb(0 0 0 / 10%);
     backdrop-filter: blur(15px);
-    z-index: 100;
+    z-index: 1;
     position: sticky;
     top: 0;
 }

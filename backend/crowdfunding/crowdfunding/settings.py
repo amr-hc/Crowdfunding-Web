@@ -60,7 +60,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "rest_framework.authtoken",
     "djoser",
-    "django_filters"
+    "django_filters",
 ]
 
 MIDDLEWARE = [
@@ -107,7 +107,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "crowdfunding",
         "USER": "root",
-        "PASSWORD": "1234",
+        "PASSWORD": "root",
         "HOST": "localhost",
         "PORT": 3306,
     }
@@ -177,8 +177,12 @@ MEDIA_URL = "media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:8080", "http://127.0.0.1:8080","http://localhost:80","http://localhost"]
-
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+    "http://localhost:80",
+    "http://localhost",
+]
 
 
 DJOSER = {
