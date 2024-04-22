@@ -61,13 +61,13 @@
               </div>
             </form>
             <div
-  id="message-container"
-  class="alert mt-3"
-  :class="{'bg-danger': showError, 'bg-success': showSuccess}"
-  v-if="showMessage"
->
-  {{message}}
-</div>
+              id="message-container"
+              class="alert mt-3"
+              :class="{ 'bg-danger': showError, 'bg-success': showSuccess }"
+              v-if="showMessage"
+            >
+              {{ message }}
+            </div>
 
             <div class="row">
               <div class="col-12">
@@ -110,13 +110,13 @@
     </div>
   </div>
 </template>
-  
-  <script>
+
+<script>
 export default {
   data: () => ({
     email: "",
-    showMessage: false, 
-    message:"",
+    showMessage: false,
+    message: "",
     showError: false,
     showSuccess: false,
   }),
@@ -133,15 +133,14 @@ export default {
             this.showError = true;
             this.showSuccess = false;
             this.showMessage = true;
-            this.message="This email isn`t exist"
+            this.message = "This email isn`t exist";
             console.log("Failed to send email");
-
           } else {
             console.log("Email sent successfully");
             this.showMessage = true;
             this.showError = false;
             this.showSuccess = true;
-            this.message="Email sent successfully"
+            this.message = "Email sent successfully";
             setTimeout(() => {
               this.showMessage = false;
             }, 2000);
@@ -150,14 +149,14 @@ export default {
         })
         .then((data) => {})
         .catch((err) => {
-          cconsole.log("Password change successfuly")
+          cconsole.log("Password change successfuly");
         });
     },
   },
 };
 </script>
-  
-  <style scoped>
+
+<style scoped>
 .basecont {
   background-color: rgb(91 91 91 / 50%);
 }
