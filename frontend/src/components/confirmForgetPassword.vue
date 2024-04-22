@@ -136,6 +136,17 @@ export default {
         return;
 
       }
+      if (!this.isValidPassword(this.password)) {
+        this.showMessage = true;
+        this.showError = true;
+        this.showSuccess = false;
+        this.message = "Password must be at least 8 characters long and contain at least one letter and one number.";
+        setTimeout(() => {
+          this.showMessage = false;
+        }, 4000);
+        return;
+      }
+      
       const urlParams = new URLSearchParams(window.location.search);
       const uid = urlParams.get("uid");
       const token = urlParams.get("token");
@@ -175,7 +186,12 @@ export default {
           console.error(err);
         });
     },
+    isValidPassword(password) {
+      const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+      return passwordRegex.test(password);
+    },
   },
+  
 };
 </script>
   

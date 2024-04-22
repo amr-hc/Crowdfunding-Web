@@ -10,8 +10,7 @@ from rest_framework.permissions import (
 )
 # Create your views here.
 class CommentReportModelViewSet(ModelViewSet):
-    permission_classes = [AllowAny]
-    # permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [IsOwnerOrReadOnly]
     queryset = Report_comment.objects.all()
     serializer_class = ReportCommentSerializer
 
