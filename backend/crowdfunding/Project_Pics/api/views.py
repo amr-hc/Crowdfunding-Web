@@ -17,6 +17,5 @@ from api.permissions import photoPermissions
 
 class ProjectPicsViewSet(ModelViewSet):
     permission_classes = [photoPermissions]
-    permission_classes = [AllowAny]
     queryset = ProjectPics.objects.all()
     serializer_class = ProjectPicsSerializer

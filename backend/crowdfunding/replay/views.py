@@ -11,7 +11,6 @@ from rest_framework.permissions import (
 )
 # Create your views here.
 class ReplayModelViewSet(ModelViewSet):
-    # permission_classes = [IsOwnerOrReadOnly]
-    permission_classes = [AllowAny]
+    permission_classes = [IsOwnerOrReadOnly]
     queryset = Replay.objects.all()
     serializer_class = ReplaySerializer

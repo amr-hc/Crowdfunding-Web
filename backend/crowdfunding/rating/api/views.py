@@ -8,8 +8,7 @@ from rest_framework.permissions import (
     IsAuthenticatedOrReadOnly,
 )
 class RatingAPIView(ModelViewSet):
-    # permission_classes = [IsOwnerOrReadOnly]
-    permission_classes = [AllowAny]
+    permission_classes = [IsOwnerOrReadOnly]
     queryset = Rate.objects.all()
     serializer_class = RatingSerializer
 
