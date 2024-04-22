@@ -154,6 +154,13 @@ class ProjectModelViewSet(ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
+    def retrieve(self, request, *args, **kwargs):
+        if request.user.is_superuser:
+            self.queryset = Project.objects.all()
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
 
 class RateModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
