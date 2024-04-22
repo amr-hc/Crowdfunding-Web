@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "sslserver",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -59,7 +60,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "rest_framework.authtoken",
     "djoser",
-    "django_filters",
+    "django_filters"
 ]
 
 MIDDLEWARE = [
@@ -176,7 +177,7 @@ MEDIA_URL = "media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:8080", "http://127.0.0.1:8080"]
+CORS_ALLOWED_ORIGINS = ["http://localhost:8080", "http://127.0.0.1:8080","http://localhost:80","http://localhost"]
 
 
 
