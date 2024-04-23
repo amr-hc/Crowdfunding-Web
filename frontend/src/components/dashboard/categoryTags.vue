@@ -61,6 +61,7 @@
 
 <script>
 import axios from 'axios';
+import { datastore } from "@/stors/crowdfundingStore";
 
 export default {
     name: "CategoryTags",
@@ -74,7 +75,9 @@ export default {
             tags: [],
             newTag: {
                 tagName: ''
-            }
+            },
+            token: datastore().userInfo.token,
+
         };
     },
     created() {
@@ -101,10 +104,13 @@ export default {
                 });
         },
         addCategory() {
-            axios.post('http://127.0.0.1:8000/api/categories/', this.newCategory)
+            axios.post('http://127.0.0.1:8000/api/categories/', this.newCategory, {
+                headers: {
+                    Authorization: `token ${this.token}`
+                }
+            })
                 .then(response => {
                     console.log('Category added successfully:', response.data);
-                    // Clear the form and fetch updated categories
                     this.newCategory = {
                         name: '',
                         description: ''
@@ -116,7 +122,11 @@ export default {
                 });
         },
         addTag() {
-            axios.post('http://127.0.0.1:8000/tags/', this.newTag)
+            axios.post('http://127.0.0.1:8000/tags/', this.newTag, {
+                headers: {
+                    Authorization: `token ${this.token}`
+                }
+            })
                 .then(response => {
                     console.log('Tag added successfully:', response.data);
                     // Clear the form and fetch updated tags
@@ -130,7 +140,11 @@ export default {
                 });
         },
         deleteCategory(category) {
-            axios.delete(`http://127.0.0.1:8000/api/categories/${category.id}`)
+            axios.delete(`http://127.0.0.1:8000/api/categories/${category.id}`, {
+                headers: {
+                    Authorization: `token ${this.token}`,
+                }
+            })
                 .then(() => {
                     console.log('Category deleted successfully');
                     this.fetchCategories();
@@ -140,7 +154,11 @@ export default {
                 });
         },
         deleteTag(tag) {
-            axios.delete(`http://127.0.0.1:8000/tags/${tag.id}`)
+            axios.delete(`http://127.0.0.1:8000/tags/${tag.id}`, {
+                headers: {
+                    Authorization: `token ${this.token}`
+                }
+            })
                 .then(() => {
                     console.log('Tag deleted successfully');
                     this.fetchTags();

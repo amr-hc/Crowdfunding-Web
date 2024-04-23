@@ -475,7 +475,7 @@ export default {
       isFeatured: true,
       rating: 4,
       showAllProjects: false,
-      totalAmount: 0,
+      totalAmount: 560,
       currentDonation: 0,
       ownerData: {},
       projectDuration: 0,
@@ -663,9 +663,10 @@ export default {
         // images
         console.log(data["pics"]);
         this.images = data["pics"].map((image) => ({
-          url: image.image_path,
+          url:image.image_path,
           active: false,
         }));
+        console.log(this.images);
         // select the active image
         if (this.images.length > 0) {
           this.activeImg = this.images[0].url;
@@ -806,10 +807,7 @@ export default {
     },
     donationPrevent() {
       console.log(this.totalAmount == this.currentDonation);
-      if (isEmptyObject(this.userData)) {
-        this.canDonate = false;
-        this.donationPreventionLogger = "You Must Register in order to donate";
-      } else if (this.projectDuration <= 0) {
+      if (this.projectDuration <= 0) {
         this.canDonate = false;
         this.donationPreventionLogger = "Project Duration Has Been Ended.";
       } else if (this.totalAmount == this.currentDonation) {
@@ -861,6 +859,7 @@ export default {
           const rateResponse = await fetch("http://localhost:8000/rating/", {
             method: "POST",
             headers: {
+              Authorization: `token ${this.userData["token"]}`,
               "Content-Type": "application/json",
             },
             body: JSON.stringify(rateData),
@@ -892,8 +891,7 @@ export default {
         if (!commentResponse.ok) {
           throw new Error("Error While Posting Comment");
         }
-        console.log("goo gooo");
-        location.reload();
+        window.location.reload();
       } catch (error) {
         console.log(error);
       }

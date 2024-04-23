@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 from comment.models import Comment
-from api.modelserializers import CommentSerializer
+from api.serializers import CommentSerializer
 from rest_framework.permissions import (
     AllowAny,
     IsAuthenticated,

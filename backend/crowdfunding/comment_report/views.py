@@ -1,7 +1,7 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from api.permissions import IsAdminOrpost, IsOwnerOrAdmin
 from comment_report.models import Report_comment
-from api.modelserializers import ReportCommentSerializer
+from api.serializers import ReportCommentSerializer
 
 
 
