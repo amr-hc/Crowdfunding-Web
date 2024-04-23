@@ -53,18 +53,25 @@
           <div class="row g-0 gap-1 overflow-hidden">
             <div
               class="project-item"
-              v-for="(image, index) in limitedImages"
+              v-for="(project, index) in this.similarProject"
               :key="index"
             >
-              <img :src="image.url" :alt="image.title" />
-              <h6 class="text-light project-item-title">hamada</h6>
+            <img
+                :src="
+                  project.pics.length > 0
+                    ? project.pics[0]['image_path']
+                    : require('@/assets/images/No-Image-Placeholder.svg.png')
+                "
+                :alt="project.title"
+              />
+              <h6 class="text-light project-item-title">{{ project.title }}</h6>
               <div class="project-item-rating">
                 <i
                   v-for="n in 5"
                   :key="n"
                   :class="{
-                    'plus fa-solid fa-star': n <= rating,
-                    'minus fa-regular fa-star': n > rating,
+                    'plus fa-solid fa-star': n <= average_rate,
+                    'minus fa-regular fa-star': n > average_rate,
                   }"
                 ></i>
               </div>
