@@ -229,9 +229,9 @@ class FunctionsClass {
         formData.delete(key);
       }
     }
-    if (formData.email) {
-      formData.delete(email);
-    }
+    
+      formData.delete('email');
+    
     // Get user Id and token
     const token = par.storgData.token;
 
