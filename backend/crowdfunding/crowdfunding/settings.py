@@ -56,7 +56,6 @@ INSTALLED_APPS = [
     "Reset_Password.apps.ResetPasswordConfig",
     "corsheaders",
     "rest_framework.authtoken",
-    "djoser",
     "django_filters",
 ]
 
@@ -181,20 +180,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost",
 ]
 
-
-DJOSER = {
-    "USER_MODEL": "users.Users",
-    "LOGIN_FIELD": "email",
-    "ACTIVATION_URL": "auth/users/activation/{uid}/{token}",
-    "SEND_ACTIVATION_EMAIL": True,
-    "SEND_CONFIRM_EMAIL": False,
-    "PASSWORD_RESET_CONFIRM_URL": "reset-password-confirm/{uid}/{token}/",
-    "LOGIN_REDIRECT_URL": "/",
-    "LOGOUT_REDIRECT_URL": "/",
-    "SERIALIZERS": {
-        "user": "api.modelserializers.UserSerializer",
-    },
-}
 
 # Authentication settings
 REST_FRAMEWORK = {
