@@ -39,11 +39,16 @@
                         <img width="100%" height="100%" :src="image.image_path" alt="Thumbnail Image" />
                     </div>
                 </div>
-                <h5 class="text-light lead">{{ project.title }} <div class="rating my-2">
+                <h5 v-if="project.average_rate" class="text-light lead">{{ project.title }} <div class="rating my-2">
                         <i v-for="n in 5" :key="n"
                             :class="{ 'plus fa-solid fa-star': n <= project.average_rate, 'minus fa-regular fa-star': n > project.average_rate }"></i>
                     </div>
                 </h5>
+                <div class="text-white">
+                    {{ project.category.name }} <i class="fa-solid fa-tag"></i>
+                </div>
+                <hr class="my-2 w-25">
+
                 <div class="text-white-50">
                     {{ project.description }}
                 </div>

@@ -115,7 +115,7 @@
               </button>
             </div>
             <hr />
-            <div v-if="haveComments === true" style="overflow: scroll;">
+            <div v-if="haveComments === true" style="overflow: scroll">
               <div v-for="comment in projectData.comments" :key="comment.id">
                 <!-- Start Of Comments Section -->
                 <div class="reviewer text-end border-bottom border-dark my-2">
@@ -128,7 +128,7 @@
                       </div>
                       <div
                         class="text-light"
-                        style="text-transform: capitalize;"
+                        style="text-transform: capitalize"
                       >
                         {{ comment.user.first_name }}
                         {{ comment.user.last_name }}
@@ -167,7 +167,7 @@
                   </button>
                   <!-- The Same User -->
                   <button
-                    v-else=""
+                    v-else
                     class="btn btn-outline-danger p-0 mb-2 border-0 px-2"
                   >
                     remove <i class="fa-regular fa-trash-can"></i>
@@ -181,11 +181,11 @@
 
         <div class="col-12 col-md py-3 rounded-4 text-light">
           <!--Owner of Project-->
-          <h4 style="text-transform: capitalize;">
+          <h4 style="text-transform: capitalize">
             {{ ownerData.first_name }} {{ ownerData.last_name }}
             <span v-if="isOwner == true">(You)</span>
           </h4>
-          <h6 class="text-white-50" style="text-transform: capitalize;">
+          <h6 class="text-white-50" style="text-transform: capitalize">
             <i class="fa-solid fa-location-crosshairs"></i>
             {{ ownerData.country }}
           </h6>
@@ -211,15 +211,14 @@
             ${{ Math.round((totalAmount - currentDonation) * 100) / 100 }} still
             needed
           </h3>
-          <p class="text-white-50" v-if="canDonate === true && months>0">
-
+          <p class="text-white-50" v-if="canDonate === true && months > 0">
             {{ years }} years {{ months }} months {{ days }} days left
           </p>
-          <p class="text-white-50" v-if="canDonate === true && months <=0 ">
-
-            {{ days }} days {{ hours }} hours {{ minutes }} minutes {{seconds}} seconds left
+          <p class="text-white-50" v-if="canDonate === true && months <= 0">
+            {{ days }} days {{ hours }} hours {{ minutes }} minutes
+            {{ seconds }} seconds left
           </p>
-          
+
           <!--End Of Donation Details-->
 
           <!-- Project Details -->
@@ -244,14 +243,19 @@
               >
                 Donate
               </button>
-              <button class="btn btn-outline-danger " data-bs-toggle="modal" data-bs-target="#projectReportModal" style="outline:none;">
-              <i
-                style="font-size: 2.5rem; margin-left: 5px;"
-                class="fas fa-exclamation-triangle"
-              ></i>
+              <button
+                class="btn btn-outline-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#projectReportModal"
+                style="outline: none"
+              >
+                <i
+                  style="font-size: 2.5rem; margin-left: 5px"
+                  class="fas fa-exclamation-triangle"
+                ></i>
               </button>
             </div>
-            <div v-else="">
+            <div v-else>
               <p
                 class="text-danger"
                 style="
@@ -357,7 +361,7 @@
             <!-- Fake Comment Details -->
             <div class="comment-details">
               <div class="comment">
-                <div style="margin-right: 10px;" class="avatar">
+                <div style="margin-right: 10px" class="avatar">
                   <img :src="selectedComment.user.image" alt="avatar" />
                 </div>
                 <div class="comment-content">
@@ -399,7 +403,7 @@
     </div>
     <!-- End Of Modal -->
 
-     <!--Projects Modal -->
+    <!--Projects Modal -->
     <div
       class="modal fade"
       data-bs-theme="dark"
@@ -425,7 +429,7 @@
             <p class="report-error">{{ projectReportError }}</p>
             <!-- Display the reportError message -->
             Are you sure you want to report this Project?
-              <!-- Report Body -->
+            <!-- Report Body -->
             <input
               type="text"
               id="report"
@@ -464,20 +468,21 @@ export default {
   name: "project-details",
   data() {
     return {
+      datastore: datastore(),
       projectData: {}, // Object to hold project data
       images: [],
       activeImg: "",
       isFeatured: true,
       rating: 4,
       showAllProjects: false,
-      totalAmount: 0,
+      totalAmount: 560,
       currentDonation: 0,
       ownerData: {},
       projectDuration: 0,
       stopProjectTime: false,
       days: 4,
-      years:0,
-      months:1,
+      years: 0,
+      months: 1,
       hours: 0,
       minutes: 0,
       seconds: 0,
@@ -519,11 +524,11 @@ export default {
       reportError: "",
 
       // Project Report Error
-      projectReportError:"",
-      commentReportBody:"",
+      projectReportError: "",
+      commentReportBody: "",
     };
   },
-  async mounted() {
+  async created() {
     // Fetch User Data
     await this.fetchUserData();
 
@@ -539,6 +544,8 @@ export default {
     // Fetch User Data From The Local Storage
     // this.logedInUserData = localStorage.getItem('userInfo');
     setInterval(this.updateTimeDifference, 1000);
+    const data = await this.datastore.getAllProjects();
+    console.log("store", data);
   },
   methods: {
     async fetchUserData() {
@@ -578,7 +585,7 @@ export default {
           `http://localhost:8000/api/projects/${projectId}`
         );
         if (!response.ok) {
-          window.location.href ="/notfound"
+          window.location.href = "/notfound";
         }
         const data = await response.json();
         this.allProjectData = data;
@@ -656,9 +663,10 @@ export default {
         // images
         console.log(data["pics"]);
         this.images = data["pics"].map((image) => ({
-          url: image.image_path,
+          url:image.image_path,
           active: false,
         }));
+        console.log(this.images);
         // select the active image
         if (this.images.length > 0) {
           this.activeImg = this.images[0].url;
@@ -689,9 +697,9 @@ export default {
       // Handle case when project duration ends
       if (this.projectDuration <= 0 || this.stopProjectTime) {
         this.projectDuration = 0;
-        this.days=0;
-        this.hours=0;
-        this.minutes=0;
+        this.days = 0;
+        this.hours = 0;
+        this.minutes = 0;
         clearInterval(this.updateTimeDifference); // Stop updating
       }
       this.days = Math.floor(this.projectDuration / (1000 * 60 * 60 * 24));
@@ -701,7 +709,7 @@ export default {
       this.minutes = Math.floor(this.projectDuration / (1000 * 60));
       this.projectDuration %= 1000 * 60;
       this.seconds = Math.floor(this.projectDuration / 1000);
-      
+
       // Calculate years and months
       const endDate = new Date(this.projectData.end_date);
       const currentDate = new Date();
@@ -799,10 +807,7 @@ export default {
     },
     donationPrevent() {
       console.log(this.totalAmount == this.currentDonation);
-      if (isEmptyObject(this.userData)) {
-        this.canDonate = false;
-        this.donationPreventionLogger = "You Must Register in order to donate";
-      } else if (this.projectDuration <= 0) {
+      if (this.projectDuration <= 0) {
         this.canDonate = false;
         this.donationPreventionLogger = "Project Duration Has Been Ended.";
       } else if (this.totalAmount == this.currentDonation) {
@@ -854,6 +859,7 @@ export default {
           const rateResponse = await fetch("http://localhost:8000/rating/", {
             method: "POST",
             headers: {
+              Authorization: `token ${this.userData["token"]}`,
               "Content-Type": "application/json",
             },
             body: JSON.stringify(rateData),
@@ -885,8 +891,7 @@ export default {
         if (!commentResponse.ok) {
           throw new Error("Error While Posting Comment");
         }
-        console.log("goo gooo");
-        location.reload();
+        window.location.reload();
       } catch (error) {
         console.log(error);
       }
@@ -925,7 +930,6 @@ export default {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-
         },
         body: JSON.stringify(commentReportBody),
       })

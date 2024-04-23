@@ -3,7 +3,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from api.permissions import IsOwnerOrReadOnly
 from replay.models import Replay
-from api.modelserializers import ReplaySerializer
+from api.serializers import ReplaySerializer
 from rest_framework.permissions import (
     AllowAny,
     IsAuthenticated,

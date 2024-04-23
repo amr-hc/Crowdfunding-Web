@@ -6,9 +6,7 @@ from social_auth.serializers import FacebookSocialAuthSerializer
 
 
 class FacebookSocialAuthView(GenericAPIView):
-
     serializer_class = FacebookSocialAuthSerializer
-
     def post(self, request):
 
         serializer = self.serializer_class(data=request.data)
