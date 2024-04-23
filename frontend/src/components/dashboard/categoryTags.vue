@@ -61,6 +61,7 @@
 
 <script>
 import axios from 'axios';
+import { datastore } from "@/stors/crowdfundingStore";
 
 export default {
     name: "CategoryTags",
@@ -74,7 +75,9 @@ export default {
             tags: [],
             newTag: {
                 tagName: ''
-            }
+            },
+            token: datastore().userInfo.token,
+
         };
     },
     created() {
@@ -101,7 +104,11 @@ export default {
                 });
         },
         addCategory() {
-            axios.post('http://127.0.0.1:8000/api/categories/', this.newCategory)
+            axios.post('http://127.0.0.1:8000/api/categories/', this.newCategory, {
+                headers: {
+                    Authorization: `token ${this.token}`
+                }
+            })
                 .then(response => {
                     console.log('Category added successfully:', response.data);
                     // Clear the form and fetch updated categories
@@ -116,7 +123,11 @@ export default {
                 });
         },
         addTag() {
-            axios.post('http://127.0.0.1:8000/tags/', this.newTag)
+            axios.post('http://127.0.0.1:8000/tags/', this.newTag, {
+                headers: {
+                    Authorization: `token ${this.token}`
+                }
+            })
                 .then(response => {
                     console.log('Tag added successfully:', response.data);
                     // Clear the form and fetch updated tags

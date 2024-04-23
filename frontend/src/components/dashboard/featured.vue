@@ -7,19 +7,25 @@
                     <div class="row justify-content-center p-0 ">
                         <div class="project-card p-0" v-for="(project, index) in importantProjects.slice(0, 5)"
                             :key="index">
-                            <img v-if="project.pics && project.pics.length > 0" :src="getImagePath(project)" alt="">
+                            <!-- {{ project }}
+                            {{ project.data }} -->
+                            <img v-if="project.data.pics && project.data.pics.length > 0"
+                                :src="getImagePath(project.data)" alt="">
                             <img v-else :src="require('@/assets/images/default.jpg')" alt="">
                             <div class="p-3">
-                                <h6 class="text-white-50 overflow overflow-hidden">{{ project.title }}</h6>
-                                <p class="author badge bg-dark p-1">{{ project.owner.first_name }} {{
-                                    project.owner.last_name }}
+                                <h6 class="text-white-50 overflow overflow-hidden">{{ project.data.title }}</h6>
+                                <p class="author badge bg-dark p-1">{{ project.data.owner.first_name }} {{
+                                    project.data.owner.last_name }}
                                 </p>
-                                <div class="project-card-rating">
+                                <div class="project.data-card-rating">
                                     <i v-for="n in 5" :key="n"
-                                        :class="{ 'plus fa-solid fa-star': n <= project.average_rate, 'minus fa-regular fa-star': n > project.average_rate }"></i>
+                                        :class="{ 'plus fa-solid fa-star': n <= project.data.average_rate, 'minus fa-regular fa-star': n > project.data.average_rate }"></i>
                                 </div>
-                                <p>Target: {{ currency_format(project.target_money) }}</p>
-                                <p>Current Donation: {{ currency_format(project.total_donations) }}</p>
+                                <p>Target: {{ currency_format(project.data.target_money) }}</p>
+                                <p>Current Donation: {{ currency_format(project.data.total_donations) }}</p>
+                                <div class="delete-project" @click="confirmDelete(project.id)">
+                                    <i class="fa-solid fa-trash"></i>
+                                </div>
                             </div>
                             <!-- Empty cards -->
                         </div>
@@ -45,15 +51,35 @@
                 </div>
                 <div class="modal-body">
                     <h6> Select project</h6>
-                    <select class="selectpicker w-100" multiple aria-label="Default select example"
-                        data-live-search="true" v-model="selectedProjects">
-                        <option v-for="project in projects" :key="project.id" :value="project.id">{{
+                    <select class="selectpicker w-100" aria-label="Default select example" data-live-search="true"
+                        v-model="selectedProject">
+                        <option v-for="project in filteredProjects" :key="project.id" :value="project.id">{{
                             project.title }}</option>
+
                     </select>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-primary" @click="addSelectedProjects">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" data-bs-theme="dark" id="deleteProjectModal" tabindex="-1"
+        aria-labelledby="deleteProjectModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="deleteProjectModalLabel">Confirm Deletion</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this project?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" @click="deleteProjectConfirmed">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>
@@ -71,8 +97,9 @@ export default {
         return {
             projects: [],
             importantProjects: [],
-            selectedProjects: [],
+            selectedProject: '',
             token: datastore().userInfo.token,
+            importantProjectIdToDelete: null,
         };
     },
 
@@ -86,6 +113,9 @@ export default {
             const emptyCards = 5 - this.importantProjects.length;
             return emptyCards > 0 ? emptyCards : 0;
         },
+        filteredProjects() {
+            return this.projects.filter(project => !this.importantProjects.find(impProject => impProject.id === project.id));
+        }
     },
 
     methods: {
@@ -105,41 +135,61 @@ export default {
         fetchImportantProjects() {
             axios.get('http://127.0.0.1:8000/api/ImportantProject/')
                 .then(response => {
-                    this.importantProjects = response.data.map(item => item.project);
+                    // this.importantProjectIds = response.data.map(item => item.id);
+                    this.importantProjects = response.data.map(item => {
+                        return {
+                            id: item.id,
+                            data: item.project
+                        }
+                    });
+                    console.log(this.importantProjects);
+                    // this.importantProjects = response.data;
                 })
                 .catch(error => {
                     console.error('Error fetching important projects:', error);
                 });
         },
         addSelectedProjects() {
-            const projectIds = this.selectedProjects.map(project => project);
-            console.log(typeof projectIds[0]);
-            if (projectIds.length > 0) {
-                axios.post('http://127.0.0.1:8000/api/ImportantProject/', {
-                    headers: {
-                        Authorization: `token ${this.token}`
-                    }
-                    ,
-                    body: {
-                        'project_id': projectIds[0]
-                    },
+            const data = {
+                project_id: this.selectedProject
+            };
+            axios.post('http://127.0.0.1:8000/api/ImportantProject/', data, {
+                headers: {
+                    Authorization: `token ${this.token}`
+                }
+            })
+                .then(response => {
+                    this.fetchImportantProjects();
+
                 })
-                    .then(response => {
-                        this.importantProjects = response.data.map(item => item.project);
-                        console.log('Important Projects:', this.importantProjects);
-                    })
-                    .catch(error => {
-                        console.error('Error adding important projects:', error);
-                    });
-            }
+                .catch(error => {
+                    console.error('Error:', error);
+                }).finally(() => {
+                    $('#addfeatuerdModal').modal('hide');
+                });
+        }
+        ,
+        confirmDelete(importantProjectId) {
+            this.importantProjectIdToDelete = importantProjectId;
+            $('#deleteProjectModal').modal('show');
         },
-
-
-
-
-
-
-
+        deleteProjectConfirmed() {
+            axios.delete(`http://127.0.0.1:8000/api/ImportantProject/${this.importantProjectIdToDelete}/`, {
+                headers: {
+                    Authorization: `token ${this.token}`
+                }
+            })
+                .then(response => {
+                    console.log('Project deleted successfully');
+                    this.fetchImportantProjects();
+                })
+                .catch(error => {
+                    console.error('Error deleting project:', error);
+                })
+                .finally(() => {
+                    $('#deleteProjectModal').modal('hide');
+                });
+        },
         getImagePath(project) {
             if (project && project.pics && project.pics.length > 0) {
                 return project.pics[0].image_path;
@@ -198,9 +248,22 @@ p {
 
 .project-card .delete-project {
     position: absolute;
-    right: 0;
-    top: 0;
-    border-radius: 0 15px 0 15px;
+    right: 10px;
+    top: 10px;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.project-card .delete-project:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
 .empty-card {
