@@ -312,22 +312,17 @@
                 </div>
               </div>
             </div>
-          </section>
-
-          <!-- Last five Donations -->
-          <hr class="my-5" />
-          <h5 class="text-white-50 my-4">Last 5 Donations</h5>
+          </section>   
+           
           <div class="text-end border-bottom border-dark my-2">
             <div class="d-flex justify-content-between align-items-baseline">
               <div class="d-flex align-items-center gap-2">
-                <div class="avatar">
-                  <img src="https://placehold.co/400" alt="Avatar" />
-                </div>
-                <div class="text-light">John Doe</div>
+                 
+                 
               </div>
-              <p class="text-white-50">3 days ago</p>
+            
             </div>
-            <p class="text-white-50 text-start">Donated $1000</p>
+             
           </div>
         </div>
       </div>
