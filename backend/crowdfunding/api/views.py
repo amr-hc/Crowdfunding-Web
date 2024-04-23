@@ -20,7 +20,8 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.permissions import (IsAuthenticatedOrReadOnly)
 from rest_framework.viewsets import ModelViewSet
-
+from Project_Pics.models import ProjectPics
+from api.pagination import small
 from django.core.mail import send_mail
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
@@ -93,10 +94,6 @@ class CategoryModelViewSet(ModelViewSet):
     serializer_class = CategorySerializer
 
 
-from Project_Pics.models import ProjectPics
-from api.pagination import small
-
-
 class ProjectModelViewSet(ModelViewSet):
     permission_classes = [IsOwnerProjectOrReadOnly]
     pagination_class = small
@@ -113,6 +110,7 @@ class ProjectModelViewSet(ModelViewSet):
             newPhoto.image_path = photo
             newPhoto.project = project
             newPhoto.save()
+
 
     def list(self, request, *args, **kwargs):
         if request.user.is_superuser:
