@@ -135,7 +135,6 @@ export default {
         fetchImportantProjects() {
             axios.get('http://127.0.0.1:8000/api/ImportantProject/')
                 .then(response => {
-                    // this.importantProjectIds = response.data.map(item => item.id);
                     this.importantProjects = response.data.map(item => {
                         return {
                             id: item.id,
@@ -143,7 +142,6 @@ export default {
                         }
                     });
                     console.log(this.importantProjects);
-                    // this.importantProjects = response.data;
                 })
                 .catch(error => {
                     console.error('Error fetching important projects:', error);

@@ -111,7 +111,6 @@ export default {
             })
                 .then(response => {
                     console.log('Category added successfully:', response.data);
-                    // Clear the form and fetch updated categories
                     this.newCategory = {
                         name: '',
                         description: ''
@@ -141,7 +140,11 @@ export default {
                 });
         },
         deleteCategory(category) {
-            axios.delete(`http://127.0.0.1:8000/api/categories/${category.id}`)
+            axios.delete(`http://127.0.0.1:8000/api/categories/${category.id}`, {
+                headers: {
+                    Authorization: `token ${this.token}`,
+                }
+            })
                 .then(() => {
                     console.log('Category deleted successfully');
                     this.fetchCategories();
@@ -151,7 +154,11 @@ export default {
                 });
         },
         deleteTag(tag) {
-            axios.delete(`http://127.0.0.1:8000/tags/${tag.id}`)
+            axios.delete(`http://127.0.0.1:8000/tags/${tag.id}`, {
+                headers: {
+                    Authorization: `token ${this.token}`
+                }
+            })
                 .then(() => {
                     console.log('Tag deleted successfully');
                     this.fetchTags();
