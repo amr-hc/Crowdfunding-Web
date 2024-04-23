@@ -318,13 +318,17 @@ class FunctionsClass {
       this.modelDismiss('deleteModal');
       this.showOprationsResalt("Delete",'success')
       setTimeout(()=>{
-        par.$router.push("/login");
-      },3000)
+        window.location.href = "http://localhost:8080/login";
+      },1500)
      
       
     } catch (error) {
-      this.modelDismiss('deleteModal');
-      this.showOprationsResalt("Delete",'faild')
+       
+        this.modelDismiss('deleteModal');
+        this.showOprationsResalt("Delete",'faild');
+        setTimeout(()=>{
+          par.$router.go();
+        },1000)
        console.error("Error fetching api:", error);
     }
   }
@@ -394,6 +398,10 @@ class FunctionsClass {
     resaltElement.innerText=`Data ${opration}ed successfully`
     resaltElement.style.display="block"
   }
+  }
+  resetOprationsResaltTag(){
+    const resaltElement=document.getElementById("faild")
+    resaltElement.style.display="none"
   }
   modelDismiss(par){
 		let SModal = bootstrap.Modal.getOrCreateInstance(
