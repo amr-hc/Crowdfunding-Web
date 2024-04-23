@@ -5,19 +5,21 @@
                 <div class="col-12 col-lg">
                     <h4 class="border-bottom border-dark">Featured Projects <i class="fa-solid fa-crown"></i></h4>
                     <div class="row justify-content-center p-0 ">
-                        <div class="project-card p-0" v-for="(project, index) in projects" :key="index">
-                            <img :src="project.project.imageUrl ? project.project.imageUrl : require('@/assets/images/default.jpg')"
-                                alt="">
-                            <div class="btn btn-danger delete-project"> <i class="fa-solid fa-remove"></i></div>
+                        <div class="project-card p-0" v-for="(project, index) in importantProjects.slice(0, 5)"
+                            :key="index">
+                            <img v-if="project.pics && project.pics.length > 0" :src="getImagePath(project)" alt="">
+                            <img v-else :src="require('@/assets/images/default.jpg')" alt="">
                             <div class="p-3">
-                                <h6 class="text-white-50">{{ project.project.title }}</h6>
-                                <p class="author text-white badge bg-primary">{{ project.project.author }}</p>
+                                <h6 class="text-white-50 overflow overflow-hidden">{{ project.title }}</h6>
+                                <p class="author badge bg-dark p-1">{{ project.owner.first_name }} {{
+                                    project.owner.last_name }}
+                                </p>
                                 <div class="project-card-rating">
                                     <i v-for="n in 5" :key="n"
-                                        :class="{ 'plus fa-solid fa-star': n <= project.project.rating, 'minus fa-regular fa-star': n > project.project.rating }"></i>
+                                        :class="{ 'plus fa-solid fa-star': n <= project.average_rate, 'minus fa-regular fa-star': n > project.average_rate }"></i>
                                 </div>
-                                <p class="m-0 badge">Target: {{ project.project.target_money }}</p>
-                                <p class="m-0 badge">Current Donation: {{ project.project.currentDonation }}</p>
+                                <p>Target: {{ currency_format(project.target_money) }}</p>
+                                <p>Current Donation: {{ currency_format(project.total_donations) }}</p>
                             </div>
                             <!-- Empty cards -->
                         </div>
@@ -30,11 +32,9 @@
             </div>
         </div>
     </div>
-    <!-- Modal trigger -->
-    <button class="btn btn-outline-danger p-0 mb-2 border-0 px-2" data-bs-toggle="modal"
-        data-bs-target="#addfeatuerdModal">Add Featured <i class="fa-solid fa-reply"></i> </button>
 
     <!-- Modal -->
+
     <div class="modal fade" data-bs-theme="dark" id="addfeatuerdModal" tabindex="-1"
         aria-labelledby="addfeatuerdModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -44,10 +44,10 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Please pick up to 5 projects
-                    <select class="selectpicker" multiple aria-label="Default select example" data-live-search="true"
-                        v-model="selectedProjects">
-                        <option v-for="project in fetchedProjects" :key="project.id" :value="project.id">{{
+                    <h6> Select project</h6>
+                    <select class="selectpicker w-100" multiple aria-label="Default select example"
+                        data-live-search="true" v-model="selectedProjects">
+                        <option v-for="project in projects" :key="project.id" :value="project.id">{{
                             project.title }}</option>
                     </select>
                 </div>
@@ -59,60 +59,118 @@
         </div>
     </div>
 </template>
+
 <script>
 import axios from 'axios';
+import { datastore } from "@/stors/crowdfundingStore";
 
 export default {
     name: 'featured',
+
     data() {
         return {
             projects: [],
+            importantProjects: [],
             selectedProjects: [],
-            ratings: [], // Add ratings array
+            token: datastore().userInfo.token,
         };
     },
+
+    created() {
+        this.fetchProjects();
+        this.fetchImportantProjects();
+    },
+
     computed: {
         emptyCardsCount() {
-            return Math.max(5 - this.projects.length, 0);
+            const emptyCards = 5 - this.importantProjects.length;
+            return emptyCards > 0 ? emptyCards : 0;
         },
-        fetchedProjects() {
-            return this.projects.filter(project => !this.selectedProjects.includes(project.id));
-        }
     },
-    mounted() {
-        this.fetchData();
-    },
+
     methods: {
-        fetchData() {
-            // Fetch projects data
-            axios.get('http://127.0.0.1:8000/api/ImportantProject/')
+        fetchProjects() {
+            axios.get('http://127.0.0.1:8000/api/projects/', {
+                headers: {
+                    Authorization: `token ${this.token}`
+                }
+            })
                 .then(response => {
-                    this.projects = response.data;
+                    this.projects = response.data.results.filter(project => !project.hidden);
                 })
                 .catch(error => {
                     console.error('Error fetching projects:', error);
                 });
-
-            // Fetch ratings data
-            axios.get('http://127.0.0.1:8000/api/rate/')
+        },
+        fetchImportantProjects() {
+            axios.get('http://127.0.0.1:8000/api/ImportantProject/')
                 .then(response => {
-                    this.ratings = response.data;
+                    this.importantProjects = response.data.map(item => item.project);
                 })
                 .catch(error => {
-                    console.error('Error fetching ratings:', error);
+                    console.error('Error fetching important projects:', error);
                 });
         },
         addSelectedProjects() {
-            console.log('Selected projects:', this.selectedProjects);
+            const projectIds = this.selectedProjects.map(project => project);
+            console.log(typeof projectIds[0]);
+            if (projectIds.length > 0) {
+                axios.post('http://127.0.0.1:8000/api/ImportantProject/', {
+                    headers: {
+                        Authorization: `token ${this.token}`
+                    }
+                    ,
+                    body: {
+                        'project_id': projectIds[0]
+                    },
+                })
+                    .then(response => {
+                        this.importantProjects = response.data.map(item => item.project);
+                        console.log('Important Projects:', this.importantProjects);
+                    })
+                    .catch(error => {
+                        console.error('Error adding important projects:', error);
+                    });
+            }
         },
-        getRating(projectId) {
-            const ratingData = this.ratings.find(rating => rating.project === projectId);
-            return ratingData ? ratingData.rate : 0;
-        }
+
+
+
+
+
+
+
+        getImagePath(project) {
+            if (project && project.pics && project.pics.length > 0) {
+                return project.pics[0].image_path;
+            } else {
+                return require('@/assets/images/default.jpg');
+            }
+        },
+        currency_format(price) {
+            return new Intl.NumberFormat("us", {
+                style: "currency",
+                currency: "usd",
+                minimumFractionDigits: 0
+            }).format(price);
+        },
     }
 }
 </script>
+
+
+
 <style scoped>
+p {
+    padding: 0;
+    margin: 0;
+}
+
+.selectpicker {
+    width: 100%;
+    max-height: 80vw;
+}
+
 .project-card,
 .empty-card {
     position: relative;
@@ -124,7 +182,6 @@ export default {
     backdrop-filter: blur(15px);
     margin: 10px;
     overflow: hidden;
-
 }
 
 .project-card .author {
@@ -169,6 +226,18 @@ export default {
 }
 
 .project-card {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.project-card-rating i {
+    color: yellow;
+    font-size: 12px;
+}
+
+.project-card .text-white-50,
+.project-card p {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
