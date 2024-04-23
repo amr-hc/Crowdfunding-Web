@@ -4,27 +4,16 @@
       Our <br />
       Featured <br />Projects
     </h1>
-    <div
-      class="alert alert-danger text-center py-2 my-3"
-      v-if="isThereProjects"
-    >
+    <div class="alert alert-danger text-center py-2 my-3" v-if="isThereProjects">
       <h1>There is no Projects to Show</h1>
     </div>
     <div class="col-12 col-lg carousel" v-else>
       <div class="list">
-        <div
-          class="item"
-          v-for="project in this.featuredProject"
-          :key="project.id"
-        >
-          <img
-            :src="
-              project.project.pics.length > 0
-                ? project.project.pics[0].image_path
-                : require('@/assets/images/No-Image-Placeholder.svg.png')
-            "
-            :alt="project.title"
-          />
+        <div class="item" v-for="project in this.featuredProject" :key="project.id">
+          <img :src="project.project.pics.length > 0
+            ? project.project.pics[0].image_path
+            : require('@/assets/images/No-Image-Placeholder.svg.png')
+            " :alt="project.title" />
           <div class="content">
             <div class="author">
               {{
@@ -34,43 +23,30 @@
             <div class="title">{{ project.project.title }}</div>
             <div class="description">{{ project.project.description }}</div>
             <div class="rating">
-              <i
-                v-for="n in 5"
-                :key="n"
-                :class="{
-                  'plus fa-solid fa-star': n <= project.project.average_rate,
-                  'minus fa-regular fa-star': n > project.project.average_rate,
-                }"
-              ></i>
+              <i v-for="n in 5" :key="n" :class="{
+                'plus fa-solid fa-star': n <= project.project.average_rate,
+                'minus fa-regular fa-star': n > project.project.average_rate,
+              }"></i>
             </div>
-            <router-link :to="'projects/' + project.id" class="button btn"
-              >SEE MORE</router-link
-            >
+            <router-link :to="'projects/' + project.id" class="button btn">SEE MORE</router-link>
           </div>
         </div>
       </div>
       <div class="thumbnail">
-        <div
-          class="item"
-          v-for="project in this.featuredProject"
-          :key="project.id"
-        >
-          <img
-            :src="
-              project.project.pics.length > 0
-                ? project.project.pics[0].image_path
-                : require('@/assets/images/No-Image-Placeholder.svg.png')
-            "
-            :alt="project.title"
-          />
+        <div class="item" v-for="project in this.featuredProject" :key="project.id">
+          <img :src="project.project.pics.length > 0
+            ? project.project.pics[0].image_path
+            : require('@/assets/images/No-Image-Placeholder.svg.png')
+            " :alt="project.title" />
           <div class="content">
             <div class="title">{{ project.project.title }}</div>
           </div>
         </div>
       </div>
       <div class="arrows">
-        <button id="prev" class="fa-solid fa-angle-left"></button>
-        <button id="next" class="fa-solid fa-angle-right"></button>
+        <button @click="showSlider('prev')" class="fa-solid fa-angle-left"></button>
+        <button @click="showSlider('next')" class="fa-solid fa-angle-right"></button>
+
       </div>
       <div class="time"></div>
     </div>
@@ -90,19 +66,13 @@ export default {
   },
   mounted() {
     // Cache the DOM elements
-    this.nextDom = document.getElementById("next");
-    this.prevDom = document.getElementById("prev");
+    this.nextDom = document.getElementById('next');
+    this.prevDom = document.getElementById('prev');
 
     // Set event listeners using method binding
     if (this.nextDom && this.prevDom) {
-      this.nextDom.addEventListener(
-        "click",
-        this.showSlider.bind(this, "next")
-      );
-      this.prevDom.addEventListener(
-        "click",
-        this.showSlider.bind(this, "prev")
-      );
+      this.nextDom.addEventListener('click', this.showSlider.bind(this, 'next'));
+      this.prevDom.addEventListener('click', this.showSlider.bind(this, 'prev'));
     }
   },
   async created() {
@@ -122,30 +92,15 @@ export default {
   },
   methods: {
     showSlider(direction) {
-      const listItems = document.querySelector(".carousel .list");
-      const thumbnails = document.querySelector(".carousel .thumbnail");
-      if (this.featuredProject.length > 1) {
-        if (direction === "next") {
-          listItems.appendChild(listItems.children[0].cloneNode(true));
-          listItems.children[0].remove();
-
-          thumbnails.appendChild(thumbnails.children[0].cloneNode(true));
-          thumbnails.children[0].remove();
-        } else {
-          listItems.insertBefore(
-            listItems.children[listItems.children.length - 1].cloneNode(true),
-            listItems.children[0]
-          );
-          listItems.children[listItems.children.length - 1].remove();
-
-          thumbnails.insertBefore(
-            thumbnails.children[thumbnails.children.length - 1].cloneNode(true),
-            thumbnails.children[0]
-          );
-          thumbnails.children[thumbnails.children.length - 1].remove();
-        }
+      if (direction === 'next') {
+        const firstItem = this.featuredProject.shift();
+        this.featuredProject.push(firstItem);
+      } else {
+        const lastItem = this.featuredProject.pop();
+        this.featuredProject.unshift(lastItem);
       }
-    },
+    }
+
   },
 };
 </script>
