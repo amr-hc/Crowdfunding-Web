@@ -30,7 +30,7 @@ class FunctionsClass {
   jsValidations(par, e, modul) {
     const namePattern = /^[a-zA-Z ,.'-]+$/;
     const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
-    const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     const mobilePattern = /^01[012]\d{8}$/;
     const countryPattern = /^[a-zA-Z ,.'-]+$/;
     const birthdatePattern =
@@ -229,9 +229,9 @@ class FunctionsClass {
         formData.delete(key);
       }
     }
-    if (formData.email) {
-      formData.delete(email);
-    }
+    
+      formData.delete('email');
+    
     // Get user Id and token
     const token = par.storgData.token;
 
@@ -318,13 +318,17 @@ class FunctionsClass {
       this.modelDismiss('deleteModal');
       this.showOprationsResalt("Delete",'success')
       setTimeout(()=>{
-        par.$router.push("/login");
-      },3000)
+        window.location.href = "http://localhost:8080/login";
+      },1500)
      
       
     } catch (error) {
-      this.modelDismiss('deleteModal');
-      this.showOprationsResalt("Delete",'faild')
+       
+        this.modelDismiss('deleteModal');
+        this.showOprationsResalt("Delete",'faild');
+        setTimeout(()=>{
+          par.$router.go();
+        },1000)
        console.error("Error fetching api:", error);
     }
   }
@@ -394,6 +398,10 @@ class FunctionsClass {
     resaltElement.innerText=`Data ${opration}ed successfully`
     resaltElement.style.display="block"
   }
+  }
+  resetOprationsResaltTag(){
+    const resaltElement=document.getElementById("faild")
+    resaltElement.style.display="none"
   }
   modelDismiss(par){
 		let SModal = bootstrap.Modal.getOrCreateInstance(

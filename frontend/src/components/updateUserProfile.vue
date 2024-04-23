@@ -158,10 +158,11 @@
 			 <form @submit.prevent="deleteUser" class="needs-validation" novalidate>
 			<div class="col-md-6 m-2">
 				<label for="password" class="form-label">password</label>
-				<input type="password" class="form-control" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+				<input type="password" class="form-control" 
+				pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
 				id="password" placeholder="enter Your password" v-model="password" required>
 				<div class="invalid-feedback">
-				Please enter a valid password Minimum eight characters, at least one letter and one number!.
+				Please enter a valid password Minimum eight characters, at least one letter and one number and one special character !.
 				</div>
 			</div>
             <div class="modal-footer">
