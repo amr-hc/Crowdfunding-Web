@@ -50,28 +50,34 @@
 
                 <hr>
                 <div class="reviews">
-                    <h5 class="text-white-50">Reviews</h5>
-                    <div class="reviewer text-end  border-bottom border-dark my-2" v-if="project.comments.length > 0">
-                        <div class="d-flex justify-content-between align-items-baseline">
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="avatar">
-                                    <img src="https://placehold.co/400" alt="Avatar" />
+                    <h5 class="text-white my-3">Reviews</h5>
+                    <div v-if="project.comments.length > 0" class="reviews">
+                        <div class="reviewer text-end border-bottom border-dark my-2"
+                            v-for="(comment, index) in project.comments" :key="index">
+                            <div class="d-flex justify-content-between align-items-baseline">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="avatar">
+                                        <img :src="comment.user_data.image" @error="handleImageError" alt="Avatar" />
+                                    </div>
+                                    <div class="text-light">{{ comment.user_data.first_name }} {{
+                                        comment.user_data.last_name }}</div>
                                 </div>
-                                <div class="text-light">{{ project.comments.user_id }}</div>
+                                <!-- Display rating -->
+                                <div class="rating">
+                                    <i v-for="n in 5" :key="n"
+                                        :class="{ 'plus fa-solid fa-star': n <= 5, 'minus fa-regular fa-star': n > 5 }"></i>
+                                </div>
                             </div>
-                            <div class="rating"> <i v-for="n in 5" :key="n"
-                                    :class="{ 'plus fa-solid fa-star': n <= project.average_rate, 'minus fa-regular fa-star': n > project.average_rate }"></i>
-                            </div>
+                            <!-- Display comment -->
+                            <p class="text-white-50 text-start my-2">{{ comment.comment }}</p>
+                            <!-- Display comment date -->
+                            <p class="m-0">{{ comment.date }}</p>
                         </div>
-                        <p class="text-white-50 text-start">{{ project.comments.comment }}
-                        </p>
-                        <p class="m-0">{{ project.comments.date }}</p>
-
                     </div>
-
                     <div v-else class="alert alert-dark bg-dark border-0">
                         <p>There are no reviews available at the moment.</p>
                     </div>
+
 
                 </div>
             </div>
@@ -112,6 +118,9 @@ export default {
         }
     },
     methods: {
+        handleImageError(event) {
+            event.target.src = require('@/assets/images/default.jpg');
+        },
         fetchProjectDetails(projectId) {
             axios.get(`http://127.0.0.1:8000/api/projects/${projectId}`, {
                 headers: {
@@ -136,7 +145,12 @@ export default {
             try {
                 const response = await axios.patch(
                     `http://127.0.0.1:8000/api/projects/${projectId}/`,
-                    { hidden: true }
+                    { hidden: true, },
+                    {
+                        headers: {
+                            Authorization: `token ${this.token}`
+                        }
+                    }
 
                 );
 
