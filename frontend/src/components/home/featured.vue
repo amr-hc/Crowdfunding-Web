@@ -19,7 +19,7 @@
         >
           <img
             :src="
-              project.pics.length > 0
+              project.project.pics.length > 0
                 ? project.project.pics[0].image_path
                 : require('@/assets/images/No-Image-Placeholder.svg.png')
             "
@@ -57,7 +57,7 @@
         >
           <img
             :src="
-              project.pics.length > 0
+              project.project.pics.length > 0
                 ? project.project.pics[0].image_path
                 : require('@/assets/images/No-Image-Placeholder.svg.png')
             "
