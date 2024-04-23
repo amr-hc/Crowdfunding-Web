@@ -1,5 +1,6 @@
 <template>
-	 
+	 <div class="bg-danger p-3 text-center m-0 oprationsResote" id="faild"></div>
+	 <div class="bg-success p-3 text-center m-0 oprationsResote" id="success"></div>
     <div class="container">
 		<div class="main-body">
 			<form  @submit.prevent="handleFormSubmission($event);" class="needs-validation" novalidate> 
@@ -148,16 +149,26 @@
     <div class="modal-dialog ">
         <div class="modal-content bg-dark ">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Delete Book</h5>
+                <h5 class="modal-title" id="deleteModalLabel">Delete User</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 Are you sure you want to delete your account?
             </div>
+			 <form @submit.prevent="deleteUser" class="needs-validation" novalidate>
+			<div class="col-md-6 m-2">
+				<label for="password" class="form-label">password</label>
+				<input type="password" class="form-control" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+				id="password" placeholder="enter Your password" v-model="password" required>
+				<div class="invalid-feedback">
+				Please enter a valid password Minimum eight characters, at least one letter and one number!.
+				</div>
+			</div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" @click="deleteUser"  class="btn btn-danger">Delete</button>
+                <button type=" submit"  class="btn btn-danger">Delete</button>
             </div>
+		</form>
         </div>
     </div>
 </div>
@@ -182,6 +193,7 @@
       facebook:'',
       storgData:{},
       id:'',
+	  password:"",
       file:null,
       countries: [],
       }),
@@ -208,8 +220,9 @@
 		handleFileChange(e){
 			functionsObject.handleFileChange(e,this)
 		},
-		deleteUser(){
-		    functionsObject.deleteUser(this)
+		deleteUser(e){
+			if(functionsObject.HTMLValidations(e))
+		    {functionsObject.deleteUser(this)}
 		}
 	  }
 		}
@@ -219,6 +232,9 @@
   </script>
   
   <style>
+  .oprationsResote{
+	display: none;
+  }
   .imgdiv{
     background-image: url('https://bootdey.com/img/Content/avatar/avatar6.png');
     background-position: center;
