@@ -79,7 +79,7 @@ class Project(models.Model):
 
 
 class ImportantProject(models.Model):
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE,unique=True)
 
 class Rate(models.Model):
     rate = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
