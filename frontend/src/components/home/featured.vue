@@ -43,9 +43,6 @@
                 }"
               ></i>
             </div>
-            <router-link :to="'projects/' + project.id" class="button btn"
-              >SEE MORE</router-link
-            >
           </div>
         </div>
       </div>
@@ -198,13 +195,7 @@ export default {
   color: #f1683a;
 }
 
-.carousel .list .item .content .button {
-  background-color: var(--secondary-color-3);
-  letter-spacing: 3px;
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  margin: 1rem 0;
-}
+
 
 .carousel .list .item .content .plus {
   color: yellow;
