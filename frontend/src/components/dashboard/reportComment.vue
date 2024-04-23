@@ -43,6 +43,8 @@
 </template>
 
 <script>
+import { datastore } from "@/stors/crowdfundingStore";
+
 export default {
   data: () => ({
     reports: [],
@@ -53,6 +55,10 @@ export default {
         try {
           await fetch(`http://127.0.0.1:8000/report/comment/${id}/`, {
             method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `token ${datastore().userInfo.token}`
+            }
           });
           this.reports = this.reports.filter((rep) => rep.id !== id);
         } catch (error) {
@@ -67,6 +73,10 @@ export default {
         try {
           await fetch(`http://127.0.0.1:8000/api/comment/${id}/`, {
             method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `token ${datastore().userInfo.token}`
+            }
           });
           this.reports = this.reports.filter((rep) => rep.comment_id !== id);
         } catch (error) {
@@ -77,7 +87,12 @@ export default {
   },
 
   created() {
-    fetch("http://127.0.0.1:8000/report/comment/")
+    fetch("http://127.0.0.1:8000/report/comment/", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `token ${datastore().userInfo.token}`
+      }
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch reports");
