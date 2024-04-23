@@ -23,12 +23,14 @@
               <h6>{{ project.title }}</h6>
               <p>{{ project.description }}</p>
               <div class="bott">
-                <router-link
+                <router-link 
+                :style="{ 'pointer-events': project.hidden ? 'none' : 'auto' }"
                   class="text-light text-decoration-none"
                   :to="'projects/' + project.id"
-                  ><button class="btn btn-success">Show</button></router-link
+                  ><button  :disabled="project.hidden" class="btn btn-success">Show</button></router-link
                 >
                 <button
+                  :disabled="project.hidden"
                   class="btn btn-info m-2"
                   data-bs-toggle="modal"
                   data-bs-target="#update"
@@ -36,11 +38,11 @@
                 >
                   Edit
                 </button>
-                <button
+                <button :disabled="project.hidden"
                   class="btn btn-danger m-2"
                   data-bs-toggle="modal"
                   data-bs-target="#deleteModal"
-                  @click="asginData(project)"
+                 
                 >
                   Delete
                 </button>
