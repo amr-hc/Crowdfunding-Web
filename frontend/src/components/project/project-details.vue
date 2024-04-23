@@ -555,7 +555,7 @@ export default {
       .map((tag) => tages.push(tag.id))
       .map((tag) => `tages=${tag}`)
       .join("&");
-
+    console.log(`http://127.0.0.1:8000/api/projects/?&${allTages}`);
     const res = await fetch(`http://127.0.0.1:8000/api/projects/?&${allTages}`);
     const data = await res.json();
     this.similarProject = data.results;

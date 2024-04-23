@@ -103,7 +103,7 @@ DATABASES = {
         "NAME": "crowdfunding",
         "USER": "root",
         "PASSWORD": "root",
-        "PASSWORD": "",
+        "PASSWORD": "1234",
         "HOST": "localhost",
         "PORT": 3306,
     }
