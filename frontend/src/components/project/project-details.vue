@@ -2,26 +2,47 @@
   <section>
     <div class="card h-100 mb-5 pb-5">
       <div class="row gap-5 g-0 justify-content-center">
-        <div class="card-details h-100 w-100 w-md-50 position-relative col-12 col-md">
+        <div
+          class="card-details h-100 w-100 w-md-50 position-relative col-12 col-md"
+        >
           <div class="img-wrapper">
-            <img class="h-100 w-100 rounded-4 object-fit-stretch" :src="activeImg" alt="Active Image" id="active-img" />
+            <img
+              class="h-100 w-100 rounded-4 object-fit-stretch"
+              :src="activeImg"
+              alt="Active Image"
+              id="active-img"
+            />
             <div v-show="isFeatured" class="featured bg-danger">
               featured <i class="fa-solid fa-star"></i>
             </div>
           </div>
           <div class="row gap-1 g-0 flex-nowrap overflow-x-auto py-2">
-            <div class="img-item" v-for="(image, index) in images" :key="index"
-              :class="{ 'active-img': image.url === activeImg }" @click="selectActiveImage(index)">
-              <img width="100%" height="100%" :src="image.url" alt="Thumbnail Image" />
+            <div
+              class="img-item"
+              v-for="(image, index) in images"
+              :key="index"
+              :class="{ 'active-img': image.url === activeImg }"
+              @click="selectActiveImage(index)"
+            >
+              <img
+                width="100%"
+                height="100%"
+                :src="image.url"
+                alt="Thumbnail Image"
+              />
             </div>
           </div>
           <h5 class="text-light-emphasis">
             Title: {{ projectData.title }}
             <div class="rating my-2">
-              <i v-for="n in 5" :key="n" :class="{
-                'plus fa-solid fa-star': n <= rating,
-                'minus fa-regular fa-star': n > rating,
-              }"></i>
+              <i
+                v-for="n in 5"
+                :key="n"
+                :class="{
+                  'plus fa-solid fa-star': n <= rating,
+                  'minus fa-regular fa-star': n > rating,
+                }"
+              ></i>
             </div>
           </h5>
           <div class="text-white-50">
@@ -30,30 +51,54 @@
           <hr />
           <h5 class="text-light-emphasis">Similar Projects</h5>
           <div class="row g-0 gap-1 overflow-hidden">
-            <div class="project-item" v-for="(image, index) in limitedImages" :key="index">
+            <div
+              class="project-item"
+              v-for="(image, index) in limitedImages"
+              :key="index"
+            >
               <img :src="image.url" :alt="image.title" />
               <h6 class="text-light project-item-title">hamada</h6>
               <div class="project-item-rating">
-                <i v-for="n in 5" :key="n" :class="{
-                  'plus fa-solid fa-star': n <= rating,
-                  'minus fa-regular fa-star': n > rating,
-                }"></i>
+                <i
+                  v-for="n in 5"
+                  :key="n"
+                  :class="{
+                    'plus fa-solid fa-star': n <= rating,
+                    'minus fa-regular fa-star': n > rating,
+                  }"
+                ></i>
               </div>
             </div>
           </div>
           <!-- See More Button -->
-          <router-link v-if="images.length > 3" to="projects" class="btn text-light-emphasis mt-2">See
-            More</router-link>
+          <router-link
+            v-if="images.length > 3"
+            to="projects"
+            class="btn text-light-emphasis mt-2"
+            >See More</router-link
+          >
           <hr />
           <div class="reviews">
             <h5 class="text-light-emphasis my-3">Reviews</h5>
             <!-- Add review input -->
-            <textarea data-bs-theme="dark" id="newComment" class="col form-control bg-transparent text-light" rows="3"
-              v-model="newComment" placeholder="Write your comment"></textarea>
+            <textarea
+              data-bs-theme="dark"
+              id="newComment"
+              class="col form-control bg-transparent text-light"
+              rows="3"
+              v-model="newComment"
+              placeholder="Write your comment"
+            ></textarea>
 
-            <div class="d-flex align-items-baseline justify-content-between gap-3 my-3">
+            <div
+              class="d-flex align-items-baseline justify-content-between gap-3 my-3"
+            >
               <div data-bs-theme="dark">
-                <select id="newRating" v-model="newRate" class="col form-select bg-body-secondary">
+                <select
+                  id="newRating"
+                  v-model="newRate"
+                  class="col form-select bg-body-secondary"
+                >
                   <option selected disabled>Your Rating</option>
                   <option value="1">1 star</option>
                   <option value="2">2 stars</option>
@@ -62,7 +107,10 @@
                   <option value="5">5 stars</option>
                 </select>
               </div>
-              <button class="col text-center btn btn-main btn-outline-dark" @click="submitComment(newRate, newComment)">
+              <button
+                class="col text-center btn btn-main btn-outline-dark"
+                @click="submitComment(newRate, newComment)"
+              >
                 Comment
               </button>
             </div>
@@ -71,23 +119,36 @@
               <div v-for="comment in projectData.comments" :key="comment.id">
                 <!-- Start Of Comments Section -->
                 <div class="reviewer text-end border-bottom border-dark my-2">
-                  <div class="d-flex justify-content-between align-items-baseline">
+                  <div
+                    class="d-flex justify-content-between align-items-baseline"
+                  >
                     <div class="d-flex align-items-center gap-2">
                       <div class="avatar">
                         <img :src="comment.user.image" alt="Avatar" />
                       </div>
-                      <div class="text-light" style="text-transform: capitalize;">
+                      <div
+                        class="text-light"
+                        style="text-transform: capitalize;"
+                      >
                         {{ comment.user.first_name }}
                         {{ comment.user.last_name }}
-                        <span v-if="comment.user.id === userData.user_id">(You)</span>
-                        <span v-if="comment.user.is_admin === true"><i class="fa-solid fa-crown"></i></span>
+                        <span v-if="comment.user.id === userData.user_id"
+                          >(You)</span
+                        >
+                        <span v-if="comment.user.is_admin === true"
+                          ><i class="fa-solid fa-crown"></i
+                        ></span>
                       </div>
                     </div>
                     <div class="rating">
-                      <i v-for="n in 5" :key="n" :class="{
-                        'plus fa-solid fa-star': n <= comment.user.rate,
-                        'minus fa-regular fa-star': n > comment.user.rate,
-                      }"></i>
+                      <i
+                        v-for="n in 5"
+                        :key="n"
+                        :class="{
+                          'plus fa-solid fa-star': n <= comment.user.rate,
+                          'minus fa-regular fa-star': n > comment.user.rate,
+                        }"
+                      ></i>
                     </div>
                   </div>
                   <p class="text-white-50 text-start">
@@ -95,13 +156,20 @@
                   </p>
                   <p class="m-0">From - {{ comment.user.country }}</p>
                   <!-- Not The Same User -->
-                  <button v-if="comment.user.id !== userData.user_id"
-                    class="btn btn-outline-danger p-0 mb-2 border-0 px-2" data-bs-toggle="modal"
-                    data-bs-target="#reportModal" @click="openReportForm(comment)">
+                  <button
+                    v-if="comment.user.id !== userData.user_id"
+                    class="btn btn-outline-danger p-0 mb-2 border-0 px-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#reportModal"
+                    @click="openReportForm(comment)"
+                  >
                     report <i class="fa-solid fa-reply"></i>
                   </button>
                   <!-- The Same User -->
-                  <button v-else="" class="btn btn-outline-danger p-0 mb-2 border-0 px-2">
+                  <button
+                    v-else=""
+                    class="btn btn-outline-danger p-0 mb-2 border-0 px-2"
+                  >
                     remove <i class="fa-regular fa-trash-can"></i>
                   </button>
                 </div>
@@ -130,46 +198,70 @@
             {{ totalAmount }} / {{ projectData.numOfDonors }} donors
           </p>
           <div class="progress">
-            <div class="progress-bar" role="progressbar" :style="{ width: donationProgress + '%' }" aria-valuenow="0"
-              aria-valuemin="0" aria-valuemax="100"></div>
+            <div
+              class="progress-bar"
+              role="progressbar"
+              :style="{ width: donationProgress + '%' }"
+              aria-valuenow="0"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            ></div>
           </div>
           <h3 class="my-3">
             ${{ Math.round((totalAmount - currentDonation) * 100) / 100 }} still
             needed
           </h3>
-          <p class="text-white-50" v-if="canDonate === true && months > 0">
+          <p class="text-white-50" v-if="canDonate === true && months>0">
 
             {{ years }} years {{ months }} months {{ days }} days left
           </p>
-          <p class="text-white-50" v-if="canDonate === true && months <= 0">
+          <p class="text-white-50" v-if="canDonate === true && months <=0 ">
 
-            {{ days }} days {{ hours }} hours {{ minutes }} minutes {{ seconds }} seconds left
+            {{ days }} days {{ hours }} hours {{ minutes }} minutes {{seconds}} seconds left
           </p>
-
+          
           <!--End Of Donation Details-->
 
           <!-- Project Details -->
           <div v-if="isOwner === false">
             <!-- Project Duration -->
             <div class="d-flex" v-if="canDonate === true">
-              <input type="number" data-bs-theme="dark" min="0" step="0.01" :max="totalAmount - currentDonation"
-                class="col form-control bg-transparent text-light" placeholder="Enter Amount"
-                aria-describedby="donationBlock" v-model="donationAmount" />
+              <input
+                type="number"
+                data-bs-theme="dark"
+                min="0"
+                step="0.01"
+                :max="totalAmount - currentDonation"
+                class="col form-control bg-transparent text-light"
+                placeholder="Enter Amount"
+                aria-describedby="donationBlock"
+                v-model="donationAmount"
+              />
 
-              <button class="col btn btn-main btn-outline-dark ms-2" @click="Donate">
+              <button
+                class="col btn btn-main btn-outline-dark ms-2"
+                @click="Donate"
+              >
                 Donate
               </button>
-              <i style="font-size: 2.5rem; margin-left: 5px; color: #dc3545;" class="fas fa-exclamation-triangle"
-                @click="reportProject"></i>
+              <button class="btn btn-outline-danger " data-bs-toggle="modal" data-bs-target="#projectReportModal" style="outline:none;">
+              <i
+                style="font-size: 2.5rem; margin-left: 5px;"
+                class="fas fa-exclamation-triangle"
+              ></i>
+              </button>
             </div>
             <div v-else="">
-              <p class="text-danger" style="
+              <p
+                class="text-danger"
+                style="
                   background-color: #f8d7da;
                   border-color: #f5c6cb;
                   color: #721c24;
                   padding: 10px;
                   border-radius: 5px;
-                ">
+                "
+              >
                 {{ donationPreventionLogger }}
               </p>
             </div>
@@ -178,11 +270,14 @@
 
           <!-- admin -->
           <!-- || userData.user.is_superuser === true -->
-          <div v-else-if="
-            (isOwner === true || userData['is_super']) &&
-            !projectData.isCanceled
-          " class="admin-for-project mt-3">
-            <div v-if="isOwner === true && days < 4 && donationProgress < 30">
+          <div
+            v-else-if="
+              (isOwner === true || userData['is_super']) &&
+              !projectData.isCanceled
+            "
+            class="admin-for-project mt-3"
+          >
+            <div v-if="isOwner === true && days < 3 && donationProgress < 30">
               <button class="btn btn-secondary me-2" @click="CancelProject">
                 Cancel
               </button>
@@ -195,10 +290,15 @@
             <div class="container">
               <div class="row justify-content-center">
                 <div class="col-md-8">
-                  <div class="alert" role="alert" :class="{
-                    'alert-danger': logger.hasError,
-                    'alert-success': logger.success,
-                  }" v-if="logger.hasError || logger.success">
+                  <div
+                    class="alert"
+                    role="alert"
+                    :class="{
+                      'alert-danger': logger.hasError,
+                      'alert-success': logger.success,
+                    }"
+                    v-if="logger.hasError || logger.success"
+                  >
                     {{
                       logger.hasError
                         ? logger.errorLogger
@@ -229,15 +329,26 @@
       </div>
     </div>
     <!-- Modal -->
-    <div class="modal fade" data-bs-theme="dark" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel"
-      aria-hidden="true">
+    <div
+      class="modal fade"
+      data-bs-theme="dark"
+      id="reportModal"
+      tabindex="-1"
+      aria-labelledby="reportModalLabel"
+      aria-hidden="true"
+    >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <h1 class="modal-title fs-5" id="reportModalLabel">
               Report Confirmation
             </h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body">
             <p class="report-error">{{ reportError }}</p>
@@ -259,14 +370,83 @@
               </div>
             </div>
             <!-- Report Body -->
-            <input type="text" id="report" v-model="commentReportBody" placeholder="What's Wrong" />
+            <input
+              type="text"
+              id="report"
+              v-model="commentReportBody"
+              placeholder="What's Wrong"
+            />
           </div>
           <!-- End Of Reported Comment -->
           <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
               No
             </button>
-            <button type="button" class="btn btn-primary" @click="reportAComment">
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="reportAComment"
+            >
+              Go ahead!
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Of Modal -->
+
+     <!--Projects Modal -->
+    <div
+      class="modal fade"
+      data-bs-theme="dark"
+      id="projectReportModal"
+      tabindex="-1"
+      aria-labelledby="reportModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="reportModalLabel">
+              Report Confirmation
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p class="report-error">{{ projectReportError }}</p>
+            <!-- Display the reportError message -->
+            Are you sure you want to report this Project?
+              <!-- Report Body -->
+            <input
+              type="text"
+              id="report"
+              v-model="projectReportBody"
+              placeholder="What's Wrong"
+            />
+          </div>
+          <!-- End Of Reported Comment -->
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              No
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="reportAProject"
+            >
               Go ahead!
             </button>
           </div>
@@ -295,9 +475,9 @@ export default {
       ownerData: {},
       projectDuration: 0,
       stopProjectTime: false,
-      days: 0,
-      years: 0,
-      months: 1,
+      days: 4,
+      years:0,
+      months:1,
       hours: 0,
       minutes: 0,
       seconds: 0,
@@ -337,6 +517,10 @@ export default {
       },
       commentReportBody: "",
       reportError: "",
+
+      // Project Report Error
+      projectReportError:"",
+      commentReportBody:"",
     };
   },
   async mounted() {
@@ -382,18 +566,19 @@ export default {
           this.userData = {};
         }
       } else {
-        console.error("userInfo Is Not Found Please reEnsure data");
+        window.location.href = "/login";
         this.userData = {};
       }
     },
     async fetchProjectData() {
       try {
         const projectId = this.$route.params.id;
+
         const response = await fetch(
           `http://localhost:8000/api/projects/${projectId}`
         );
         if (!response.ok) {
-          throw new Error("Failed to fetch project data");
+          window.location.href ="/notfound"
         }
         const data = await response.json();
         this.allProjectData = data;
@@ -504,9 +689,9 @@ export default {
       // Handle case when project duration ends
       if (this.projectDuration <= 0 || this.stopProjectTime) {
         this.projectDuration = 0;
-        this.days = 0;
-        this.hours = 0;
-        this.minutes = 0;
+        this.days=0;
+        this.hours=0;
+        this.minutes=0;
         clearInterval(this.updateTimeDifference); // Stop updating
       }
       this.days = Math.floor(this.projectDuration / (1000 * 60 * 60 * 24));
@@ -516,7 +701,7 @@ export default {
       this.minutes = Math.floor(this.projectDuration / (1000 * 60));
       this.projectDuration %= 1000 * 60;
       this.seconds = Math.floor(this.projectDuration / 1000);
-
+      
       // Calculate years and months
       const endDate = new Date(this.projectData.end_date);
       const currentDate = new Date();
@@ -559,7 +744,6 @@ export default {
           const response = await fetch("http://localhost:8000/donation/", {
             method: "POST",
             headers: {
-              Authorization: `Token ${this.userData["token"]}`,
               "Content-Type": "application/json",
               Authorization: `Token ${this.userData["token"]}`,
             },
@@ -596,7 +780,6 @@ export default {
         {
           method: "PATCH",
           headers: {
-            Authorization: `Token ${this.userData["token"]}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(cancelingData),
@@ -742,6 +925,7 @@ export default {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+
         },
         body: JSON.stringify(commentReportBody),
       })
@@ -752,6 +936,42 @@ export default {
           // Clear the error message if report was successful
           this.reportError = "";
           $("#reportModal").modal("hide");
+        })
+        .catch((error) => {
+          console.error(error);
+          this.reportError = "Error while reporting the comment.";
+        });
+    },
+    async reportAProject() {
+      // Validate reportBody
+      if (!this.projectReportBody.trim()) {
+        this.projectReportError = "Please provide a report before proceeding.";
+        return;
+      }
+
+      // Make A Report
+      const projectReportBody = {
+        user_id: this.userData["user_id"],
+        project_id: this.projectData.id,
+        report: this.projectReportBody,
+      };
+      console.log(JSON.stringify(projectReportBody));
+
+      // Submit The Report If Success
+      await fetch("http://localhost:8000/report/projects/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(projectReportBody),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Error while reporting the comment.");
+          }
+          // Clear the error message if report was successful
+          this.reportError = "";
+          $("#projectReportModal").modal("hide");
         })
         .catch((error) => {
           console.error(error);
@@ -905,7 +1125,6 @@ export default {
   color: #155724;
   border-color: #c3e6cb;
 }
-
 /* end of logger */
 
 .avatar {
@@ -947,7 +1166,6 @@ option {
   display: flex;
   margin-bottom: 15px;
 }
-
 .comment-content {
   flex: 1;
 }

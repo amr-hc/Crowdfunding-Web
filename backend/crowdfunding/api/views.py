@@ -1,20 +1,10 @@
-import django_filters
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters
-
-from rest_framework.decorators import action
-from djoser.compat import get_user_email, settings
-from djoser import signals
-
 from api.Filter import ProjectModelFilter
 from api.models import Category, Project, Rate, User, ImportantProject
 from api.modelserializers import (
     CategorySerializer,
-    CommentSerializer,
-    LoginSerializer,
     ProjectSerializer,
     RateSerializer,
-    ReplaySerializer,
     UserSerializer,
     ImportantProjectSerializer,
     confirmActivation,
@@ -24,28 +14,15 @@ from api.permissions import (
     IsOwnerProjectOrReadOnly,
     IsSameUserOrReadOnly,
 )
-from comment.models import Comment
-from comment_report.models import Report_comment
-from django.contrib.auth import authenticate
-from django.http import HttpResponse
-from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
 
-from replay.models import Replay
-from rest_framework.authentication import TokenAuthentication
+from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.generics import GenericAPIView, ListCreateAPIView
-from rest_framework.permissions import (
-    AllowAny,
-    IsAuthenticated,
-    IsAuthenticatedOrReadOnly,
-)
-from rest_framework.response import Response
+from rest_framework.permissions import (IsAuthenticatedOrReadOnly)
 from rest_framework.viewsets import ModelViewSet
-
+from Project_Pics.models import ProjectPics
+from api.pagination import small
 from django.core.mail import send_mail
-from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_bytes
@@ -117,11 +94,6 @@ class CategoryModelViewSet(ModelViewSet):
     serializer_class = CategorySerializer
 
 
-from Project_Pics.api.serializer import ProjectPicsSerializer
-from Project_Pics.models import ProjectPics
-from api.pagination import small
-
-
 class ProjectModelViewSet(ModelViewSet):
     permission_classes = [IsOwnerProjectOrReadOnly]
     pagination_class = small
@@ -138,6 +110,7 @@ class ProjectModelViewSet(ModelViewSet):
             newPhoto.image_path = photo
             newPhoto.project = project
             newPhoto.save()
+
 
     def list(self, request, *args, **kwargs):
         if request.user.is_superuser:

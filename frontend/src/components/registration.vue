@@ -81,17 +81,17 @@
 <div class="name col-md-10 p-0 row  ">
   <div class="col-md-6">
     <label for="password" class="form-label">password</label>
-    <input type="password" class="form-control" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+    <input type="password" class="form-control" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
       id="password" placeholder="enter password" v-model="password" required>
     <div class="invalid-feedback">
-      Please enter a valid password Minimum eight characters, at least one letter and one number!.
+      Please enter a valid password Minimum eight characters, at least one letter and one number and one special character!.
     </div>
   </div>
   <div class="col-md-6">
 
     <label for="validationCustom3" class="form-label">Confirm password</label>
     <input type="password" class="form-control"  
-    pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+    pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
       id="validationCustom3" placeholder="Renter password" v-model="cpassword" @blur="confirm" required>
     <div class="invalid-feedback">
       Please enter a valid password that matchs with previous input  !.

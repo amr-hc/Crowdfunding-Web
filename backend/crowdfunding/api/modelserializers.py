@@ -1,16 +1,12 @@
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
-
 from api.models import User, Category, Project, Rate, ImportantProject
-from comment.models import Comment
 from comment.serializer import CommentSerializer
 from replay.models import Replay
 from comment_report.models import Report_comment
 from Project_Pics.api.serializer import ProjectPicsSerializer
 from datetime import date
-
 from Donation.api.serializer import DonationSerializer
-from tags.api.serializers import TagSerializer
 from tags.models import Tag
 
 
@@ -61,8 +57,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        # fields = "__all__"
-        fields = ["id", "email", "password", "first_name", "last_name", "is_superuser", "is_active", "birth_date", "photo","country","facebook","phone","owner_projects","donations"]
+        fields = "__all__"
         extra_kwargs = {'password': {'write_only': True}}
     def validate(self, data):
         if 'password' in data:
@@ -73,10 +68,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 
-class LoginSerializer(serializers.Serializer):
-    email = serializers.CharField()
-    password = serializers.CharField()
-
 class confirmActivation(serializers.Serializer):
     uid = serializers.CharField()
     token = serializers.CharField()
@@ -85,7 +76,7 @@ class confirmActivation(serializers.Serializer):
 class userImportantData(UserSerializer):
     class Meta:
         model = User
-        fields = ["id", "email", "password", "first_name", "last_name", "is_superuser", "is_active", "birth_date", "photo","country","facebook","phone"]
+        fields = ["id", "email", "first_name", "last_name", "is_superuser", "is_active", "birth_date", "photo","country","facebook","phone"]
 
 class ProjectSerializer(serializers.ModelSerializer):
     owner = userImportantData(read_only=True)
@@ -115,29 +106,18 @@ class ProjectSerializer(serializers.ModelSerializer):
         return sum(obj.donations.values_list('donation_amount', flat=True))
 
 
-#
-# class CommentSerializer(serializers.ModelSerializer):
-#     user_data = serializers.SerializerMethodField(read_only=True)
-#
-#     class Meta:
-#         model = Comment
-#         fields = "__all__"
-#
-#     def validate(self, data):
-#         data['user_id'] = self.context['request'].user
-#         return data
-#
-#     def get_user_data(self, obj):
-#         user = obj.user_id
-#         return {
-#             'id': user.id,
-#             'first_name': user.first_name,
-#             'last_name': user.last_name,
-#             'image': user.photo.url if user.photo else None,  # Assuming photo is a FileField or ImageField
-#             'country': user.country,
-#             'is_active': user.is_active,
-#             'is_superuser': user.is_superuser,
-#         }
+    def validate(self, data):
+        request=self.context.get('request')
+        if not request.method == "POST":
+            total_donations = sum(self.instance.donations.values_list('donation_amount', flat=True))
+            if "hidden" in data and (total_donations/data.get('target_money')) > 0.25 and not request.user.is_superuser:
+                    raise serializers.ValidationError("Cant Cancel this Project")
+            if "target_money" in data and total_donations > data.get('target_money'):
+                    raise serializers.ValidationError("target_money is less than total donations")
+        return data
+
+
+
 
 class ReplaySerializer(serializers.ModelSerializer):
     class Meta:
@@ -145,25 +125,17 @@ class ReplaySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class ReportCommentSerializer(serializers.ModelSerializer):
-    full_name=serializers.SerializerMethodField()
-    comment=serializers.SerializerMethodField()
-    project_id=serializers.SerializerMethodField()
-    project_title=serializers.SerializerMethodField()
+    full_name = serializers.SerializerMethodField(read_only=True)
+    comment = serializers.CharField(source="comment_id.comment", read_only=True)
+    project_id = serializers.PrimaryKeyRelatedField(source="comment_id.project_id", read_only=True)
+    project_title = serializers.CharField(source="comment_id.project_id.title", read_only=True)
+
     class Meta:
         model = Report_comment
         fields = "__all__"
 
-    def get_full_name(self,obj):
-        return obj.user_id.first_name + " " +obj.user_id.last_name
-
-    def get_comment(self,obj):
-        return obj.comment_id.comment
-
-    def get_project_id(self,obj):
-        return obj.comment_id.project_id.id
-
-    def get_project_title(self,obj):
-        return obj.comment_id.project_id.title
+    def get_full_name(self, obj):
+        return obj.user_id.first_name + " " + obj.user_id.last_name
 
 
 class ImportantProjectSerializer(serializers.ModelSerializer):

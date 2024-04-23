@@ -10,6 +10,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 from api.models import User
+from rest_framework.authtoken.models import Token
+
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -58,6 +60,7 @@ def reset_password(request):
             return Response({'error': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Reset password
+        Token.objects.filter(user=user).delete()
         user.set_password(new_password)
         user.save()
 

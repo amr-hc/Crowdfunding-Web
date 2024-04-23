@@ -17,8 +17,8 @@
   <script>
   export default {
   beforeCreate(){
-    const sessionStorageData=JSON.parse(sessionStorage.getItem("needactivation"));
-    if(!sessionStorageData){
+    const storageData=localStorage.getItem("needactivation");
+    if(!storageData){
         this.$router.push('/login');
     }
   }

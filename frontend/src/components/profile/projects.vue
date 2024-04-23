@@ -38,14 +38,6 @@
                 >
                   Edit
                 </button>
-                <button :disabled="project.hidden"
-                  class="btn btn-danger m-2"
-                  data-bs-toggle="modal"
-                  data-bs-target="#deleteModal"
-                 
-                >
-                  Delete
-                </button>
               </div>
             </div>
           </div>
@@ -220,50 +212,9 @@
     </div>
 
     <!-- Model End-->
+ 
 
-    <!--  delete project model  -->
-
-    <div
-      class="modal fade"
-      id="deleteModal"
-      tabindex="-1"
-      aria-labelledby="deleteModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content bg-dark">
-          <div class="modal-header">
-            <h5 class="modal-title" id="deleteModalLabel">Delete Book</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            Are you sure you want to delete This project?
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              @click="deleteproject"
-              data-bs-dismiss="modal"
-              class="btn btn-danger"
-            >
-              Delete
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+    
   </section>
 </template>
 
@@ -320,9 +271,7 @@ export default {
       functionsObject.handleProjectFormSubmission(e, this);
     },
 
-    deleteproject() {
-      functionsObject.deleteProject(this);
-    },
+     
   },
   unmounted() {
     const selectElement = document.querySelector(".select2");

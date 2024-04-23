@@ -2,7 +2,6 @@ from django.urls import path,include
 from api.views import CategoryModelViewSet, ProjectModelViewSet, UserModelViewSet, login, RateModelViewSet, \
      ImportantProjectAPIView,confirmActivate
 from comment.views import CommentModelViewSet
-from comment_report.views import CommentReportModelViewSet
 from replay.views import ReplayModelViewSet
 from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
