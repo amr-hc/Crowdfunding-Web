@@ -38,8 +38,6 @@ class login(ObtainAuthToken):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"]
-        filtered_user_by_email = User.objects.filter(email=user.email)
-        print(type(filtered_user_by_email[0]))
         token, created = Token.objects.get_or_create(user=user)
         return Response(
             {
