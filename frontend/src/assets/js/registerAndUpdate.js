@@ -30,7 +30,7 @@ class FunctionsClass {
   jsValidations(par, e, modul) {
     const namePattern = /^[a-zA-Z ,.'-]+$/;
     const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
-    const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     const mobilePattern = /^01[012]\d{8}$/;
     const countryPattern = /^[a-zA-Z ,.'-]+$/;
     const birthdatePattern =
