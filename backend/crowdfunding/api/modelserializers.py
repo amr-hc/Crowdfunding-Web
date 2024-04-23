@@ -68,10 +68,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 
-class LoginSerializer(serializers.Serializer):
-    email = serializers.CharField()
-    password = serializers.CharField()
-
 class confirmActivation(serializers.Serializer):
     uid = serializers.CharField()
     token = serializers.CharField()
@@ -108,6 +104,17 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     def get_total_donations(self, obj):
         return sum(obj.donations.values_list('donation_amount', flat=True))
+
+
+    def validate(self, data):
+        if not self.context.get('request').method == "POST":
+            total_donations = sum(self.instance.donations.values_list('donation_amount', flat=True))
+            if "hidden" in data and (total_donations/data.get('target_money')) > 0.25:
+                    raise serializers.ValidationError("Cant Cancel this Project")
+            if "target_money" in data and total_donations > data.get('target_money'):
+                    raise serializers.ValidationError("target_money is less than total donations")
+        return data
+
 
 
 
