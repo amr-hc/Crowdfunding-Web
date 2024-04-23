@@ -17,15 +17,13 @@ class CommentReportModelViewSet(ModelViewSet):
 
 
 class ReportListCreateAPIView(ListCreateAPIView):
-    permission_classes = [AllowAny]
-    # permission_classes = [IsAdminOrpost]
+    permission_classes = [IsAdminOrpost]
     queryset = Report_comment.objects.all()
     serializer_class = ReportCommentSerializer
 
 
 class ReportRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    permission_classes = [AllowAny]
-    # permission_classes = [IsOwnerOrAdmin]
+    permission_classes = [IsOwnerOrAdmin]
     queryset = Report_comment.objects.all()
     serializer_class = ReportCommentSerializer
     lookup_url_kwarg = 'id'
