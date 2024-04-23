@@ -136,17 +136,21 @@ export default {
             axios.get('http://127.0.0.1:8000/api/ImportantProject/')
                 .then(response => {
                     this.importantProjects = response.data.map(item => {
-                        return {
-                            id: item.id,
-                            data: item.project
+                        // Check if the project is hidden before including it
+                        if (!item.project.hidden) {
+                            return {
+                                id: item.id,
+                                data: item.project
+                            }
                         }
-                    });
+                    }).filter(Boolean); // Filter out undefined values
                     console.log(this.importantProjects);
                 })
                 .catch(error => {
                     console.error('Error fetching important projects:', error);
                 });
         },
+
         addSelectedProjects() {
             const data = {
                 project_id: this.selectedProject
