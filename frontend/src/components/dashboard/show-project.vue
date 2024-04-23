@@ -1,5 +1,5 @@
 <template>
-    <div v-if="project" class="project-wrapper h-100 mb-5 pb-5 container pt-4">
+    <div v-if="project" class="project-wrapper h-100 mb-5 pb-5 container  container-lg pt-4">
         <div class="row gap-5 g-0 justify-content-center">
             <div class="col-12 col-md py-3 rounded-4 text-light">
                 <h4> {{ project.owner.first_name }} {{ project.owner.last_name }}</h4>

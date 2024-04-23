@@ -48,13 +48,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <h6> Select project</h6>
-                    <select class="selectpicker w-100" aria-label="Default select example" data-live-search="true"
-                        v-model="selectedProject">
+                    <h6 v-if="filteredProjects.length > 0"> Select project</h6>
+                    <select v-if="filteredProjects.length > 0" class="selectpicker w-100"
+                        aria-label="Default select example" data-live-search="true" v-model="selectedProject">
                         <option v-for="project in filteredProjects" :key="project.id" :value="project.id">{{
                             project.title }}</option>
 
                     </select>
+                    <p class="text-danger" v-else>No projects found</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
@@ -112,7 +113,8 @@ export default {
             return emptyCards > 0 ? emptyCards : 0;
         },
         filteredProjects() {
-            return this.projects.filter(project => !this.importantProjects.find(impProject => impProject.id === project.id));
+            const featuredIds = this.importantProjects.map(project => project.data.id);
+            return this.projects.filter(project => !featuredIds.includes(project.id));
         }
     },
 
