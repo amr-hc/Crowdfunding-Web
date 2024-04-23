@@ -1,114 +1,60 @@
 <template>
-  <section>
-    <div class="register vh-100 row justify-content-center align-items-center">
-      <div id="carouselExampleDark" class="carousel carousel-dark slide">
-        <div class="carousel-indicators">
-          <button
-            type="button"
-            data-bs-target="#carouselExampleDark"
-            data-bs-slide-to="0"
-            class="active"
-            aria-current="true"
-            aria-label="Slide 1"
-          ></button>
-          <button
-            type="button"
-            data-bs-target="#carouselExampleDark"
-            data-bs-slide-to="1"
-            aria-label="Slide 2"
-          ></button>
-          <button
-            type="button"
-            data-bs-target="#carouselExampleDark"
-            data-bs-slide-to="2"
-            aria-label="Slide 3"
-          ></button>
-        </div>
-        <div class="carousel-inner">
-          <div class="carousel-item active" data-bs-interval="10000">
-            <img src="../assets/images/1.jpg" class="d-block w-100" alt="..." />
-            <div class="carousel-caption d-none d-md-block">
-              <h5>First slide label</h5>
-              <p>
-                Some representative placeholder content for the first slide.
-              </p>
-            </div>
-          </div>
-          <div class="carousel-item" data-bs-interval="2000">
-            <img src="../assets/images/2.jpg" class="d-block w-100" alt="..." />
-            <div class="carousel-caption d-none d-md-block">
-              <h5>Second slide label</h5>
-              <p>
-                Some representative placeholder content for the second slide.
-              </p>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <img src="" class="d-block w-100" alt="..." />
-            <div class="carousel-caption d-none d-md-block">
-              <h5>Third slide label</h5>
-              <p>
-                Some representative placeholder content for the third slide.
-              </p>
-            </div>
-          </div>
-        </div>
-        <button
-          class="carousel-control-prev"
-          type="button"
-          data-bs-target="#carouselExampleDark"
-          data-bs-slide="prev"
-        >
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button
-          class="carousel-control-next"
-          type="button"
-          data-bs-target="#carouselExampleDark"
-          data-bs-slide="next"
-        >
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-      </div>
-    </div>
-    <div class="shadow-lg p-3 mb-5 bg-body-tertiary rounded opacity-50">
-      <span id="contributors">Contributors</span>
-    </div>
-  </section>
+  <div class="funding-container">
+    <h2 class="funding-title text-center">
+      Helping people help <br> each other </h2>
+    <img :src="imgSrc" alt="about" class="funding-image mx-auto d-block">
+    <h1 class="funding-message text">
+      Arise launched in 1833 as a fundraising platform dedicated to helping people help each other. In 2022, Arise
+      acquired Classy, which enables nonprofit organizations to maximize their impact through a suite of online
+      fundraising tools.
+
+      Together, Arise and Classy are building a future where everyone has the ability to make a meaningful difference
+      for the people, causes, and communities they care about most. Through our GoFundMe platform and Classy software
+      business, we offer innovative products and services that leverage insights and analytics of our combined company.
+      Learn about our commitment to your data privacy. </h1>
+  </div>
 </template>
 
 <script>
 export default {
   name: "HelloWorld",
-  props: {
-    msg: String,
-  },
+
+  data() {
+    return {
+      imgSrc: require('@/assets/images/funding.svg')
+    }
+  }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.register {
-  /* background-image: url("../assets/imges/pexels-alan-henrique-9425961.jpg"); */
-  background-position: center;
-  background-size: cover;
-}
-.registerCard {
-  border-radius: 10%;
-  opacity: 0.8;
-  color: black;
+.funding-container {
+  border: 1px solid var(--primary-color-3);
+  border-radius: 20px;
+  box-shadow: 0px 0 31px 0px rgb(0 0 0 / 10%);
+  backdrop-filter: blur(15px);
+  margin: 2rem 0;
+  padding: 40px;
 }
 
-.carousel-item img {
-  width: 100%;
-  height: 500px; /* Adjust this height as needed */
-  object-fit: fill;
+.funding-title {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  text-transform: capitalize;
 }
 
-#contributors {
-  color: rgb(0, 0, 0);
-  opacity: 1;
+.funding-message {
+  text-align: start;
+  font-size: 18px;
+  line-height: 2rem;
+  position: relative;
+  padding: 12px;
+
+}
+
+.funding-image {
+  max-width: 100%;
+  height: 50vh;
 }
 </style>

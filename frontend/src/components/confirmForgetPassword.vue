@@ -27,6 +27,7 @@
                     >
                     <input
                       type="password"
+                      pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
                       class="form-control rounded w-75 mb-2"
                       name="password"
                       id="password"
@@ -43,6 +44,7 @@
 
                       <input
                         type="password"
+                        pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
                         class="form-control form-control rounded w-75"
                         name="confirmpassword"
                         id="confirmpassword"
@@ -113,6 +115,14 @@
   
   <script>
 export default {
+  created(){
+    const urlParams = new URLSearchParams(window.location.search);
+     this.uid = urlParams.get("uid");
+     this.token = urlParams.get("token");
+      if(!this.uid || !this.token){
+        this.$router.push('/')
+      }
+  },
   data: () => ({
     token: "",
     uid: "",
@@ -147,14 +157,13 @@ export default {
         return;
       }
       
-      const urlParams = new URLSearchParams(window.location.search);
-      const uid = urlParams.get("uid");
-      const token = urlParams.get("token");
-      console.log(token);
+      // const urlParams = new URLSearchParams(window.location.search);
+      // const uid = urlParams.get("uid");
+      // const token = urlParams.get("token");
 
       const passwordData = new FormData();
-      passwordData.append("uidb64", uid);
-      passwordData.append("token", token);
+      passwordData.append("uidb64", this.uid);
+      passwordData.append("token", this.token);
       passwordData.append("new_password", this.password);
       fetch("http://127.0.0.1:8000/password/reset-password/", {
         method: "POST",
@@ -187,7 +196,7 @@ export default {
         });
     },
     isValidPassword(password) {
-      const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+      const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
       return passwordRegex.test(password);
     },
   },

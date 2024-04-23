@@ -90,7 +90,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "crowdfunding.wsgi.application"
 
-handler404 = 'api.views.page_not_found'
+handler404 = "api.views.page_not_found"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -102,7 +102,8 @@ DATABASES = {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "crowdfunding",
         "USER": "root",
-        "PASSWORD": "1234",
+        "PASSWORD": "root",
+        "PASSWORD": "",
         "HOST": "localhost",
         "PORT": 3306,
     }
@@ -118,8 +119,8 @@ DATABASES = {
 #         'PASSWORD': 'nagy',
 #         'HOST': 'localhost',
 #         'PORT': 3306
-
-#     } 
+#     }
+#     }   
 # }
 
 
@@ -189,9 +190,8 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.AllowAny",
     ],
     "DEFAULT_RENDERER_CLASSES": [
-        'rest_framework.renderers.JSONRenderer',
-    ]
-
+        "rest_framework.renderers.JSONRenderer",
+    ],
 }
 
 
@@ -211,6 +211,3 @@ SWAGGER_SETTINGS = {
 }
 
 PASSWORD_RESET_TIMEOUT = 60 * 60 * 24
-
-
-

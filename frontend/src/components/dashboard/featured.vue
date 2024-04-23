@@ -7,8 +7,6 @@
                     <div class="row justify-content-center p-0 ">
                         <div class="project-card p-0" v-for="(project, index) in importantProjects.slice(0, 5)"
                             :key="index">
-                            <!-- {{ project }}
-                            {{ project.data }} -->
                             <img v-if="project.data.pics && project.data.pics.length > 0"
                                 :src="getImagePath(project.data)" alt="">
                             <img v-else :src="require('@/assets/images/default.jpg')" alt="">

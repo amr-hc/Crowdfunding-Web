@@ -35,6 +35,8 @@
             placeholder="target"
             v-model="targetMoney"
             required
+            min="1"
+           
           />
           <label for="target" class="text-dark ms-2">Target Money</label>
           <div class="invalid-feedback">
@@ -79,23 +81,7 @@
           <div class="invalid-feedback">Please select a category.</div>
         </div>
         <div class="form-floating">
-          <!-- <select
-            v-model="selectedTags"
-            class="form-select"
-            name="tags"
-            id="tags"
-            multiple
-            required
-            size="2"
-          >
-            <option selected disabled hidden value="">
-              Please select tags
-            </option>
-            <option v-for="tag in tags" :key="tag.id" :value="tag.tagName">
-              {{ tag.tagName }}
-            </option>
-          </select> -->
-
+         
           <select @change="addSelection" style="width: 100%; z-index: 100;" ref="select" class=" form-control select2" multiple id="validationCustom05" 
                     pattern="^[a-zA-Z ,.'\-]+$" v-model="projectTags">
                   </select>
