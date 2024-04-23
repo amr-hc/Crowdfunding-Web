@@ -966,6 +966,7 @@ export default {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization : `token ${this.userData["token"]}`
         },
         body: JSON.stringify(projectReportBody),
       })
@@ -974,12 +975,12 @@ export default {
             throw new Error("Error while reporting the comment.");
           }
           // Clear the error message if report was successful
-          this.reportError = "";
+          this.projectReportError = "";
           $("#projectReportModal").modal("hide");
         })
         .catch((error) => {
           console.error(error);
-          this.reportError = "Error while reporting the comment.";
+          this.projectReportError = "Error while reporting the project.";
         });
     },
   },

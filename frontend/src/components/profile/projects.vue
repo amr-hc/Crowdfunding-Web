@@ -100,7 +100,7 @@
                 <input
                   v-model="targetMoney"
                   type="number"
-                  pattern="^[1-9]\d*$"
+                 min="1"
                   class="form-control"
                   id="validationCustom03"
                   required
