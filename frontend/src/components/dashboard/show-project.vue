@@ -20,8 +20,8 @@
                 </h3>
                 <p class="text-white-50">{{ formatDaysLeft(project.start_date, project.end_date) }} left</p>
 
-                <button v-show="!isRemoved" class="col btn btn-outline-danger text-light ms-2"
-                    @click="removeProject">Remove this
+                <button v-show="!isRemoved && project.total_donations < project.target_money * .25"
+                    class="col btn btn-outline-danger text-light ms-2" @click="removeProject">Remove this
                     project<i class="mx-3 fa-solid fa-trash"></i> </button>
 
 
@@ -67,15 +67,12 @@
                                     <div class="text-light">{{ comment.user_data.first_name }} {{
                                         comment.user_data.last_name }}</div>
                                 </div>
-                                <!-- Display rating -->
                                 <div class="rating">
                                     <i v-for="n in 5" :key="n"
                                         :class="{ 'plus fa-solid fa-star': n <= 5, 'minus fa-regular fa-star': n > 5 }"></i>
                                 </div>
                             </div>
-                            <!-- Display comment -->
                             <p class="text-white-50 text-start my-2">{{ comment.comment }}</p>
-                            <!-- Display comment date -->
                             <p class="m-0">{{ comment.date }}</p>
                         </div>
                     </div>
@@ -94,6 +91,26 @@
     <div v-else>
         <p>Loading project data...</p>
     </div>
+
+
+    <div class="modal fade" data-bs-theme="dark" id="deleteProjectModal" tabindex="-1"
+        aria-labelledby="deleteProjectModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="deleteProjectModalLabel">Confirm Deletion</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this project?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" @click="deleteProjectConfirmed">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -108,6 +125,7 @@ export default {
             activeImg: null, // Initialize as null
             isFeatured: false,
             isRemoved: false,
+
             token: datastore().userInfo.token,
 
         };
