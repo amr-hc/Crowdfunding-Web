@@ -66,7 +66,7 @@ class UserSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError(
                     "Password must be at least 8 characters long and contain at least 1 letter and 1 digit.")
             data['password'] = make_password(data['password'])
-        if data['birth_date'] >= date.today():
+        if 'birth_date' in data and data['birth_date'] >= date.today():
             raise serializers.ValidationError("You didn't born yet")
         return data
 
