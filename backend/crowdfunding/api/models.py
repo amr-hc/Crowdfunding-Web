@@ -50,7 +50,7 @@ class User(AbstractBaseUser):
     birth_date = models.DateField(null=True, blank=True)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
-    country = models.CharField(max_length=225)
+    country = models.CharField(max_length=225, blank=True, null=True)
     facebook = models.URLField(null=True, blank=True)
     auth_provider = models.CharField(
         max_length=255, blank=False,
