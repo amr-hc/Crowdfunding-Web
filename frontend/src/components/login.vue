@@ -190,8 +190,8 @@ export default {
                 return response.json();
               })
               .then((data) => {
-                console.log(data); // Log the response data
                 localStorage.setItem("userInfo", JSON.stringify(data));
+                window.location.href = "http://localhost:8080/";
               })
               .catch((error) => {
                 console.error(
