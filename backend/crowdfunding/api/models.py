@@ -65,7 +65,7 @@ class Project(models.Model):
     description = models.CharField(max_length=225)
     start_date = models.DateField(auto_now_add=True)
     end_date = models.DateField()
-    target_money = models.DecimalField(max_digits=10, decimal_places=2)
+    target_money = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)])
     hidden = models.BooleanField(default=False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="owner_projects")
