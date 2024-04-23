@@ -1,5 +1,9 @@
 <template>
   <div class="container">
+    <hr class="my-5 ">
+    <div class="text-center">
+      <h3 class="text-white">Reported Comments</h3>
+    </div>
     <table class="table table-dark table-striped mt-4">
       <thead>
         <tr>
@@ -11,7 +15,7 @@
           <th class="text-success">Actions</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody v-if="reports.length > 0">
         <tr v-for="report in reports" :key="report.id" class="">
           <td>{{ report.id }}</td>
           <td>{{ report.report }}</td>
@@ -19,23 +23,22 @@
           <td>{{ report.comment }}</td>
           <td>{{ report.full_name }}</td>
           <td>
-            <button
-              class="btn btn-danger"
-              @click="deleteReport(report.id)"
-              style="margin-right: 10px"
-            >
+            <button class="btn btn-danger" @click="deleteReport(report.id)" style="margin-right: 10px">
               Delete report
             </button>
-            <button
-              class="btn btn-danger"
-              @click="deleteComment(report.comment_id)"
-            >
+            <button class="btn btn-danger" @click="deleteComment(report.comment_id)">
               Delete Comment
             </button>
           </td>
         </tr>
       </tbody>
+      <tbody v-else>
+        <tr>
+          <td colspan="5" class="text-center">No reports found.</td>
+        </tr>
+      </tbody>
     </table>
+
   </div>
 </template>
 
@@ -91,7 +94,7 @@ export default {
 };
 </script>
 
-<style >
+<style>
 table {
   background-color: #2e363d;
 }

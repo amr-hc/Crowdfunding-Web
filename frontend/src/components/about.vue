@@ -9,7 +9,7 @@
       fundraising tools.
 
       Together, Arise and Classy are building a future where everyone has the ability to make a meaningful difference
-      for the people, causes, and communities they care about most. Through our GoFundMe platform and Classy software
+      for the people, causes, and communities they care about most. Through our Arise platform and Classy software
       business, we offer innovative products and services that leverage insights and analytics of our combined company.
       Learn about our commitment to your data privacy. </h1>
   </div>

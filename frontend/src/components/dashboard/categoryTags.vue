@@ -15,7 +15,7 @@
                         class="form-control">
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Add Category</button>
+            <button type="submit" class="btn btn-main">Add Category</button>
         </form>
         <hr class="my-4">
         <div class="d-flex flex-wrap" v-if="categories.length > 0">
@@ -39,7 +39,7 @@
                 <label for="tagName" class="form-label">Tag Name:</label>
                 <input type="text" required maxlength="50" id="tagName" v-model="newTag.tagName" class="form-control">
             </div>
-            <button type="submit" class="btn btn-primary">Add Tag</button>
+            <button type="submit" class="btn btn-main">Add Tag</button>
         </form>
         <hr class="my-4">
 
@@ -189,11 +189,17 @@ export default {
 
 <style scoped>
 .form-control {
-    background-color: rgb(45, 52, 61);
+    background-color: var(--primary-color-2);
+    color: white;
+    border: 1px solid var(--primary-color-1);
 }
 
 .form-control:focus {
-    background-color: rgb(45, 52, 61);
+    background-color: var(--primary-color-1);
+    color: white;
+    outline: none;
+    box-shadow: none;
+    border: 1px solid var(--primary-color-3);
 }
 
 

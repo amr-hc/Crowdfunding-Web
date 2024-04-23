@@ -1,5 +1,8 @@
 <template>
-  <div class="container">
+  <div class="container mt-3">
+    <div class="text-center">
+      <h3 class="text-white">Reported Projects</h3>
+    </div>
     <table class="table table-dark table-striped mt-4">
       <thead>
         <tr>
@@ -10,7 +13,7 @@
           <th class="text-success">Actions</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody v-if="reports.length > 0">
         <tr v-for="report in reports" :key="report.id" class="">
           <td>{{ report.id }}</td>
           <td>{{ report.report }}</td>
@@ -18,28 +21,26 @@
           <td>{{ report.full_name }}</td>
 
           <td>
-            <button
-              class="btn btn-danger"
-              @click="deleteReport(report.id)"
-              style="margin-right: 10px"
-            >
+            <button class="btn btn-danger" @click="deleteReport(report.id)" style="margin-right: 10px">
               Delete report
             </button>
-            <button
-              class="btn btn-danger"
-              @click="deleteProject(report.project_id)"
-            >
+            <button class="btn btn-danger" @click="deleteProject(report.project_id)">
               Delete Project
             </button>
           </td>
         </tr>
       </tbody>
+      <tbody v-else>
+        <tr>
+          <td colspan="5" class="text-center">No reports found.</td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </template>
-  
-  <script>
-  import { datastore } from "@/stors/crowdfundingStore";
+
+<script>
+import { datastore } from "@/stors/crowdfundingStore";
 
 export default {
   data: () => ({
@@ -53,7 +54,7 @@ export default {
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",
-              Authorization : `token ${datastore().userInfo.token}`
+              Authorization: `token ${datastore().userInfo.token}`
             }
           });
           this.reports = this.reports.filter((rep) => rep.id !== id);
@@ -69,7 +70,7 @@ export default {
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",
-              Authorization : `token ${datastore().userInfo.token}`
+              Authorization: `token ${datastore().userInfo.token}`
             }
           });
           this.reports = this.reports.filter((rep) => rep.project_id !== id);
@@ -81,13 +82,13 @@ export default {
   },
 
   created() {
-    fetch("http://127.0.0.1:8000/report/projects/",{
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization : `token ${datastore().userInfo.token}`
-        }
-      })
+    fetch("http://127.0.0.1:8000/report/projects/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `token ${datastore().userInfo.token}`
+      }
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch reports");
@@ -103,9 +104,5 @@ export default {
   },
 };
 </script>
-  
-  <style >
-table {
-  background-color: #2e363d;
-}
-</style>
+
+<style></style>
