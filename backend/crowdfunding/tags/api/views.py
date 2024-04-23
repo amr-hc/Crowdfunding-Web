@@ -8,8 +8,7 @@ from rest_framework.permissions import (
     IsAuthenticatedOrReadOnly,
 )
 class TagAPIView(ModelViewSet):
-    # permission_classes = [IsAdminOrReadOnly]
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminOrReadOnly]
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
 
