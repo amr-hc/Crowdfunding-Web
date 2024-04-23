@@ -62,11 +62,11 @@ class UserSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
     def validate(self, data):
         if 'password' in data:
-            if not re.match(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$', data['password']):
+            if not re.match(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$', data['password']):
                 raise serializers.ValidationError(
                     "Password must be at least 8 characters long and contain at least 1 letter and 1 digit.")
             data['password'] = make_password(data['password'])
-        if data['birth_date'] >= date.today():
+        if 'birth_date' in data and data['birth_date'] >= date.today():
             raise serializers.ValidationError("You didn't born yet")
         return data
 

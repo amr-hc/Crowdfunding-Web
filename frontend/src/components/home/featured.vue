@@ -87,7 +87,9 @@ export default {
     if (this.featuredProject.length > 0) {
       this.isThereProjects = false;
     }
-    console.log(this.featuredProject.length);
+    this.featuredProject=this.featuredProject.filter((project)=>project.project.hidden===false);
+    console.log(this.featuredProject);
+
   },
   methods: {
     showSlider(direction) {
