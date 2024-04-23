@@ -111,7 +111,7 @@ class FunctionsClass {
 
   editProjectValidations(par) {
     const titlePattern = /^[a-zA-Z0-9\s]{1,50}$/;
-    const descriptionPattern = /^.{1,400}$/;
+    const descriptionPattern = /^.{1,250}$/;
     const category = /^[a-zA-Z0-9\s]{1,50}$/;
     const datePattern =
       /^([0-9]{4}[-/]?((0[13-9]|1[012])[-/]?(0[1-9]|[12][0-9]|30)|(0[13578]|1[02])[-/]?31|02[-/]?(0[1-9]|1[0-9]|2[0-8]))|([0-9]{2}(([2468][048]|[02468][48])|[13579][26])|([13579][26]|[02468][048]|0[0-9]|1[0-6])00)[-/]?02[-/]?29)$/;
@@ -123,7 +123,12 @@ class FunctionsClass {
     }
     if (!descriptionPattern.test(par.description)) {
       console.log("2");
-
+      const berthdateInput = document.getElementById("validationCustom04");
+      berthdateInput.setCustomValidity("Description must be less than 250chars");
+      setTimeout(() => {
+        berthdateInput.setCustomValidity("");
+      }, 2000);
+      
       return false;
     }
     if (!category.test(par.category)) {

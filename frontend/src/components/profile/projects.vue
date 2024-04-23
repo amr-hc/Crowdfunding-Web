@@ -77,18 +77,6 @@
               novalidate
             >
               <div class="col-md-6">
-                <label for="validationCustom01" class="form-label">id</label>
-                <input
-                  v-model="projectId"
-                  readonly
-                  type="text"
-                  class="form-control"
-                  id="validationCustom01"
-                  required
-                />
-               
-              </div>
-              <div class="col-md-6">
                 <label for="validationCustom02" class="form-label">
                   Title</label
                 >
@@ -96,10 +84,13 @@
                   v-model="title"
                   type="text"
                   class="form-control"
+                  pattern="^(?!^\d)[\w\s_]+$"
                   id="validationCustom02"
                   required
                 />
-               
+                <div class="invalid-feedback">
+                  Please provide a valid Title(It can't be only numbers or start with a number, and it contains no special characters except _ or space.).
+                </div>
               </div>
 
               <div class="col-md-6">
@@ -109,6 +100,7 @@
                 <input
                   v-model="targetMoney"
                   type="number"
+                  pattern="^[1-9]\d*$"
                   class="form-control"
                   id="validationCustom03"
                   required
@@ -154,7 +146,7 @@
                   required
                 ></textarea>
                 <div class="invalid-feedback">
-                  Please provide a valid Description.
+                  Please provide a valid Description(Description must be less than 250chars).
                 </div>
               </div>
 
@@ -165,6 +157,7 @@
                 <input
                   v-model="endDate"
                   type="DATE"
+                  pattern="^(((0[13-9]|1[012])[-/]?(0[1-9]|[12][0-9]|30)|(0[13578]|1[02])[-/]?31|02[-/]?(0[1-9]|1[0-9]|2[0-8]))[-/]?[0-9]{4}|02[-/]?29[-/]?([0-9]{2}(([2468][048]|[02468][48])|[13579][26])|([13579][26]|[02468][048]|0[0-9]|1[0-6])00))$"
                   class="form-control"
                   id="validationCustom06"
                   required
