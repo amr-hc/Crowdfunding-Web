@@ -53,18 +53,25 @@
           <div class="row g-0 gap-1 overflow-hidden">
             <div
               class="project-item"
-              v-for="(image, index) in limitedImages"
+              v-for="(project, index) in this.similarProject"
               :key="index"
             >
-              <img :src="image.url" :alt="image.title" />
-              <h6 class="text-light project-item-title">hamada</h6>
+            <img
+                :src="
+                  project.pics.length > 0
+                    ? project.pics[0]['image_path']
+                    : require('@/assets/images/No-Image-Placeholder.svg.png')
+                "
+                :alt="project.title"
+              />
+              <h6 class="text-light project-item-title">{{ project.title }}</h6>
               <div class="project-item-rating">
                 <i
                   v-for="n in 5"
                   :key="n"
                   :class="{
-                    'plus fa-solid fa-star': n <= rating,
-                    'minus fa-regular fa-star': n > rating,
+                    'plus fa-solid fa-star': n <= average_rate,
+                    'minus fa-regular fa-star': n > average_rate,
                   }"
                 ></i>
               </div>
@@ -312,22 +319,17 @@
                 </div>
               </div>
             </div>
-          </section>
-
-          <!-- Last five Donations -->
-          <hr class="my-5" />
-          <h5 class="text-white-50 my-4">Last 5 Donations</h5>
+          </section>   
+           
           <div class="text-end border-bottom border-dark my-2">
             <div class="d-flex justify-content-between align-items-baseline">
               <div class="d-flex align-items-center gap-2">
-                <div class="avatar">
-                  <img src="https://placehold.co/400" alt="Avatar" />
-                </div>
-                <div class="text-light">John Doe</div>
+                 
+                 
               </div>
-              <p class="text-white-50">3 days ago</p>
+            
             </div>
-            <p class="text-white-50 text-start">Donated $1000</p>
+             
           </div>
         </div>
       </div>
@@ -540,12 +542,20 @@ export default {
 
     //project donation permission
     this.donationPrevent();
-
-    // Fetch User Data From The Local Storage
-    // this.logedInUserData = localStorage.getItem('userInfo');
     setInterval(this.updateTimeDifference, 1000);
-    const data = await this.datastore.getAllProjects();
-    console.log("store", data);
+    let allTages = await this.datastore.getTags();
+    let tages = [];
+    allTages = allTages
+      .filter((tag) => this.allProjectData.tages.includes(tag.tagName))
+      .map((tag) => tages.push(tag.id))
+      .map((tag) => `tages=${tag}`)
+      .join("&");
+    console.log(`http://127.0.0.1:8000/api/projects/?&${allTages}`);
+    const res = await fetch(`http://127.0.0.1:8000/api/projects/?&${allTages}`);
+    const data = await res.json();
+    this.similarProject = data.results;
+    
+    this.similarProject=this.similarProject.filter((project)=>project.title != this.allProjectData.title)
   },
   methods: {
     async fetchUserData() {

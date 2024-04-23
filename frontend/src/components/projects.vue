@@ -7,116 +7,115 @@
       </div>
     </div>
     <section class="container">
-      <div class="row align-items-center">
-        <router-link class="buttonAdd col-2 ms-2" to="/add" v-show="showAddBtn"
+      <div class="d-flex flex-column flex-lg-row justify-content-evenly align-items-center gap-2 gap-lg-0">
+        <router-link class="btn btn-success" to="/add" v-show="showAddBtn"
           >Add Project</router-link
         >
+        <div class="row flex-lg-row flex-column  justify-content-end align-items-center gap-2 gap-lg-0">
 
-        <div class="dropdown col text-end">
-          <button
-            class="btn btn-light dropdown-toggle"
-            type="button"
-            data-bs-toggle="dropdown"
-            data-bs-auto-close="outside"
-          >
-            Select tags
-          </button>
-          <ul class="dropdown-menu text-center">
-            <li v-for="tag in this.tags" :key="tag.id">
-              <label class="dropdown-item" :for="tag.tagName + tag.id"
-                ><input
-                  type="checkbox"
-                  :id="tag.tagName + tag.id"
-                  :value="tag.id"
-                />
-                {{ tag.tagName }}</label
-              >
-            </li>
-          </ul>
-        </div>
-
-        <div class="col-3">
-          <select
-            class="form-select"
-            id="floatingSelect"
-            v-model="this.filteredCategory"
-          >
-            <option value="">select category</option>
-            <option
-              v-for="category in this.categories"
-              :key="category.id"
-              :value="category.id"
+          <div class="dropdown col-lg-2 col-5 d-flex justify-content-center ">
+            <button
+              class="btn btn-light dropdown-toggle btn-lg"
+              type="button"
+              data-bs-toggle="dropdown"
+              data-bs-auto-close="outside"
             >
-              {{ category.name }}
-            </option>
-          </select>
-        </div>
-        <div class="input-group col">
-          <input
-            id="searchBar"
-            class="form-control"
-            type="search"
-            placeholder="Search for Project"
-            v-model="this.searchValue"
-          />
+              Select tags
+            </button>
+            <ul class="dropdown-menu text-center">
+              <li v-for="tag in this.tags" :key="tag.id">
+                <label class="dropdown-item" :for="tag.tagName + tag.id"
+                  ><input
+                    type="checkbox"
+                    :id="tag.tagName + tag.id"
+                    :value="tag.id"
+                  />
+                  {{ tag.tagName }}</label
+                >
+              </li>
+            </ul>
+          </div>
 
-          <span
-            class="searchIcon input-group-text bg-dark text-light"
-            @click="filterProject"
-            ><i class="fa-solid fa-magnifying-glass"></i
-          ></span>
+          <div class="form-floating col-lg-3 col-10 accordion  ms-5">
+            <select
+              class="form-select"
+              id="floatingSelect"
+              v-model="this.filteredCategory"
+            >
+              <option value="">Show All</option>
+              <option
+                v-for="category in this.categories"
+                :key="category.id"
+                :value="category.id"
+              >
+                {{ category.name }}
+              </option>
+            </select>
+            <label for="floatingSelect" class="ms-2">Category</label>
+          </div>
+          <div class="d-flex input-group    searchBarInput">
+            <div class="form-floating">
+              <input
+                id="searchBar"
+                class="form-control"
+                type="search"
+                placeholder="Search"
+                v-model="this.searchValue"
+              />
+              <label for="searchBar" class="text-dark"
+                >Search for Project</label
+              >
+            </div>
+            <span
+              class="searchIcon input-group-text col-2 pe-auto bg-dark text-light"
+              @click="filterProject"
+              ><i class="fa-solid fa-magnifying-glass"></i
+            ></span>
+          </div>
         </div>
       </div>
-      <div class="row p-0 p-4">
-        <h4>All projects</h4>
-        <hr class="my-4" />
-        <!-- Loading Indicator -->
-        <div v-if="loading" class="alert alert-dark bg-dark border-0">
-          <p>Loading projects...</p>
-        </div>
-        <!-- Projects list -->
-        <div v-else-if="projectsData.length > 0" class="row p-0">
-          <router-link
-            class="project-card p-0"
-            v-for="(project, index) in projectsData"
-            :key="index"
-            :to="'projects/' + project.id"
-          >
-            <img
-              :src="
-                project.pics.length > 0
-                  ? project.pics[0]['image_path']
-                  : require('@/assets/images/No-Image-Placeholder.svg.png')
-              "
-              :alt="project.title"
-            />
-            <div class="p-3">
-              <h6 class="text-white-50 overflow overflow-hidden">
-                {{ project.title }}
-              </h6>
-              <p class="author badge bg-dark p-1">
-                {{ project.owner.first_name }} {{ project.owner.last_name }}
-              </p>
-              <div class="project-card-rating">
-                <i
-                  v-for="n in 5"
-                  :key="n"
-                  :class="{
-                    'plus fa-solid fa-star': n <= project.average_rate,
-                    'minus fa-regular fa-star': n > project.average_rate,
-                  }"
-                ></i>
+      <div
+        class="alert alert-danger text-center py-2 my-3"
+        v-if="isThereProjects"
+      >
+        <h1>There is no Projects to Show</h1>
+      </div>
+      <div class="text-center py-3" v-else>
+        <div class="container">
+          <div class="row wall row-gap-5">
+            <div
+              class="col-md-4 col-sm-6"
+              v-for="project in this.projectsData"
+              :key="project.id"
+            >
+              <div class="box">
+                <img
+                  :src="
+                    project.pics.length > 0
+                      ? project.pics[0]['image_path']
+                      : require('@/assets/images/No-Image-Placeholder.svg.png')
+                  "
+                  :alt="project.title"
+                />
+                <div class="box-overlay"></div>
+                <div class="box-content">
+                  <div class="inner-content">
+                    <h3 class="title">{{ project.title }}</h3>
+                    <span class="post">{{ project.category["name"] }}</span>
+                    <ul class="icon">
+                      <li>
+                        <router-link
+                          :to="'projects/' + project.id"
+                          title="project details"
+                          ><i class="fa-solid fa-diamond-turn-right"></i
+                        ></router-link>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
-              <p>Target: {{ currency_format(project.target_money) }}</p>
-              <p>
-                Current Donation: {{ currency_format(project.total_donations) }}
-              </p>
             </div>
-          </router-link>
-        </div>
-        <!-- No Projects Message -->
-        <div v-else class="alert alert-dark bg-dark border-0">
-          <p>There are no projects available at the moment.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -125,7 +124,6 @@
 
 <script>
 import { datastore } from "@/stors/crowdfundingStore";
-
 export default {
   data: () => ({
     datastore: datastore(),
@@ -136,7 +134,6 @@ export default {
     filteredCategory: "",
     searchValue: "",
     filteredTags: "",
-    loading: true,
   }),
   methods: {
     prepareTags() {
@@ -161,6 +158,7 @@ export default {
           return res.json();
         })
         .then((data) => {
+          console.log(data.results);
           this.projectsData = data.results;
           if (this.projectsData.count > 0) {
             this.isThereProjects = false;
@@ -170,23 +168,16 @@ export default {
           console.log(err);
         });
     },
-    currency_format(price) {
-      return new Intl.NumberFormat("us", {
-        style: "currency",
-        currency: "usd",
-        minimumFractionDigits: 0,
-      }).format(price);
-    },
   },
   async created() {
     this.projectsData = await this.datastore.getAllProjects();
     if (this.projectsData.count > 0) {
       this.isThereProjects = false;
     }
-    this.projectsData = this.projectsData.results;
+    this.projectsData.results = this.projectsData.results;
+    this.projectsData = this.projectsData.results.filter((project)=>project.hidden===false);
     this.categories = await this.datastore.getCategories();
     this.tags = await this.datastore.getTags();
-    this.loading = false;
   },
   computed: {
     showAddBtn() {
@@ -199,6 +190,127 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.wall {
+  background-color: rgb(65 65 65 / 38%);
+}
+.box {
+  overflow: hidden;
+  position: relative;
+}
+.box img {
+  width: 100%;
+  height: 200px;
+  /* height: auto; */
+}
+.box .box-content {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: all 0.3s ease 0.5s;
+}
+.box:before,
+.box:after,
+.box .box-content:before,
+.box .box-content:after,
+.box .box-overlay {
+  content: "";
+  width: 20%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transform: scale(1.2);
+  transition: all 0.3s ease 0.1s;
+}
+.box:after {
+  left: 20%;
+  transition-delay: 0.2s;
+}
+.box .box-content:before {
+  left: 40%;
+  transition-delay: 0.3s;
+}
+.box .box-content:after {
+  left: 60%;
+  transition-delay: 0.4s;
+}
+.box .box-overlay {
+  left: 80%;
+  transition-delay: 0.5s;
+}
+.box:hover:before,
+.box:hover:after,
+.box:hover .box-content:before,
+.box:hover .box-content:after,
+.box:hover .box-overlay {
+  opacity: 1;
+  transform: scale(1);
+}
+.box .inner-content {
+  width: 100%;
+  color: #fff;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  opacity: 0;
+  z-index: 1;
+  transform: translate(-50%, -50%) scale(1.5);
+  transition: all 0.3s ease 0.5s;
+}
+.box:hover .inner-content {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+.box .title {
+  font-size: 25px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin: 0;
+}
+.box .post {
+  display: inline-block;
+  font-size: 16px;
+  font-style: italic;
+  letter-spacing: 1px;
+  text-transform: capitalize;
+  margin: 5px 0 20px 0;
+}
+.box .icon {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.box .icon li {
+  display: inline-block;
+  margin: 0 5px;
+}
+.box .icon li a {
+  display: block;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 50% 0;
+  background: #8421ef;
+  font-size: 18px;
+  color: #fff;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.5), 0 0 0 4px rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease 0s;
+}
+.box .icon li a:hover {
+  background: #fff;
+  color: #8421ef;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5) inset, 0 0 10px #fff;
+}
+@media only screen and (max-width: 990px) {
+  .box {
+    margin-bottom: 30px;
+  }
+}
 .jumbotron {
   background-image: url("@/assets/images/wallpaperflare.com_wallpaper.jpg");
   background-position: center;
@@ -208,103 +320,29 @@ export default {
   height: 15rem;
 }
 .jumbotron * {
-  color: #48d1d1c2 !important;
+  color: #442b10 !important;
   font-weight: 600 !important;
 }
 .searchIcon {
   cursor: pointer;
 }
-
-.project-card {
-  position: relative;
-  width: 250px;
-  height: 400px;
-  border: 1px solid var(--primary-color-3);
-  border-radius: 20px;
-  box-shadow: 0px 0 31px 0px rgb(0 0 0 / 10%);
-  backdrop-filter: blur(15px);
-  margin: 10px;
-  overflow: hidden;
+.searchBarInput{
+  width: 50%;
+}
+@media (orientation: portrait) {
+  .searchBarInput {
+    width: 100%;
+  }
+}
+@media (max-width: 768px) {
+  .searchBarInput {
+    width: 100%;
+  }
 }
 
-.project-card .author {
-  position: absolute;
-  top: 225px;
-  right: 10px;
-}
-
-.project-card img {
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
-}
-
-.project-card .text-white-50,
-.project-card p {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.project-card:hover {
-  cursor: pointer;
-  outline: 2px solid var(--secondary-color-2);
-  transition: all 0.05s ease-in-out;
-  background-color: var(--primary-color-1);
-  color: white;
-}
-
-.project-card-rating i {
-  color: yellow;
-  font-size: 12px;
-}
-
-.buttonAdd {
-  --color: #0b7aad;
-  font-family: inherit;
-  display: inline-block;
-  width: 8em;
-  height: 2.6em;
-  line-height: 2.5em;
-  margin: 20px;
-  position: relative;
-  overflow: hidden;
-  border: 2px solid var(--color);
-  transition: color 0.5s;
-  z-index: 1;
-  font-size: 17px;
-  border-radius: 6px;
-  font-weight: 500;
-  color: var(--color);
-}
-
-.buttonAdd:before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  background: var(--color);
-  height: 150px;
-  width: 200px;
-  border-radius: 50%;
-}
-
-.buttonAdd:hover {
-  color: #fff;
-}
-
-.buttonAdd:before {
-  top: 100%;
-  left: 100%;
-  transition: all 0.7s;
-}
-
-.buttonAdd:hover:before {
-  top: -30px;
-  left: -30px;
-}
-
-.buttonAdd:active:before {
-  background: #0b7aad;
-  transition: background 0s;
+@media (min-width: 769px) and (max-width: 1024px) {
+  .searchBarInput {
+    width: 100%;
+  }
 }
 </style>
