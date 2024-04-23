@@ -52,7 +52,6 @@
                 <div class="text-white-50">
                     {{ project.description }}
                 </div>
-
                 <hr>
                 <div class="reviews">
                     <h5 class="text-white my-3">Reviews</h5>
@@ -69,7 +68,7 @@
                                 </div>
                                 <div class="rating">
                                     <i v-for="n in 5" :key="n"
-                                        :class="{ 'plus fa-solid fa-star': n <= 5, 'minus fa-regular fa-star': n > 5 }"></i>
+                                        :class="{ 'plus fa-solid fa-star': n <= project.allrate[0].rate, 'minus fa-regular fa-star': n > project.allrate[0].rate }"></i>
                                 </div>
                             </div>
                             <p class="text-white-50 text-start my-2">{{ comment.comment }}</p>
