@@ -1,5 +1,5 @@
 <template>
-    <div v-if="project" class="project-wrapper h-100 mb-5 pb-5 container pt-4">
+    <div v-if="project" class="project-wrapper h-100 mb-5 pb-5 container  container-lg pt-4">
         <div class="row gap-5 g-0 justify-content-center">
             <div class="col-12 col-md py-3 rounded-4 text-light">
                 <h4> {{ project.owner.first_name }} {{ project.owner.last_name }}</h4>
@@ -52,7 +52,6 @@
                 <div class="text-white-50">
                     {{ project.description }}
                 </div>
-
                 <hr>
                 <div class="reviews">
                     <h5 class="text-white my-3">Reviews</h5>
@@ -69,7 +68,7 @@
                                 </div>
                                 <div class="rating">
                                     <i v-for="n in 5" :key="n"
-                                        :class="{ 'plus fa-solid fa-star': n <= 5, 'minus fa-regular fa-star': n > 5 }"></i>
+                                        :class="{ 'plus fa-solid fa-star': n <= project.allrate[0].rate, 'minus fa-regular fa-star': n > project.allrate[0].rate }"></i>
                                 </div>
                             </div>
                             <p class="text-white-50 text-start my-2">{{ comment.comment }}</p>

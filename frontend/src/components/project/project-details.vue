@@ -53,31 +53,23 @@
           <div class="row g-0 gap-1 overflow-hidden">
             <div
               class="project-item"
-              v-for="(project, index) in this.similarProject"
+              v-for="(image, index) in limitedImages"
               :key="index"
             >
-              <img
-                :src="
-                  project.pics.length > 0
-                    ? project.pics[0]['image_path']
-                    : require('@/assets/images/No-Image-Placeholder.svg.png')
-                "
-                :alt="project.title"
-              />
-              <h6 class="text-light project-item-title">{{ project.title }}</h6>
+              <img :src="image.url" :alt="image.title" />
+              <h6 class="text-light project-item-title">hamada</h6>
               <div class="project-item-rating">
                 <i
                   v-for="n in 5"
                   :key="n"
                   :class="{
-                    'plus fa-solid fa-star': n <= average_rate,
-                    'minus fa-regular fa-star': n > average_rate,
+                    'plus fa-solid fa-star': n <= rating,
+                    'minus fa-regular fa-star': n > rating,
                   }"
                 ></i>
               </div>
             </div>
           </div>
-
           <!-- See More Button -->
           <router-link
             v-if="images.length > 3"
@@ -294,6 +286,8 @@
                 Cancel
               </button>
             </div>
+
+            <!-- <button class="btn btn-warning">Edit</button> -->
           </div>
           <!-- Logger-section -->
           <section class="logger-section">
@@ -318,22 +312,17 @@
                 </div>
               </div>
             </div>
-          </section>
-
-          <!-- Last five Donations -->
-          <hr class="my-5" />
-          <h5 class="text-white-50 my-4">Last 5 Donations</h5>
+          </section>   
+           
           <div class="text-end border-bottom border-dark my-2">
             <div class="d-flex justify-content-between align-items-baseline">
               <div class="d-flex align-items-center gap-2">
-                <div class="avatar">
-                  <img src="https://placehold.co/400" alt="Avatar" />
-                </div>
-                <div class="text-light">John Doe</div>
+                 
+                 
               </div>
-              <p class="text-white-50">3 days ago</p>
+            
             </div>
-            <p class="text-white-50 text-start">Donated $1000</p>
+             
           </div>
         </div>
       </div>
@@ -475,7 +464,6 @@ export default {
   data() {
     return {
       datastore: datastore(),
-      similarProject: [],
       projectData: {}, // Object to hold project data
       images: [],
       activeImg: "",
@@ -576,12 +564,12 @@ export default {
           this.userData = localStorageData
             ? JSON.parse(localStorageData)
             : JSON.parse(sessionStorageData);
-          
+          console.log(this.userData["user_id"]);
           const response = await fetch(
             `http://localhost:8000/api/users/${this.userData["user_id"]}`
           );
           this.allUserData = await response.json();
-          
+          console.log(this.allUserData);
         } catch (error) {
           throw new Error(error);
 
@@ -639,7 +627,7 @@ export default {
           this.newRate = this.userRate.rate;
         }
         ///Fetching Comment Data
-        
+        console.log("comments section");
 
         this.projectData.comments = this.projectData.comments.map((comment) => {
           return {
@@ -659,7 +647,8 @@ export default {
             },
           };
         });
-        
+        console.log("Comments fulll Data");
+        this.projectData.comments.forEach((comment) => console.log(comment));
 
         if (this.projectData.comments.length > 0) this.haveComments = true;
 
@@ -675,10 +664,12 @@ export default {
         //rating
         this.rating = data["average_rate"];
         // images
+        console.log(data["pics"]);
         this.images = data["pics"].map((image) => ({
-          url: image.image_path,
+          url:image.image_path,
           active: false,
         }));
+        console.log(this.images);
         // select the active image
         if (this.images.length > 0) {
           this.activeImg = this.images[0].url;
@@ -707,11 +698,8 @@ export default {
       // this.projectDuration=0
 
       // Handle case when project duration ends
-      if (this.projectDuration <= 0 || this.stopProjectTime) {
+      if (this.projectDuration <= 0) {
         this.projectDuration = 0;
-        this.days = 0;
-        this.hours = 0;
-        this.minutes = 0;
         clearInterval(this.updateTimeDifference); // Stop updating
       }
       this.days = Math.floor(this.projectDuration / (1000 * 60 * 60 * 24));
@@ -759,6 +747,7 @@ export default {
           project: this.projectData["id"],
           donation_amount: this.donationAmount,
         };
+        console.log(donationData);
         try {
           const response = await fetch("http://localhost:8000/donation/", {
             method: "POST",
@@ -769,6 +758,7 @@ export default {
             body: JSON.stringify(donationData),
           });
           if (!response.ok) {
+            console.log(response);
             this.logger.hasError = true;
             this.logger.errorLogger =
               "Fail To Donate Due To Techincal ,Network Issue";
@@ -792,17 +782,21 @@ export default {
       const cancelingData = {
         hidden: true,
       };
+      console.log(JSON.stringify(cancelingData));
       const response = await fetch(
         `http://localhost:8000/api/projects/${this.projectData["id"]}/`,
         {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `token ${this.userData["token"]}`
           },
           body: JSON.stringify(cancelingData),
         }
       );
+      console.log(response);
       if (!response.ok) {
+        console.log(response);
         this.logger.hasError = true;
         this.logger.errorLogger = "Error While canceling The Project";
       }
@@ -813,18 +807,16 @@ export default {
       this.projectData.isCanceled = true;
     },
     donationPrevent() {
+      console.log(this.totalAmount == this.currentDonation);
       if (this.projectDuration <= 0) {
         this.canDonate = false;
         this.donationPreventionLogger = "Project Duration Has Been Ended.";
-      } else if (this.totalAmount == this.currentDonation) {
+      } else if (this.totalAmount == this.currentDonation &&this.totalAmount >0) {
         this.canDonate = false;
         this.donationPreventionLogger = "Project was completed Successfully";
-        this.stopProjectTime = true;
-        this.CancelProject();
       } else if (this.projectData.isCanceled == true) {
         this.canDonate = false;
         this.donationPreventionLogger = "Project was canceled";
-        this.stopProjectTime = true;
       }
     },
     async submitComment(rating, comment) {
@@ -835,11 +827,12 @@ export default {
           // throw error till now
           throw new Error("please retry to enter the rate");
         }
+        console.log(this.userRate.rate);
         if (this.userRate.rate != null) {
           //update rate
           const updatedRate = { rate: this.newRate };
           const rateResponse = await fetch(
-            `http://localhost:8000/rating/${this.userRate.id}/`,
+            `http://localhost:8000/api/rate/${this.userRate.id}/`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -850,6 +843,7 @@ export default {
             }
           );
           if (!rateResponse.ok) {
+            console.log("Error While Update Rate");
           }
         } else {
           //new rate
@@ -858,7 +852,9 @@ export default {
             user: this.userData["user_id"],
             rate: parseInt(rating),
           };
-          const rateResponse = await fetch("http://localhost:8000/rating/", {
+          console.log("rate Data");
+          console.log(JSON.stringify(rateData));
+          const rateResponse = await fetch("http://localhost:8000/api/rate/", {
             method: "POST",
             headers: {
               Authorization: `token ${this.userData["token"]}`,
@@ -878,6 +874,7 @@ export default {
           user_id: this.userData["user_id"],
           project_id: this.projectData["id"],
         };
+        console.log(JSON.stringify(commentData));
         const commentResponse = await fetch(
           "http://localhost:8000/api/comment/",
           {
@@ -924,12 +921,14 @@ export default {
         comment_id: this.selectedComment.id,
         report: this.commentReportBody,
       };
+      console.log(JSON.stringify(commentReportBody));
 
       // Submit The Report If Success
       await fetch("http://localhost:8000/report/comment/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization : `token ${this.userData["token"]}`
         },
         body: JSON.stringify(commentReportBody),
       })
@@ -959,6 +958,7 @@ export default {
         project_id: this.projectData.id,
         report: this.projectReportBody,
       };
+      console.log(JSON.stringify(projectReportBody));
 
       // Submit The Report If Success
       await fetch("http://localhost:8000/report/projects/", {

@@ -186,7 +186,8 @@ export default {
             this.showSuccess = true;
             this.message="Password change successfuly"
             setTimeout(() => {
-              this.showMessage = false;
+              this.$router.push('/');
+              
             }, 2000);
             console.log("Password change successfuly");
           }
