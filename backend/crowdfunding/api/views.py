@@ -1,7 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from api.Filter import ProjectModelFilter
 from api.models import Category, Project, Rate, User, ImportantProject
-from api.modelserializers import (
+from api.serializers import (
     CategorySerializer,
     ProjectSerializer,
     RateSerializer,
@@ -38,8 +38,6 @@ class login(ObtainAuthToken):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"]
-        filtered_user_by_email = User.objects.filter(email=user.email)
-        print(type(filtered_user_by_email[0]))
         token, created = Token.objects.get_or_create(user=user)
         return Response(
             {
@@ -57,7 +55,6 @@ class login(ObtainAuthToken):
 
 class UserModelViewSet(ModelViewSet):
     permission_classes = [IsSameUserOrReadOnly]
-    # permission_classes = [AllowAny]
     queryset = User.objects.all()
     serializer_class = UserSerializer
     filter_backends = [DjangoFilterBackend]
@@ -176,3 +173,4 @@ class confirmActivate(APIView):
                 )
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+

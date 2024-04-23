@@ -110,9 +110,9 @@ class ProjectSerializer(serializers.ModelSerializer):
         request=self.context.get('request')
         if not request.method == "POST":
             total_donations = sum(self.instance.donations.values_list('donation_amount', flat=True))
-            if "hidden" in data and (total_donations/data.get('target_money')) > 0.25 and not request.user.is_superuser:
+            if "hidden" in data and (total_donations/self.instance.target_money) > 0.25 and not request.user.is_superuser:
                     raise serializers.ValidationError("Cant Cancel this Project")
-            if "target_money" in data and total_donations > data.get('target_money'):
+            if "target_money" in data and total_donations > self.instance.target_money:
                     raise serializers.ValidationError("target_money is less than total donations")
         return data
 

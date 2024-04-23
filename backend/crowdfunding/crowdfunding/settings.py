@@ -27,15 +27,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-&^7f@18=mqn*3bkh04118n$tp*x$th7b%qslgng8bewaq_)_k6"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    "sslserver",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -51,15 +50,11 @@ INSTALLED_APPS = [
     "comment.apps.CommentConfig",
     "comment_report.apps.CommentReportConfig",
     "replay.apps.ReplayConfig",
-    # Donation App
     "Donation.apps.DonationConfig",
-    # Project Pics App
     "Project_Pics.apps.ProjectPicsConfig",
-    # Reset Password
     "Reset_Password.apps.ResetPasswordConfig",
     "corsheaders",
     "rest_framework.authtoken",
-    "djoser",
     "django_filters",
 ]
 
@@ -95,7 +90,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "crowdfunding.wsgi.application"
 
-
+handler404 = 'api.views.page_not_found'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -185,20 +180,6 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 
-DJOSER = {
-    "USER_MODEL": "users.Users",
-    "LOGIN_FIELD": "email",
-    "ACTIVATION_URL": "auth/users/activation/{uid}/{token}",
-    "SEND_ACTIVATION_EMAIL": True,
-    "SEND_CONFIRM_EMAIL": False,
-    "PASSWORD_RESET_CONFIRM_URL": "reset-password-confirm/{uid}/{token}/",
-    "LOGIN_REDIRECT_URL": "/",
-    "LOGOUT_REDIRECT_URL": "/",
-    "SERIALIZERS": {
-        "user": "api.modelserializers.UserSerializer",
-    },
-}
-
 # Authentication settings
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
@@ -207,6 +188,10 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.AllowAny",
     ],
+    "DEFAULT_RENDERER_CLASSES": [
+        'rest_framework.renderers.JSONRenderer',
+    ]
+
 }
 
 
@@ -226,3 +211,6 @@ SWAGGER_SETTINGS = {
 }
 
 PASSWORD_RESET_TIMEOUT = 60 * 60 * 24
+
+
+

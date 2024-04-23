@@ -12,31 +12,26 @@ from tags.models import Tag
 
 
 class CustomUserManager(BaseUserManager):
-    def _create_user(self, email, password, first_name, last_name, phone, birth_date, **extra_fields):
+    def _create_user(self, email, password, **extra_fields):
         if not email:
             raise ValueError("Email must be provided")
         if not password:
             raise ValueError('Password is not provided')
         user = self.model(
             email = self.normalize_email(email),
-            first_name = first_name,
-            last_name = last_name,
-            phone = phone,
-            birth_date = birth_date,
-            # photo = photo
             **extra_fields
         )
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_user(self, email, password, first_name, last_name, phone, birth_date, **extra_fields):
+    def create_user(self, email, password, **extra_fields):
         extra_fields.setdefault('is_superuser',False)
-        return self._create_user(email, password, first_name, last_name, phone, birth_date, **extra_fields)
+        return self._create_user(email, password, **extra_fields)
 
-    def create_superuser(self, email, password, first_name, last_name, phone ,birth_date, **extra_fields):
+    def create_superuser(self, email, password, **extra_fields):
         extra_fields.setdefault('is_superuser',True)
-        return self._create_user(email, password, first_name, last_name, phone, birth_date, **extra_fields)
+        return self._create_user(email, password, **extra_fields)
 
 AUTH_PROVIDERS = {'facebook': 'facebook', 'email': 'email'}
  
@@ -50,21 +45,16 @@ class User(AbstractBaseUser):
     birth_date = models.DateField(null=True, blank=True)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
-    country = models.CharField(max_length=225)
+    country = models.CharField(max_length=225, blank=True, null=True)
     facebook = models.URLField(null=True, blank=True)
     auth_provider = models.CharField(
         max_length=255, blank=False,
         null=False, default=AUTH_PROVIDERS.get('email'))
 
-
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ["first_name", "last_name", "phone","birth_date","photo"]
 
-    class Meta:
-        verbose_name = 'User'
-        verbose_name_plural = 'Users'
 
 
 class Category(models.Model):
@@ -97,9 +87,6 @@ class Rate(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE,related_name="allrate")
 
 
-
-    def __str__(self):
-        return f'{self.tag} - {self.project}'
 
 
 def tokens(self):
