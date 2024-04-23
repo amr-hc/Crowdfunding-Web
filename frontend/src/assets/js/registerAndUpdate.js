@@ -213,9 +213,9 @@ class FunctionsClass {
         method: "POST",
         body: formData,
       });
-      if (!response.ok) {
-        throw new Error("can't insert data to server");
-      }
+      // if (!response.ok) {
+      //   throw new Error("can't insert data to server");
+      // }
       const data = await response.json();
       localStorage.setItem("needactivation", "true");
       par.$router.push("/befroreactivation");
