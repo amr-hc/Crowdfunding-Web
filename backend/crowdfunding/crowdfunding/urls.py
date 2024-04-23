@@ -27,8 +27,6 @@ urlpatterns = [
     path("rating/", include("rating.api.urls")),
     path("report/projects/", include("project_report.api.urls")),
     path("report/comment/", include("comment_report.urls")),
-    path("auth/", include("djoser.urls")),
-    path("auth/", include("djoser.urls.authtoken")),
     path(
         "social_auth/",
         include(("social_auth.urls", "social_auth"), namespace="social_auth"),
