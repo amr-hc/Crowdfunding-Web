@@ -1,7 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from api.Filter import ProjectModelFilter
 from api.models import Category, Project, Rate, User, ImportantProject
-from api.modelserializers import (
+from api.serializers import (
     CategorySerializer,
     ProjectSerializer,
     RateSerializer,
@@ -57,7 +57,6 @@ class login(ObtainAuthToken):
 
 class UserModelViewSet(ModelViewSet):
     permission_classes = [IsSameUserOrReadOnly]
-    # permission_classes = [AllowAny]
     queryset = User.objects.all()
     serializer_class = UserSerializer
     filter_backends = [DjangoFilterBackend]
