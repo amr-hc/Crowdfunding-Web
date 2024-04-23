@@ -1,14 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, AbstractBaseUser, BaseUserManager, PermissionsMixin
-from django.forms import TimeField
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.core.exceptions import ValidationError
-from datetime import date
 from tags.models import Tag
-# from project_tag.models import ProjectTag
 
-# Create your models here.
 
 
 class CustomUserManager(BaseUserManager):
@@ -79,7 +74,7 @@ class Project(models.Model):
 
 
 class ImportantProject(models.Model):
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE,unique=True)
 
 class Rate(models.Model):
     rate = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
