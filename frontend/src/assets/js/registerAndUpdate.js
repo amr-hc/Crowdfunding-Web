@@ -212,7 +212,7 @@ class FunctionsClass {
       //   throw new Error("can't insert data to server");
       // }
       const data = await response.json();
-      sessionStorage.setItem("needactivation", "true");
+      localStorage.setItem("needactivation", "true");
       par.$router.push("/befroreactivation");
 
       console.log(data);

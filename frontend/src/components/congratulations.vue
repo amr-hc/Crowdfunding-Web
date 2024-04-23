@@ -31,13 +31,13 @@
 
     }),
      async created(){
-      
-      try{
-    const urlParams = new URLSearchParams(window.location.search);
+        const urlParams = new URLSearchParams(window.location.search);
     const reqestData={
         uid:urlParams.get("uid"),
         token:urlParams.get("token")
       }
+     
+      try{
       const response= await fetch
             ('http://localhost:8000/api/activate/',
             {
@@ -48,7 +48,11 @@
                 body: JSON.stringify(reqestData)
             }
             );
+            if(!response.ok){
+                this.$router.push('/login');
+            }
             const data = await response.json(); 
+            localStorage.removeItem("needactivation")
             
       }
       catch(err){
