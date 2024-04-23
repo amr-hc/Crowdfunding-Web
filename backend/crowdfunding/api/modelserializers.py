@@ -1,16 +1,12 @@
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
-
 from api.models import User, Category, Project, Rate, ImportantProject
-from comment.models import Comment
 from comment.serializer import CommentSerializer
 from replay.models import Replay
 from comment_report.models import Report_comment
 from Project_Pics.api.serializer import ProjectPicsSerializer
 from datetime import date
-
 from Donation.api.serializer import DonationSerializer
-from tags.api.serializers import TagSerializer
 from tags.models import Tag
 
 
@@ -61,8 +57,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        # fields = "__all__"
-        fields = ["id", "email", "password", "first_name", "last_name", "is_superuser", "is_active", "birth_date", "photo","country","facebook","phone","owner_projects","donations"]
+        fields = "__all__"
         extra_kwargs = {'password': {'write_only': True}}
     def validate(self, data):
         if 'password' in data:
@@ -85,7 +80,7 @@ class confirmActivation(serializers.Serializer):
 class userImportantData(UserSerializer):
     class Meta:
         model = User
-        fields = ["id", "email", "password", "first_name", "last_name", "is_superuser", "is_active", "birth_date", "photo","country","facebook","phone"]
+        fields = ["id", "email", "first_name", "last_name", "is_superuser", "is_active", "birth_date", "photo","country","facebook","phone"]
 
 class ProjectSerializer(serializers.ModelSerializer):
     owner = userImportantData(read_only=True)
@@ -115,29 +110,6 @@ class ProjectSerializer(serializers.ModelSerializer):
         return sum(obj.donations.values_list('donation_amount', flat=True))
 
 
-#
-# class CommentSerializer(serializers.ModelSerializer):
-#     user_data = serializers.SerializerMethodField(read_only=True)
-#
-#     class Meta:
-#         model = Comment
-#         fields = "__all__"
-#
-#     def validate(self, data):
-#         data['user_id'] = self.context['request'].user
-#         return data
-#
-#     def get_user_data(self, obj):
-#         user = obj.user_id
-#         return {
-#             'id': user.id,
-#             'first_name': user.first_name,
-#             'last_name': user.last_name,
-#             'image': user.photo.url if user.photo else None,  # Assuming photo is a FileField or ImageField
-#             'country': user.country,
-#             'is_active': user.is_active,
-#             'is_superuser': user.is_superuser,
-#         }
 
 class ReplaySerializer(serializers.ModelSerializer):
     class Meta:
