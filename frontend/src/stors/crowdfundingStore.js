@@ -16,7 +16,7 @@ export const datastore = defineStore("crowdfunding", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token} `,
+            Authorization: `Token ${token} `,
           },
         });
         if (!response.ok) {
@@ -54,7 +54,7 @@ export const datastore = defineStore("crowdfunding", {
     async getAllProjects() {
       let autherization = "";
       if (this.userInfo != null)
-        autherization = `Bearer ${this.userInfo.token}`;
+        autherization = `Token ${this.userInfo.token}`;
       try {
         const res = await fetch("http://127.0.0.1:8000/api/projects/", {
           method: "GET",

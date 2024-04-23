@@ -242,7 +242,7 @@ class FunctionsClass {
         {
           method: "PATCH",
           headers: {
-            Authorization: `token ${token} `,
+            Authorization: `Token ${token} `,
           },
           body: formData,
         }
@@ -251,8 +251,13 @@ class FunctionsClass {
         throw new Error("can't update data ");
       }
       const data = await response.json();
+      this.showOprationsResalt("Update",'success')
+      setTimeout(()=>{
+        par.$router.push("/profile");
+      },3000)
       console.log(data);
     } catch (error) {
+      this.showOprationsResalt("Update",'faild')
       console.error("Error fetching api:", error);
     }
   }
@@ -277,37 +282,50 @@ class FunctionsClass {
         throw new Error("can't update data ");
       }
       const data = await response.json();
-      let SModal = bootstrap.Modal.getOrCreateInstance(
-        document.getElementById(`update`)
-      );
-      SModal.hide();
+      this.modelDismiss('update');
+      this.showOprationsResalt("Update",'success')
+      setTimeout(()=>{
+        par.$router.push(`/projects/${par.projectId}`);
+      },3000)
+     
       console.log(data);
     } catch (error) {
+      this.modelDismiss('update');
+      this.showOprationsResalt("Update",'faild')
       console.error("Error fetching api:", error);
     }
   }
 
   async deleteUser(par) {
     const storgData = par.storgData;
+ 
     try {
       const response = await fetch(
         `http://127.0.0.1:8000/api/users/${storgData.user_id}`,
         {
           method: "DELETE",
           headers: {
-            Authorization: `Bearer ${storgData.token} `,
+            'Content-Type': 'application/json',
+            Authorization: `Token ${storgData.token} `,
           },
-        }
-      );
+          body: JSON.stringify({
+            password:par.password
+        })
+      });
       if (!response.ok) {
         throw new Error("can't delete data ");
       }
-      const data = await response.json();
-
-      par.$router.push("/login");
-      console.log(data);
+      this.modelDismiss('deleteModal');
+      this.showOprationsResalt("Delete",'success')
+      setTimeout(()=>{
+        par.$router.push("/login");
+      },3000)
+     
+      
     } catch (error) {
-      console.error("Error fetching api:", error);
+      this.modelDismiss('deleteModal');
+      this.showOprationsResalt("Delete",'faild')
+       console.error("Error fetching api:", error);
     }
   }
 
@@ -319,16 +337,22 @@ class FunctionsClass {
         {
           method: "DELETE",
           headers: {
-            Authorization: `Bearer ${storgData.token} `,
+            Authorization: `Token ${storgData.token} `,
           },
         }
       );
       if (!response.ok) {
         throw new Error("can't delete data ");
       }
-      par.$router.go(par.$router.currentRoute);
-      console.log(response);
+      
+      this.modelDismiss('deleteModal');
+      this.showOprationsResalt("Delete",'success')
+      setTimeout(()=>{
+        par.$router.go();
+      },3000)
     } catch (error) {
+      this.modelDismiss('deleteModal');
+      this.showOprationsResalt("Delete",'faild')
       console.error("Error fetching api:", error);
     }
   }
@@ -352,12 +376,30 @@ class FunctionsClass {
       }
     }
   }
+  
   handleProjectFormSubmission(e, par) {
     if (this.HTMLValidations(e) && this.editProjectValidations(par)) {
       this.updateProjectRequest(par);
     }
   }
-
+  showOprationsResalt(opration,state){
+    if(state=='faild')
+    {
+    const resaltElement=document.getElementById("faild")
+    resaltElement.innerText=`Faild To ${opration} Data`
+    resaltElement.style.display="block"
+  }
+  else{
+    const resaltElement=document.getElementById("success")
+    resaltElement.innerText=`Data ${opration}ed successfully`
+    resaltElement.style.display="block"
+  }
+  }
+  modelDismiss(par){
+		let SModal = bootstrap.Modal.getOrCreateInstance(
+    document.getElementById(par) ); 
+		SModal.hide();
+		}
   getStorgData() {
     const localStorageData = JSON.parse(localStorage.getItem("userInfo"));
     const sessionStorageData = JSON.parse(sessionStorage.getItem("userInfo"));

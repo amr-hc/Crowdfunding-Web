@@ -1,4 +1,6 @@
 <template>
+   <div class="bg-danger p-3 text-center m-0 oprationsResote" id="faild"></div>
+	 <div class="bg-success p-3 text-center m-0 oprationsResote" id="success"></div>
     <div class="container">
     <div class="main-body">
           <div class="row gutters-sm">

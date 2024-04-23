@@ -80,6 +80,7 @@ class login(ObtainAuthToken):
 
 class UserModelViewSet(ModelViewSet):
     permission_classes = [IsSameUserOrReadOnly]
+    # permission_classes = [AllowAny]
     queryset = User.objects.all()
     serializer_class = UserSerializer
     filter_backends = [DjangoFilterBackend]
