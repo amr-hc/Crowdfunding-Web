@@ -107,9 +107,10 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 
     def validate(self, data):
-        if not self.context.get('request').method == "POST":
+        request=self.context.get('request')
+        if not request.method == "POST":
             total_donations = sum(self.instance.donations.values_list('donation_amount', flat=True))
-            if "hidden" in data and (total_donations/data.get('target_money')) > 0.25:
+            if "hidden" in data and (total_donations/data.get('target_money')) > 0.25 and not request.user.is_superuser:
                     raise serializers.ValidationError("Cant Cancel this Project")
             if "target_money" in data and total_donations > data.get('target_money'):
                     raise serializers.ValidationError("target_money is less than total donations")
@@ -124,25 +125,17 @@ class ReplaySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class ReportCommentSerializer(serializers.ModelSerializer):
-    full_name=serializers.SerializerMethodField()
-    comment=serializers.SerializerMethodField()
-    project_id=serializers.SerializerMethodField()
-    project_title=serializers.SerializerMethodField()
+    full_name = serializers.SerializerMethodField(read_only=True)
+    comment = serializers.CharField(source="comment_id.comment", read_only=True)
+    project_id = serializers.PrimaryKeyRelatedField(source="comment_id.project_id", read_only=True)
+    project_title = serializers.CharField(source="comment_id.project_id.title", read_only=True)
+
     class Meta:
         model = Report_comment
         fields = "__all__"
 
-    def get_full_name(self,obj):
-        return obj.user_id.first_name + " " +obj.user_id.last_name
-
-    def get_comment(self,obj):
-        return obj.comment_id.comment
-
-    def get_project_id(self,obj):
-        return obj.comment_id.project_id.id
-
-    def get_project_title(self,obj):
-        return obj.comment_id.project_id.title
+    def get_full_name(self, obj):
+        return obj.user_id.first_name + " " + obj.user_id.last_name
 
 
 class ImportantProjectSerializer(serializers.ModelSerializer):
