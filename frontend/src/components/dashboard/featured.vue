@@ -52,7 +52,10 @@
                     <select v-if="filteredProjects.length > 0" class="selectpicker w-100"
                         aria-label="Default select example" data-live-search="true" v-model="selectedProject">
                         <option v-for="project in filteredProjects" :key="project.id" :value="project.id">{{
-                            project.title }}</option>
+                            project.title }} | rate :
+                            {{ project.average_rate }}
+                            of 5
+                        </option>
 
                     </select>
                     <p class="text-danger" v-else>No projects found</p>

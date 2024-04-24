@@ -68,7 +68,7 @@
                                 </div>
                                 <div class="rating">
                                     <i v-for="n in 5" :key="n"
-                                        :class="{ 'plus fa-solid fa-star': n <= project.allrate[0].rate, 'minus fa-regular fa-star': n > project.allrate[0].rate }"></i>
+                                        :class="{ 'plus fa-solid fa-star': n <= project.allrate[index].rate, 'minus fa-regular fa-star': n > project.allrate[index].rate }"></i>
                                 </div>
                             </div>
                             <p class="text-white-50 text-start my-2">{{ comment.comment }}</p>

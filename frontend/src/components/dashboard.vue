@@ -28,16 +28,23 @@
 </template>
 
 <script>
+import FunctionsClass from '../assets/js/registerAndUpdate'
+const functionsObject = new FunctionsClass();
 
 export default {
 
     name: 'dashboard',
+    created() {
+        functionsObject.isAuth(this);
+
+    },
 
     computed: {
         isAdmin() {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
             return userInfo && userInfo.is_superuser === true;
-        }
+        },
+
     },
 
 }

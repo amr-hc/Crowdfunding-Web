@@ -30,7 +30,8 @@ class FunctionsClass {
   jsValidations(par, e, modul) {
     const namePattern = /^[a-zA-Z ,.'-]+$/;
     const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
-    const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+    const passwordPattern =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     const mobilePattern = /^01[012]\d{8}$/;
     const countryPattern = /^[a-zA-Z ,.'-]+$/;
     const birthdatePattern =
@@ -124,11 +125,13 @@ class FunctionsClass {
     if (!descriptionPattern.test(par.description)) {
       console.log("2");
       const berthdateInput = document.getElementById("validationCustom04");
-      berthdateInput.setCustomValidity("Description must be less than 250chars");
+      berthdateInput.setCustomValidity(
+        "Description must be less than 250chars"
+      );
       setTimeout(() => {
         berthdateInput.setCustomValidity("");
       }, 2000);
-      
+
       return false;
     }
     if (!category.test(par.category)) {
@@ -234,9 +237,9 @@ class FunctionsClass {
         formData.delete(key);
       }
     }
-    
-      formData.delete('email');
-    
+
+    formData.delete("email");
+
     // Get user Id and token
     const token = par.storgData.token;
 
@@ -256,13 +259,13 @@ class FunctionsClass {
         throw new Error("can't update data ");
       }
       const data = await response.json();
-      this.showOprationsResalt("Update",'success')
-      setTimeout(()=>{
+      this.showOprationsResalt("Update", "success");
+      setTimeout(() => {
         par.$router.push("/profile");
-      },3000)
+      }, 3000);
       console.log(data);
     } catch (error) {
-      this.showOprationsResalt("Update",'faild')
+      this.showOprationsResalt("Update", "faild");
       console.error("Error fetching api:", error);
     }
   }
@@ -287,54 +290,52 @@ class FunctionsClass {
         throw new Error("can't update data ");
       }
       const data = await response.json();
-      this.modelDismiss('update');
-      this.showOprationsResalt("Update",'success')
-      setTimeout(()=>{
+      this.modelDismiss("update");
+      this.showOprationsResalt("Update", "success");
+      setTimeout(() => {
         par.$router.push(`/projects/${par.projectId}`);
-      },3000)
-     
+      }, 3000);
+
       console.log(data);
     } catch (error) {
-      this.modelDismiss('update');
-      this.showOprationsResalt("Update",'faild')
+      this.modelDismiss("update");
+      this.showOprationsResalt("Update", "faild");
       console.error("Error fetching api:", error);
     }
   }
 
   async deleteUser(par) {
     const storgData = par.storgData;
- 
+
     try {
       const response = await fetch(
         `http://127.0.0.1:8000/api/users/${storgData.user_id}`,
         {
           method: "DELETE",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Token ${storgData.token} `,
           },
           body: JSON.stringify({
-            password:par.password
-        })
-      });
+            password: par.password,
+          }),
+        }
+      );
       if (!response.ok) {
         throw new Error("can't delete data ");
       }
-      this.modelDismiss('deleteModal');
-      this.showOprationsResalt("Delete",'success')
-      setTimeout(()=>{
+      this.modelDismiss("deleteModal");
+      this.showOprationsResalt("Delete", "success");
+      setTimeout(() => {
         window.location.href = "http://localhost:8080/login";
-      },1500)
-     
-      
+      }, 1500);
     } catch (error) {
-       
-        this.modelDismiss('deleteModal');
-        this.showOprationsResalt("Delete",'faild');
-        setTimeout(()=>{
-          par.$router.go();
-        },1000)
-       console.error("Error fetching api:", error);
+      this.modelDismiss("deleteModal");
+      this.showOprationsResalt("Delete", "faild");
+      setTimeout(() => {
+        par.$router.go();
+      }, 1000);
+      console.error("Error fetching api:", error);
     }
   }
 
@@ -353,15 +354,15 @@ class FunctionsClass {
       if (!response.ok) {
         throw new Error("can't delete data ");
       }
-      
-      this.modelDismiss('deleteModal');
-      this.showOprationsResalt("Delete",'success')
-      setTimeout(()=>{
+
+      this.modelDismiss("deleteModal");
+      this.showOprationsResalt("Delete", "success");
+      setTimeout(() => {
         par.$router.go();
-      },3000)
+      }, 3000);
     } catch (error) {
-      this.modelDismiss('deleteModal');
-      this.showOprationsResalt("Delete",'faild')
+      this.modelDismiss("deleteModal");
+      this.showOprationsResalt("Delete", "faild");
       console.error("Error fetching api:", error);
     }
   }
@@ -385,34 +386,33 @@ class FunctionsClass {
       }
     }
   }
-  
+
   handleProjectFormSubmission(e, par) {
     if (this.HTMLValidations(e) && this.editProjectValidations(par)) {
       this.updateProjectRequest(par);
     }
   }
-  showOprationsResalt(opration,state){
-    if(state=='faild')
-    {
-    const resaltElement=document.getElementById("faild")
-    resaltElement.innerText=`Faild To ${opration} Data`
-    resaltElement.style.display="block"
+  showOprationsResalt(opration, state) {
+    if (state == "faild") {
+      const resaltElement = document.getElementById("faild");
+      resaltElement.innerText = `Faild To ${opration} Data`;
+      resaltElement.style.display = "block";
+    } else {
+      const resaltElement = document.getElementById("success");
+      resaltElement.innerText = `Data ${opration}ed successfully`;
+      resaltElement.style.display = "block";
+    }
   }
-  else{
-    const resaltElement=document.getElementById("success")
-    resaltElement.innerText=`Data ${opration}ed successfully`
-    resaltElement.style.display="block"
+  resetOprationsResaltTag() {
+    const resaltElement = document.getElementById("faild");
+    resaltElement.style.display = "none";
   }
+  modelDismiss(par) {
+    let SModal = bootstrap.Modal.getOrCreateInstance(
+      document.getElementById(par)
+    );
+    SModal.hide();
   }
-  resetOprationsResaltTag(){
-    const resaltElement=document.getElementById("faild")
-    resaltElement.style.display="none"
-  }
-  modelDismiss(par){
-		let SModal = bootstrap.Modal.getOrCreateInstance(
-    document.getElementById(par) ); 
-		SModal.hide();
-		}
   getStorgData() {
     const localStorageData = JSON.parse(localStorage.getItem("userInfo"));
     const sessionStorageData = JSON.parse(sessionStorage.getItem("userInfo"));
@@ -430,7 +430,12 @@ class FunctionsClass {
       par.user = par.storData.user;
     }
   }
-
+  async isAuth(par) {
+    let userData = this.getStorgData();
+    if (!userData) {
+      window.location.href = "http://localhost:8080/login";
+    }
+  }
   async featchUserData(par) {
     let userData = this.getStorgData();
     if (userData) {
