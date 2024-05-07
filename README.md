@@ -141,8 +141,8 @@ npm run serve
 3. Open your browser and go to http://localhost:8080 to access the application.
 ## Contributors
 
-| Contributor | Avatar | Profile | GitHub |
-|-------------|--------|---------|--------|
+| Contributor | Avatar | Profile |
+|-------------|--------|---------|
 | Ahmed Dabour | <img src="https://avatars.githubusercontent.com/u/90671017?v=4" width="100" height="100"> | [Ahmed Dabour](https://github.com/dabour1) |
 | Amr Elrefaaey | <img src="https://avatars.githubusercontent.com/u/156538554?v=4" width="100" height="100"> | [Amr Elrefaaey](https://github.com/amr-hc) |
 | Amir Elattar | <img src="https://avatars.githubusercontent.com/u/120283848?v=4" width="100" height="100"> | [Amir Elattar](https://github.com/Ameer-Elattar) |
