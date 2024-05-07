@@ -139,12 +139,15 @@ cd frontend
 npm run serve
 ```
 3. Open your browser and go to http://localhost:8080 to access the application.
-
 ## Contributors
-| <img src="https://avatars.githubusercontent.com/u/90671017?v=4" width="100" height="100"> | Ahmed Dabour | [Ahmed Dabour](https://github.com/dabour1) |
-| <img src="https://avatars.githubusercontent.com/u/156538554?v=4" width="100" height="100"> | Amr Elrefaaey | [Amr Elrefaaey](https://github.com/amr-hc) |
-| <img src="https://avatars.githubusercontent.com/u/120283848?v=4" width="100" height="100"> | Amir Elattar | [Amir Elattar](https://github.com/Ameer-Elattar) |
-| <img src="https://avatars.githubusercontent.com/u/92125041?v=4" width="100" height="100"> | Doha Seif | [Doha Seif](https://github.com/dohaseif2) |
-| <img src="https://avatars.githubusercontent.com/u/64663044?v=4" width="100" height="100"> | Mohamed Abdelazeem | [Mohamed Abdelazeem](https://github.com/mo-abdelazem) |
-| <img src="https://avatars.githubusercontent.com/u/116142339?v=4" width="100" height="100"> | Ahmed Nagy | [Ahmed Nagy](https://github.com/Blitz576) |
+
+| Contributor | Avatar | Profile | GitHub |
+|-------------|--------|---------|--------|
+| Ahmed Dabour | <img src="https://avatars.githubusercontent.com/u/90671017?v=4" width="100" height="100"> | [Ahmed Dabour](https://github.com/dabour1) |
+| Amr Elrefaaey | <img src="https://avatars.githubusercontent.com/u/156538554?v=4" width="100" height="100"> | [Amr Elrefaaey](https://github.com/amr-hc) |
+| Amir Elattar | <img src="https://avatars.githubusercontent.com/u/120283848?v=4" width="100" height="100"> | [Amir Elattar](https://github.com/Ameer-Elattar) |
+| Doha Seif | <img src="https://avatars.githubusercontent.com/u/92125041?v=4" width="100" height="100"> | [Doha Seif](https://github.com/dohaseif2) |
+| Mohamed Abdelazeem | <img src="https://avatars.githubusercontent.com/u/64663044?v=4" width="100" height="100"> | [Mohamed Abdelazeem](https://github.com/mo-abdelazem) |
+| Ahmed Nagy | <img src="https://avatars.githubusercontent.com/u/116142339?v=4" width="100" height="100"> | [Ahmed Nagy](https://github.com/Blitz576) |
+
 
