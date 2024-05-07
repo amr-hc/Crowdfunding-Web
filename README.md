@@ -52,7 +52,7 @@ Crowdfunding is the practice of funding a project or venture by raising small am
    - Search bar to search projects by title or tag.
 
 ## DataBase Schema
-- ![](related_images/Schema.png)
+ ![](related_images/Schema.png)
 
 ## Technologies Used
 
