@@ -123,3 +123,16 @@ pip install -r requirements.txt
 4. Configuration:
 - Configure backend settings in backend/project/settings.py.
 - Configure database settings in backend/project/settings.py
+
+## Usage
+1. Run the backend server:
+```bash
+cd backend
+python manage.py runserver
+```
+2. Run the frontend:
+```bash
+cd frontend
+npm run serve
+```
+3. Open your browser and go to http://localhost:8080 to access the application.
