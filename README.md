@@ -141,10 +141,11 @@ npm run serve
 3. Open your browser and go to http://localhost:8080 to access the application.
 
 ## Contributors
-| [Ahmed Dabour](https://avatars.githubusercontent.com/u/90671017?v=4) | Ahmed Dabour | [Ahmed Dabour](https://github.com/dabour1) |
-| [Amr Elrefaaey](https://avatars.githubusercontent.com/u/156538554?v=4) | Amr Elrefaaey | [Amr Elrefaaey](https://github.com/amr-hc) |
+| [![Ahmed Dabour](https://avatars.githubusercontent.com/u/90671017?v=4&s=50)](https://github.com/dabour1) | Ahmed Dabour | [Ahmed Dabour](https://github.com/dabour1) |
+| [![Amr Elrefaaey](https://avatars.githubusercontent.com/u/156538554?v=4&s=50)](https://github.com/amr-hc) | Amr Elrefaaey | [Amr Elrefaaey](https://github.com/amr-hc) |
 | [Avatar URL 3] | Amir Elattar | [Bob Johnson](https://github.com/bobjohnson) |
 | [Avatar URL 3] | Doha Seif | [Bob Johnson](https://github.com/bobjohnson) |
 | [Avatar URL 3] | Mohamed Abdelazeem | [Bob Johnson](https://github.com/bobjohnson) |
 | [Avatar URL 3] | Ahmed Nagy | [Bob Johnson](https://github.com/bobjohnson) |
+
 
