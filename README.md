@@ -55,4 +55,24 @@ Crowdfunding is the practice of funding a project or venture by raising small am
 - MySQL
 
 ## Project Structure
+```
+project/
+├── frontend/ # Vue.js frontend
+├── src/
+├── public/
+├── ...
+├── backend/ # Django backend
+├── app/
+├── manage.py
+├── ...
+├── database/ # MySQL database schema
+├── schema.sql
+├── ...
+├── related_images/ # Screenshots related to the project
+├── AboutUs.png
+├── Schema.png
+├── admin-add-feature-project.png
+├── ...
+└── README.md
 
+```
