@@ -112,8 +112,14 @@ npm install
 
 # Backend
 cd backend
-
+python -m venv venv
+venv\Scripts\activate
 pip install -r requirements.txt
-
 ```
+3. Database setup:
+- Create a MySQL database.
+- Import schema.sql to set up the database schema.
 
+4. Configuration:
+- Configure backend settings in backend/project/settings.py.
+- Configure database settings in backend/project/settings.py
