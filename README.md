@@ -76,23 +76,48 @@ project/
 └── README.md
 
 ```
-
 ## Screenshots
 
-- Database Design Schema
-  ![Database Design Schema](related_images/Schema.png)
+- ![About Us](related_images/AboutUs.png)
+  *About Us*
 
-- Homepage
-  ![Homepage](related_images/home-page.png)
+- ![Database Design Schema](related_images/Schema.png)
+  *Database Design Schema*
 
-- User Donates to a Project
-  ![User Donates to a Project](related_images/user-donate.png)
+- ![Homepage](related_images/home-page.png)
+  *Homepage*
 
-- User Reports a Comment
-  ![User Reports a Comment](related_images/user-report-a-comment.png)
+- ![User Donates to a Project](related_images/user-donate.png)
+  *User Donates to a Project*
 
-- Admin Reports Page
-  ![Admin Reports Page](related_images/admin-reports-page.png)
+- ![User Reports a Comment](related_images/user-report-a-comment.png)
+  *User Reports a Comment*
+
+- ![Admin Reports Page](related_images/admin-reports-page.png)
+  *Admin Reports Page*
+
+- ![Admin can add projects with features section](related_images/admin-add-feature-project.png)
+  *Admin can add projects with features section*
+
+- ![Admin can show all the projects with the canceled one](related_images/admin-all-projects-with-canceled.png)
+  *Admin can show all the projects with the canceled one*
+
+- ![Admin can delete a project](related_images/admin-delete-project.png)
+  *Admin can delete a project*
+
+- ![Admin can show all the reports on comments and reports](related_images/admin-reports-page.png)
+  *Admin can show all the reports on comments and reports*
+
+- ![Admin can show all the categories and tags](related_images/all-categories-and-tags.png)
+  *Admin can show all the categories and tags*
+
+## Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/your_username/your_project.git
+
 
 ## Installation
 
