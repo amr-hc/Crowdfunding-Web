@@ -141,9 +141,10 @@ npm run serve
 3. Open your browser and go to http://localhost:8080 to access the application.
 
 ## Contributors
-| [![Ahmed Dabour](https://avatars.githubusercontent.com/u/90671017?v=4&s=50)](https://github.com/dabour1) | Ahmed Dabour | [Ahmed Dabour](https://github.com/dabour1) |
-| [![Amr Elrefaaey](https://avatars.githubusercontent.com/u/156538554?v=4&s=50)](https://github.com/amr-hc) | Amr Elrefaaey | [Amr Elrefaaey](https://github.com/amr-hc) |
-| [![Amir Elattar](https://avatars.githubusercontent.com/u/120283848?v=4)](https://github.com/Ameer-Elattar) | Amir Elattar | [Amir Elattar](https://github.com/Ameer-Elattar) |
-| [![Doha Seif](https://avatars.githubusercontent.com/u/92125041?v=4)](https://github.com/dohaseif2) | Doha Seif | [Doha Seif](https://github.com/dohaseif2) |
-| [![Mohamed Abdelazeem](https://avatars.githubusercontent.com/u/64663044?v=4)](https://github.com/mo-abdelazem) | Mohamed Abdelazeem | [Mohamed Abdelazeem](https://github.com/mo-abdelazem) |
-| [![Ahmed Nagy](https://avatars.githubusercontent.com/u/116142339?v=4)](https://github.com/Blitz576) | Ahmed Nagy | [Ahmed Nagy](https://github.com/Blitz576) |
+| <img src="https://avatars.githubusercontent.com/u/90671017?v=4" width="100" height="100"> | Ahmed Dabour | [Ahmed Dabour](https://github.com/dabour1) |
+| <img src="https://avatars.githubusercontent.com/u/156538554?v=4" width="100" height="100"> | Amr Elrefaaey | [Amr Elrefaaey](https://github.com/amr-hc) |
+| <img src="https://avatars.githubusercontent.com/u/120283848?v=4" width="100" height="100"> | Amir Elattar | [Amir Elattar](https://github.com/Ameer-Elattar) |
+| <img src="https://avatars.githubusercontent.com/u/92125041?v=4" width="100" height="100"> | Doha Seif | [Doha Seif](https://github.com/dohaseif2) |
+| <img src="https://avatars.githubusercontent.com/u/64663044?v=4" width="100" height="100"> | Mohamed Abdelazeem | [Mohamed Abdelazeem](https://github.com/mo-abdelazem) |
+| <img src="https://avatars.githubusercontent.com/u/116142339?v=4" width="100" height="100"> | Ahmed Nagy | [Ahmed Nagy](https://github.com/Blitz576) |
+
