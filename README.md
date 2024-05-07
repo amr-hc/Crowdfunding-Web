@@ -79,9 +79,6 @@ project/
 
 ## Screenshots
 
-- About Us
-  ![About Us](related_images/AboutUs.png)
-
 - Database Design Schema
   ![Database Design Schema](related_images/Schema.png)
 
