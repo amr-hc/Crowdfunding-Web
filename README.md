@@ -103,4 +103,17 @@ project/
 
 ```bash
 git clone https://github.com/your_username/your_project.git
+```
+2. Install dependencies:
+```bash
+# Frontend
+cd frontend
+npm install
+
+# Backend
+cd backend
+
+pip install -r requirements.txt
+
+```
 
