@@ -76,3 +76,31 @@ project/
 └── README.md
 
 ```
+
+## Screenshots
+
+- About Us
+  ![About Us](related_images/AboutUs.png)
+
+- Database Design Schema
+  ![Database Design Schema](related_images/Schema.png)
+
+- Homepage
+  ![Homepage](related_images/home-page.png)
+
+- User Donates to a Project
+  ![User Donates to a Project](related_images/user-donate.png)
+
+- User Reports a Comment
+  ![User Reports a Comment](related_images/user-report-a-comment.png)
+
+- Admin Reports Page
+  ![Admin Reports Page](related_images/admin-reports-page.png)
+
+## Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/your_username/your_project.git
+
