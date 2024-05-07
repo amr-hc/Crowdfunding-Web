@@ -79,21 +79,21 @@ project/
 
 ## Functionality Screenshots
 
-**User Interface**
+### User Interface
 
-* **About Us:** [Image of About Us page](related_images/AboutUs.png)
-* **Homepage:** [Image of Homepage](related_images/home-page.png)
-* **User Donates to a Project:** [Image of User Donation](related_images/user-donate.png)
-* **User Reports a Comment:** [Image of User Reporting a Comment](related_images/user-report-a-comment.png)
+* **About Us:** ![About Us page](related_images/AboutUs.png)
+* **Homepage:** ![Homepage](related_images/home-page.png)
+* **User Donates to a Project:** ![User Donation](related_images/user-donate.png)
+* **User Reports a Comment:** ![User Reporting a Comment](related_images/user-report-a-comment.png)
 
-**Admin Panel**
+### Admin Panel
 
-* **Reports Page:** [Image of Admin Reports Page](related_images/admin-reports-page.png)
+* **Reports Page:** ![Admin Reports Page](related_images/admin-reports-page.png)
 * **Project Management:**
-    * Add Project with Features: [Image of Admin Adding Project](related_images/admin-add-feature-project.png)
-    * View All Projects (including canceled): [Image of Admin Viewing All Projects](related_images/admin-all-projects-with-canceled.png)
-    * Delete Project: [Image of Admin Deleting Project](related_images/admin-delete-project.png)
-* **Category and Tag Management:** [Image of Admin Viewing Categories and Tags](related_images/all-categories-and-tags.png)
+    * Add Project with Features: ![Admin Adding Project](related_images/admin-add-feature-project.png)
+    * View All Projects (including canceled): ![Admin Viewing All Projects](related_images/admin-all-projects-with-canceled.png)
+    * Delete Project: ![Admin Deleting Project](related_images/admin-delete-project.png)
+* **Category and Tag Management:** ![Admin Viewing Categories and Tags](related_images/all-categories-and-tags.png)
 ## Installation
 
 1. Clone the repository:
