@@ -21,14 +21,13 @@ Crowdfunding is the practice of funding a project or venture by raising small am
 1. **Authentication System:**
    - Registration with email verification.
    - Login with email and password.
-   - Login with Facebook account (Bonus).
-   - Forgot Password (Bonus).
+   - Forgot Password.
    - User Profile:
      - View profile information.
      - View owned projects.
      - View donations.
-     - Edit profile information (except email).
-     - Delete account with confirmation (Bonus: password required).
+     - Edit profile information.
+     - Delete account with confirmation.
 2. **Projects:**
    - Create fundraising campaigns with:
      - Title
@@ -39,7 +38,7 @@ Crowdfunding is the practice of funding a project or venture by raising small am
      - Multiple tags
      - Start/end time for the campaign
    - View projects and donate.
-   - Add comments on projects (Bonus: with replies).
+   - Add comments on projects.
    - Report inappropriate projects or comments.
    - Rate projects.
    - Project creators can cancel projects if donations are less than 25% of the target.
